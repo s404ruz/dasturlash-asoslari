@@ -24,14 +24,13 @@
 ## Prezentatsiya imkoniyatlari va klavishlar
 
 - **100% oflayn:** lokal `vendor/lucide.min.js` vektor ikonkalari, ichki Python/SQL sintaksis yoritish va 11 ta inline SVG diagramma.
-- **Yorug‘ (proyektorga qulay) + Tungi rejim**, **PDF eksport** (`A4 landscape`), **O‘qituvchi izohlari (Speaker Notes)** va bosqichma-bosqich ochilish (fragmentlar).
+- **Yorug‘ (proyektorga qulay) + Tungi rejim**, **PDF eksport** (`A4 landscape`) va bosqichma-bosqich ochilish (fragmentlar).
 
 | Klavish | Vazifasi |
 | --- | --- |
 | `→` yoki `Space` | Keyingi fragment / slayd |
 | `←` | Oldingi fragment / slayd |
 | `M` | 7 bob bo‘yicha navigatsiya menyusi |
-| `N` | O‘qituvchi izohi (Speaker Notes) panelini ochish / yopish |
 | `O` | Barcha slaydlar panjarasi (Overview) |
 | `D` | Yorug‘ / Tungi rejim (Dark Mode) |
 | `F` | To‘liq ekran rejimi |
@@ -59,10 +58,12 @@ Dastur ishga tushgach quyidagi fayllarni avtomatik yaratadi:
 ```text
 11-dars/
 ├── README.md
-├── index.html            # 42 ta slayd, inline SVG diagrammalar va Speaker Notes
+├── index.html            # 42 ta slayd va inline SVG diagrammalar
 ├── style.css             # Light/Dark dizayn va PDF print stillari
 ├── app.js                # Navigatsiya, fragmentlar, sintaksis yoritish va interaktiv lablar
 ├── yuridik_firma_mb.py   # 7-bob yuridik firma MB va yaxlitlik sinovlari dasturi
 └── vendor/
-    └── lucide.min.js     # Rasmiy Lucide vektor ikonkalari (oflayn)
+    ├── lucide.min.js     # Rasmiy Lucide vektor ikonkalari (oflayn)
+    ├── fonts.css         # Lokal Montserrat (600/700) va Open Sans (400) shriftlari
+    └── fonts/            # Oflayn .woff2 shrift fayllari
 ```

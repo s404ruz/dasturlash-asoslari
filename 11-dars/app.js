@@ -11,8 +11,6 @@
   const counterEl = document.getElementById("slideCounter");
   const chapterNameEl = document.getElementById("currentChapterName");
 
-  const notesDockContent = document.getElementById("notesDockContent");
-  const notesBtn = document.getElementById("btnNotes");
   const themeBtn = document.getElementById("btnTheme");
   const menuBtn = document.getElementById("btnMenu");
   const overviewBtn = document.getElementById("btnOverview");
@@ -39,21 +37,46 @@
   }
 
   /* ------------------------------------------------------------------------
-     1. Responsive 16:9 Stage Scaling
+     1. Responsive 16:9 Stage Scaling + Fullscreen Auto-Hide Toolbar
      ------------------------------------------------------------------------ */
   function scaleStage() {
     if (!stage || !viewport) return;
     const rect = viewport.getBoundingClientRect();
-    const availW = Math.max(320, rect.width - 28);
-    const availH = Math.max(200, rect.height - 20);
-    const scale = Math.min(availW / 1280, availH / 720, 1.45);
+    const availW = Math.max(320, rect.width - 14);
+    const availH = Math.max(200, rect.height - 10);
+    const scale = Math.min(availW / 1280, availH / 720, 2.2);
     stage.style.transform = `scale(${scale})`;
   }
+
+  let peekTimer = null;
+  function syncFullscreenState() {
+    const isFs = Boolean(document.fullscreenElement);
+    document.body.classList.toggle("is-fullscreen", isFs);
+    if (!isFs) {
+      document.body.classList.remove("toolbar-peek");
+    }
+    setTimeout(scaleStage, 80);
+  }
+
+  document.addEventListener("fullscreenchange", syncFullscreenState);
+  document.addEventListener("mousemove", (e) => {
+    if (!document.body.classList.contains("is-fullscreen")) return;
+    const nearBottom = window.innerHeight - e.clientY <= 68;
+    if (nearBottom) {
+      document.body.classList.add("toolbar-peek");
+      clearTimeout(peekTimer);
+    } else if (document.body.classList.contains("toolbar-peek")) {
+      clearTimeout(peekTimer);
+      peekTimer = setTimeout(() => {
+        document.body.classList.remove("toolbar-peek");
+      }, 900);
+    }
+  });
 
   window.addEventListener("resize", scaleStage);
 
   /* ------------------------------------------------------------------------
-     2. Built-in Offline Syntax Highlighter (Python & SQL)
+     2. Built-in Offline Syntax Highlighter (Single-Pass, Python & SQL)
      ------------------------------------------------------------------------ */
   function escapeHtml(text) {
     return text
@@ -63,45 +86,49 @@
   }
 
   function highlightCode(raw, lang) {
-    const escaped = escapeHtml(raw);
-    const tokens = [];
-    const stash = (cls, match) => {
-      const id = tokens.length;
-      tokens.push(`<span class="${cls}">${match}</span>`);
-      return `\u0000${id}\u0000`;
-    };
-
-    let code = escaped;
-
     if (lang === "python") {
-      code = code.replace(/(#[^\n]*)/g, (m) => stash("tok-com", m));
-      code = code.replace(/("""[\s\S]*?"""|'''[\s\S]*?'''|f?"(?:\\.|[^"\\])*"|f?'(?:\\.|[^'\\])*')/g, (m) =>
-        stash("tok-str", m)
-      );
-      code = code.replace(
-        /\b(import|from|as|def|return|if|elif|else|for|in|while|try|except|with|and|or|not|True|False|None|pass|break|continue)\b/g,
-        '<span class="tok-kw">$1</span>'
-      );
-      code = code.replace(
-        /\b(print|len|range|set|dict|list|tuple|sorted|type|sum|int|str|float)\b/g,
-        '<span class="tok-fn">$1</span>'
-      );
-      code = code.replace(/\b(\d+(?:\.\d+)?)\b/g, '<span class="tok-num">$1</span>');
-    } else if (lang === "sql") {
-      code = code.replace(/(--[^\n]*)/g, (m) => stash("tok-com", m));
-      code = code.replace(/('(?:''|[^'])*')/g, (m) => stash("tok-str", m));
-      code = code.replace(
-        /\b(CREATE|TABLE|IF|NOT|EXISTS|PRIMARY|KEY|FOREIGN|REFERENCES|UNIQUE|CHECK|DEFAULT|NULL|ON|DELETE|RESTRICT|CASCADE|SET|INSERT|INTO|VALUES|SELECT|FROM|WHERE|JOIN|LEFT|GROUP|BY|ORDER|ALTER|ADD|COLUMN|RENAME|TO|DROP|PRAGMA|BEGIN|COMMIT|ROLLBACK|UPDATE|EXPLAIN|QUERY|PLAN|STRICT|AND|OR|IN|IS|AS|COUNT|INDEX)\b/gi,
-        '<span class="tok-kw">$1</span>'
-      );
-      code = code.replace(
-        /\b(INTEGER|TEXT|REAL|BLOB|NUMERIC)\b/gi,
-        '<span class="tok-type">$1</span>'
-      );
-      code = code.replace(/\b(\d+(?:\.\d+)?)\b/g, '<span class="tok-num">$1</span>');
+      const pyRegex =
+        /(#[^\n]*)|("""[\s\S]*?"""|'''[\s\S]*?'''|f?"(?:\\.|[^"\\])*"|f?'(?:\\.|[^'\\])*')|\b(import|from|as|def|return|if|elif|else|for|in|while|try|except|with|and|or|not|True|False|None|pass|break|continue)\b|\b(print|len|range|set|dict|list|tuple|sorted|type|sum|int|str|float)\b|\b(\d+(?:\.\d+)?)\b/g;
+
+      let out = "";
+      let last = 0;
+      let m;
+      while ((m = pyRegex.exec(raw)) !== null) {
+        if (m.index > last) out += escapeHtml(raw.slice(last, m.index));
+        const text = escapeHtml(m[0]);
+        if (m[1]) out += `<span class="tok-com">${text}</span>`;
+        else if (m[2]) out += `<span class="tok-str">${text}</span>`;
+        else if (m[3]) out += `<span class="tok-kw">${text}</span>`;
+        else if (m[4]) out += `<span class="tok-fn">${text}</span>`;
+        else if (m[5]) out += `<span class="tok-num">${text}</span>`;
+        last = pyRegex.lastIndex;
+      }
+      if (last < raw.length) out += escapeHtml(raw.slice(last));
+      return out;
     }
 
-    return code.replace(/\u0000(\d+)\u0000/g, (_, idx) => tokens[Number(idx)]);
+    if (lang === "sql") {
+      const sqlRegex =
+        /(--[^\n]*)|('(?:''|[^'])*')|\b(CREATE|TABLE|IF|NOT|EXISTS|PRIMARY|KEY|FOREIGN|REFERENCES|UNIQUE|CHECK|DEFAULT|NULL|ON|DELETE|RESTRICT|CASCADE|SET|INSERT|INTO|VALUES|SELECT|FROM|WHERE|JOIN|LEFT|GROUP|BY|ORDER|ALTER|ADD|COLUMN|RENAME|TO|DROP|PRAGMA|BEGIN|COMMIT|ROLLBACK|UPDATE|EXPLAIN|QUERY|PLAN|STRICT|AND|OR|IN|IS|AS|COUNT|INDEX)\b|\b(INTEGER|TEXT|REAL|BLOB|NUMERIC)\b|\b(\d+(?:\.\d+)?)\b/gi;
+
+      let out = "";
+      let last = 0;
+      let m;
+      while ((m = sqlRegex.exec(raw)) !== null) {
+        if (m.index > last) out += escapeHtml(raw.slice(last, m.index));
+        const text = escapeHtml(m[0]);
+        if (m[1]) out += `<span class="tok-com">${text}</span>`;
+        else if (m[2]) out += `<span class="tok-str">${text}</span>`;
+        else if (m[3]) out += `<span class="tok-kw">${text}</span>`;
+        else if (m[4]) out += `<span class="tok-type">${text}</span>`;
+        else if (m[5]) out += `<span class="tok-num">${text}</span>`;
+        last = sqlRegex.lastIndex;
+      }
+      if (last < raw.length) out += escapeHtml(raw.slice(last));
+      return out;
+    }
+
+    return escapeHtml(raw);
   }
 
   function initCodeBlocks() {
@@ -121,6 +148,25 @@
         codeEl.innerHTML = highlightCode(rawText, lang);
       } else {
         codeEl.textContent = rawText;
+      }
+
+      const outputBox = card.querySelector(".code-output");
+      if (outputBox && !outputBox.querySelector("pre")) {
+        const labelEl = outputBox.querySelector(".code-output-label");
+        let textContent = "";
+        Array.from(outputBox.childNodes).forEach((node) => {
+          if (node !== labelEl) {
+            textContent += node.textContent || "";
+            node.remove();
+          }
+        });
+        const trimmed = textContent.replace(/^\s*\n|\s+$/g, "");
+        if (trimmed) {
+          const pre = document.createElement("pre");
+          pre.className = "code-output-pre";
+          pre.textContent = trimmed;
+          outputBox.appendChild(pre);
+        }
       }
 
       const copyBtn = card.querySelector(".copy-btn");
@@ -155,7 +201,7 @@
   }
 
   /* ------------------------------------------------------------------------
-     3. Navigation, Fragments & Speaker Notes
+     3. Navigation & Fragments
      ------------------------------------------------------------------------ */
   function getFragments(slide) {
     return Array.from(slide.querySelectorAll(".fragment"));
@@ -189,11 +235,6 @@
 
     const pct = ((currentIndex + 1) / slides.length) * 100;
     progressFill.style.width = `${pct}%`;
-
-    const noteSrc = activeSlide.querySelector(".speaker-notes-source");
-    notesDockContent.innerHTML = noteSrc
-      ? noteSrc.innerHTML
-      : "<p>Ushbu slayd uchun qo‘shimcha o‘qituvchi izohi kiritilmagan.</p>";
 
     history.replaceState(null, "", `#slide-${currentIndex + 1}`);
     syncMenuHighlight();
@@ -315,12 +356,6 @@
   function toggleOverview() {
     if (overviewModal.classList.contains("open")) closeOverview();
     else openOverview();
-  }
-
-  function toggleNotes() {
-    const isOpen = document.body.classList.toggle("notes-open");
-    notesBtn.classList.toggle("active", isOpen);
-    setTimeout(scaleStage, 260);
   }
 
   function setThemeButton(theme) {
@@ -545,10 +580,6 @@
         e.preventDefault();
         goToSlide(slides.length - 1);
         break;
-      case "n":
-      case "N":
-        toggleNotes();
-        break;
       case "m":
       case "M":
         toggleDrawer();
@@ -570,7 +601,6 @@
 
   prevBtn.addEventListener("click", stepPrev);
   nextBtn.addEventListener("click", stepNext);
-  notesBtn.addEventListener("click", toggleNotes);
   themeBtn.addEventListener("click", toggleTheme);
   menuBtn.addEventListener("click", toggleDrawer);
   drawerCloseBtn.addEventListener("click", closeDrawer);

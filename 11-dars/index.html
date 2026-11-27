@@ -69,17 +69,12 @@
             <div class="kbd-row">
               <span><kbd>→</kbd> / <kbd>Space</kbd> Keyingi qadam</span>
               <span><kbd>M</kbd> Boblar menyusi</span>
-              <span><kbd>N</kbd> O‘qituvchi izohi</span>
               <span><kbd>D</kbd> Tungi rejim</span>
               <span><kbd>F</kbd> To‘liq ekran</span>
             </div>
             <span>7 bob • 42 slayd • Oflayn HTML</span>
           </div>
         </div>
-
-        <aside class="speaker-notes-source">
-          <p><strong>Kirish nutqi:</strong> Talabalarga 10-mavzuda o‘rganilgan matnli va CSV fayllardan endi ma’lumotlar bazalariga o‘tayotganimizni eslating. Pastdagi 7 bob kartochkalarini bosib istalgan bobga tezkor o‘tish mumkin. Dars davomida <strong>N</strong> tugmasi orqali ushbu izohlarni ko‘rib borishingiz mumkin.</p>
-        </aside>
       </section>
 
       <!-- ================================================================
@@ -122,22 +117,18 @@
               </div>
               <div class="card" data-goto="32" style="cursor:pointer; border-left: 4px solid var(--accent);">
                 <h3 class="card-title">6. Python <code>sqlite3</code> moduli <span class="badge badge-blue">32–37</span></h3>
-                <p>Ulanish, kursor, DDL, <code>PRAGMA</code>, parametrlangan so‘rovlar (SQL-in’ektsiya), <code>with</code>.</p>
+                <p>Ulanish, kursor, jadval yaratish (DDL), <code>PRAGMA</code>, parametrlangan so‘rovlar, <code>with</code>.</p>
               </div>
               <div class="card" data-goto="38" style="cursor:pointer; border-left: 4px solid var(--rose);">
                 <h3 class="card-title">7. Kompleks amaliy mashg‘ulot <span class="badge badge-red">38–42</span></h3>
                 <p>Yuridik firma MB loyihasi (7 jadval, 7 yaxlitlik sinovi, TXT/CSV hisobotlar).</p>
               </div>
               <div class="callout success mt-auto">
-                <strong>Yakuniy maqsad:</strong> Og‘zaki biznes-talabdan 3NF relyatsion sxema loyihalash va uni Python + SQLite’da sinab ishga tushirish. (CRUD so‘rovlari 12-mavzuda o‘rganiladi.)
+                <strong>Yakuniy maqsad:</strong> Og‘zaki biznes-talabdan 3NF relyatsion sxema loyihalash va uni Python + SQLite’da sinab ishga tushirish. (Ma’lumot qo‘shish/o‘qish/o‘zgartirish — CRUD 12-mavzuda.)
               </div>
             </div>
           </div>
         </div>
-
-        <aside class="speaker-notes-source">
-          <p><strong>Yo‘naltirish:</strong> Istalgan bob kartochkasini bosish orqali o‘sha bobga darhol o‘tish mumkin. Talabalarga 11-mavzu asosan loyihalash va sxemaga qaratilganini, <code>INSERT/SELECT/UPDATE/DELETE</code> ning to‘liq imkoniyatlari esa 12–13-mavzularda kelishini ayting.</p>
-        </aside>
       </section>
 
       <!-- ================================================================
@@ -193,10 +184,6 @@
             <strong>Muhim fikr:</strong> Ma’lumotlar bazasi shunchaki “saqlash ombori” emas — u ma’lumotlarni tuzilmali saqlash, tez topish, bir vaqtda ko‘p foydalanuvchiga xizmat ko‘rsatish va xatolarning oldini olish vositasidir.
           </div>
         </div>
-
-        <aside class="speaker-notes-source">
-          <p><strong>Savol bilan boshlang:</strong> Doskaga faqat <code>1500000</code> deb yozib, talabalardan “Bu nima?” deb so‘rang (narx, maosh, qarzdorlik, aholi soni?). Kontekstsiz bu shunchaki ma’lumot; yozuvga birlashgach axborotga aylanadi.</p>
-        </aside>
       </section>
 
       <!-- ================================================================
@@ -281,10 +268,6 @@
             </div>
           </div>
         </div>
-
-        <aside class="speaker-notes-source">
-          <p><strong>Tushuntirish:</strong> 10-mavzudagi CSV fayl kichik ro‘yxatlar uchun yaxshi, lekin yuridik firmada yuzlab shartnoma va bir nechta xodim ishlaganda shu 6 muammo darhol yuzaga chiqadi. Ma’lumotlar bazasida mijoz bir joyda saqlanadi, shartnomalar unga havola qiladi.</p>
-        </aside>
       </section>
 
       <!-- ================================================================
@@ -368,10 +351,6 @@ ulanish.close()</code></pre>
             </div>
           </div>
         </div>
-
-        <aside class="speaker-notes-source">
-          <p><strong>Muhim farq:</strong> Ko‘p talabalar “SQLite — bu ma’lumotlar bazasi” deb aralashtiradi. Aniqlashtiring: <code>yuridik_firma.db</code> — ma’lumotlar bazasi, <strong>SQLite</strong> esa uni boshqaruvchi dastur (MBBT), <strong>SQL</strong> esa u bilan muloqot tili.</p>
-        </aside>
       </section>
 
       <!-- ================================================================
@@ -455,10 +434,6 @@ ulanish.close()</code></pre>
             <strong>Nega relyatsion model?</strong> Iqtisodiyot, boshqaruv va huquq tizimlarining aksariyati qat’iy aniqlik va jadvallararo bog‘lanishni talab qiladi — bu aynan relyatsion bazalarning kuchli tomoni.
           </div>
         </div>
-
-        <aside class="speaker-notes-source">
-          <p><strong>Kasbiy bog‘liqlik:</strong> Dasturchi bo‘lmagan mutaxassis ham MB tuzilishini tushunsa, IT jamoaga aniq texnik topshiriq bera oladi, hisobot sifatini baholay oladi va xatolarni tez topadi.</p>
-        </aside>
       </section>
 
       <!-- ================================================================
@@ -504,10 +479,6 @@ ulanish.close()</code></pre>
             <strong>1-bob xulosasi:</strong> Ma’lumot kontekstda axborotga aylanadi. CSV’dagi takrorlanish va zidliklarni bartaraf etish uchun MBBT va relyatsion ma’lumotlar bazasidan foydalanamiz.
           </div>
         </div>
-
-        <aside class="speaker-notes-source">
-          <p><strong>Auditoriya bilan ishlash:</strong> Avval talabalardan og‘zaki javob so‘rang, so‘ng variantni bosing va izohni birga muhokama qiling.</p>
-        </aside>
       </section>
 
       <!-- ================================================================
@@ -596,10 +567,6 @@ ulanish.close()</code></pre>
             </div>
           </div>
         </div>
-
-        <aside class="speaker-notes-source">
-          <p><strong>Eslatma:</strong> 6-mavzudagi Python <code>tuple</code> (kortej) atamasi aynan relyatsion modeldagi satr bilan bir xil ma’noga ega. Jadval darajasi — ustunlar soni, quvvati — satrlar soni.</p>
-        </aside>
       </section>
 
       <!-- ================================================================
@@ -686,10 +653,6 @@ toifa - TEXT
             </div>
           </div>
         </div>
-
-        <aside class="speaker-notes-source">
-          <p><strong>O‘xshatish:</strong> Sxemani bo‘sh anketaga (blank), ma’lumotlarni esa to‘ldirilgan anketalarga qiyoslang. Jadval yaratilgach, unda sxema bor, lekin hali satrlar yo‘q.</p>
-        </aside>
       </section>
 
       <!-- ================================================================
@@ -733,10 +696,6 @@ toifa - TEXT
             </div>
           </div>
         </div>
-
-        <aside class="speaker-notes-source">
-          <p><strong>Muhokama:</strong> Talabalardan Excel’da ko‘rgan “chiroyli, lekin buzilgan” jadvallarini (birlashtirilgan kataklar, bitta katakda vergul bilan bir nechta fan/telefon) eslashni so‘rang.</p>
-        </aside>
       </section>
 
       <!-- ================================================================
@@ -770,19 +729,23 @@ toifa - TEXT
               <div class="callout warn fragment text-sm">
                 <strong>Pul summasi va sana:</strong><br/>
                 • <code>0.1 + 0.1 + 0.1 == 0.30000000000000004</code> → Pulni <code>REAL</code> emas, eng kichik birlikda <code>INTEGER</code> saqlang.<br/>
-                • Sanani <code>TEXT</code> sifatida <code>2026-03-15</code> (ISO) yozing — matncha saralash ham to‘g‘ri ishlaydi.
+                • Sanani <code>TEXT</code> sifatida <code>2026-03-15</code> (yil-oy-kun) yozing — matncha saralash ham to‘g‘ri ishlaydi.
               </div>
             </div>
 
             <div class="flex-col">
               <div class="code-card">
                 <div class="code-bar">
-                  <span class="code-lang"><span class="code-dots"><span></span><span></span><span></span></span>NULL ≠ 0 ≠ ''</span>
+                  <span class="code-lang"><span class="code-dots"><span></span><span></span><span></span></span>Python • NULL ≠ 0 ≠ '' ekanini sinash</span>
                   <button type="button" class="copy-btn">Nusxalash</button>
                 </div>
-                <pre><code class="language-python">for ifoda in ["NULL", "0", "''", "NULL = NULL", "NULL IS NULL"]:
+                <pre><code class="language-python">import sqlite3
+
+ulanish = sqlite3.connect(":memory:")
+for ifoda in ["NULL", "0", "''", "NULL = NULL", "NULL IS NULL"]:
     q = ulanish.execute(f"SELECT {ifoda}").fetchone()[0]
-    print(f"{ifoda:<13} -> {q!r}")</code></pre>
+    print(f"{ifoda:&lt;13} -&gt; {q!r}")
+ulanish.close()</code></pre>
                 <div class="code-output">
                   <div class="code-output-label">Natija</div>
 NULL          -> None
@@ -800,10 +763,6 @@ NULL IS NULL  -> 1      # To'g'ri tekshirish usuli!
             </div>
           </div>
         </div>
-
-        <aside class="speaker-notes-source">
-          <p><strong>Diqqatni torting:</strong> Ikki noma’lum qiymatning tengligini aniqlab bo‘lmagani uchun SQL’da <code>NULL = NULL</code> rost bermaydi! Doimo <code>IS NULL</code> yoki <code>IS NOT NULL</code> ishlatiladi.</p>
-        </aside>
       </section>
 
       <!-- ================================================================
@@ -849,10 +808,6 @@ NULL IS NULL  -> 1      # To'g'ri tekshirish usuli!
             <strong>2-bob xulosasi:</strong> Relyatsion modelda barcha ma’lumotlar atomar katakli jadvallarda saqlanadi. Sxema — jadval qolipi, <code>NULL</code> — noma’lum qiymat.
           </div>
         </div>
-
-        <aside class="speaker-notes-source">
-          <p><strong>Tekshiruv:</strong> Ikkinchi savolda ko‘pchilik talabalar <code>1</code> (rost) deb o‘ylaydi — aynan shu joyda “Mening cho‘ntagimdagi noma’lum pul sizning cho‘ntagingizdagi noma’lum pulga tengmi? Bilmaymiz!” misolini ayting.</p>
-        </aside>
       </section>
 
       <!-- ================================================================
@@ -903,10 +858,6 @@ NULL IS NULL  -> 1      # To'g'ri tekshirish usuli!
             <strong>Yaxlitlik buzilsa nima bo‘ladi?</strong> Mavjud bo‘lmagan mijozga yozilgan shartnoma yoki manfiy summali to‘lov butun moliyaviy hisobotni noto‘g‘ri qilib qo‘yadi.
           </div>
         </div>
-
-        <aside class="speaker-notes-source">
-          <p><strong>Muhim nuqta:</strong> Python kodida <code>if</code> bilan tekshirish o‘rniga qoidani MB sxemasiga yozishning afzalligi — bazaga qaysi dastur yoki xodim ulanmasin, qoida baribir buzilmaydi.</p>
-        </aside>
       </section>
 
       <!-- ================================================================
@@ -969,9 +920,12 @@ ulanish.execute("""
 ulanish.execute("INSERT INTO mijozlar VALUES (1, 'Karimov')")
 
 try:
-    ulanish.execute("INSERT INTO mijozlar VALUES (1, 'Azizova')")
+    ulanish.execute(
+        "INSERT INTO mijozlar VALUES (1, 'Azizova')"
+    )
 except sqlite3.IntegrityError as xatolik:
-    print("Rad etildi:", xatolik)</code></pre>
+    print("Rad etildi:", xatolik)
+ulanish.close()</code></pre>
               <div class="code-output">
                 <div class="code-output-label">Natija</div>
 Rad etildi: UNIQUE constraint failed: mijozlar.mijoz_id
@@ -979,10 +933,6 @@ Rad etildi: UNIQUE constraint failed: mijozlar.mijoz_id
             </div>
           </div>
         </div>
-
-        <aside class="speaker-notes-source">
-          <p><strong>Tushuntirish:</strong> Tarkibiy kalitda alohida <code>talaba_id</code> ham, <code>fan_id</code> ham takrorlanishi mumkin, lekin ularning <strong>juftligi</strong> <code>(talaba_id, fan_id)</code> takrorlanmaydi.</p>
-        </aside>
       </section>
 
       <!-- ================================================================
@@ -1031,18 +981,16 @@ Rad etildi: UNIQUE constraint failed: mijozlar.mijoz_id
                 <span class="code-lang"><span class="code-dots"><span></span><span></span><span></span></span>Python • Avtomatik surrogat kalit (lastrowid)</span>
                 <button type="button" class="copy-btn">Nusxalash</button>
               </div>
-              <pre><code class="language-python">ulanish.execute("""
-    CREATE TABLE mijozlar (
-        mijoz_id INTEGER PRIMARY KEY,
-        stir     TEXT UNIQUE,
-        nomi     TEXT
-    )
-""")
-k = ulanish.execute(
+              <pre><code class="language-python">import sqlite3
+
+u = sqlite3.connect(":memory:")
+u.execute("""CREATE TABLE mijozlar (
+    mijoz_id INTEGER PRIMARY KEY, stir TEXT UNIQUE, nomi TEXT)""")
+k = u.execute(
     "INSERT INTO mijozlar (stir, nomi) VALUES (?, ?)",
-    ("305123456", "Baraka Savdo MChJ")
-)
-print("Avto mijoz_id =", k.lastrowid)</code></pre>
+    ("305123456", "Baraka Savdo MChJ"))
+print("Avto mijoz_id =", k.lastrowid)
+u.close()</code></pre>
               <div class="code-output">
                 <div class="code-output-label">Natija</div>
 Avto mijoz_id = 1
@@ -1057,10 +1005,6 @@ Avto mijoz_id = 1
             </div>
           </div>
         </div>
-
-        <aside class="speaker-notes-source">
-          <p><strong>Misoldan xulosa:</strong> SQLite’da <code>INTEGER PRIMARY KEY</code> yozilganda kalit qiymatini kiritmasangiz ham MBBT o‘zi <code>1, 2, 3...</code> berib boradi. <code>kursor.lastrowid</code> oxirgi yaratilgan ID ni qaytaradi.</p>
-        </aside>
       </section>
 
       <!-- ================================================================
@@ -1167,10 +1111,6 @@ Avto mijoz_id = 1
             </div>
           </div>
         </div>
-
-        <aside class="speaker-notes-source">
-          <p><strong>Eslatma:</strong> Yuridik va moliyaviy tizimlarda to‘lovi yoki shartnomasi bor mijozni <code>CASCADE</code> bilan o‘chirish xavfli — tarix yo‘qoladi. Shuning uchun odatda <code>ON DELETE RESTRICT</code> qo‘yiladi.</p>
-        </aside>
       </section>
 
       <!-- ================================================================
@@ -1217,15 +1157,16 @@ Avto mijoz_id = 1
               </div>
               <pre><code class="language-sql">CREATE TABLE shartnomalar (
     shartnoma_id INTEGER PRIMARY KEY,
-    raqam        TEXT    NOT NULL UNIQUE,
-    summa        INTEGER NOT NULL CHECK (summa > 0),
-    holat        TEXT    NOT NULL DEFAULT 'faol'
-                 CHECK (holat IN ('faol', 'yakunlangan', 'bekor'))
+    raqam  TEXT    NOT NULL UNIQUE,
+    summa  INTEGER NOT NULL CHECK (summa > 0),
+    holat  TEXT    NOT NULL DEFAULT 'faol'
+           CHECK (holat IN ('faol', 'yakunlangan', 'bekor'))
 );
 
 -- Jadval darajasidagi cheklov (2 ustun bog'liq):
 -- UNIQUE (tur_id, raqam)
--- CHECK (kuchga_kirishi IS NULL OR kuchga_kirishi >= qabul_sanasi)</code></pre>
+-- CHECK (kuchga_kirishi IS NULL
+--        OR kuchga_kirishi >= qabul_sanasi)</code></pre>
               <div class="code-output">
                 <div class="code-output-label">Sinov natijalari</div>
 ✓ ('SH-001', 500000)         -> qabul (holat='faol')
@@ -1237,10 +1178,6 @@ Avto mijoz_id = 1
             </div>
           </div>
         </div>
-
-        <aside class="speaker-notes-source">
-          <p><strong>Jadval darajasidagi cheklov:</strong> Agar qoida ikki ustunni solishtirsa (masalan, hujjatning kuchga kirish sanasi qabul qilingan sanasidan oldin bo‘lmasligi), u bitta ustunga emas, jadval oxiriga yoziladi.</p>
-        </aside>
       </section>
 
       <!-- ================================================================
@@ -1286,10 +1223,6 @@ Avto mijoz_id = 1
             <strong>3-bob xulosasi:</strong> PK obyekt yaxlitligini, FK havola yaxlitligini, <code>NOT NULL / UNIQUE / CHECK / DEFAULT</code> esa domen yaxlitligini avtomatik kafolatlaydi.
           </div>
         </div>
-
-        <aside class="speaker-notes-source">
-          <p><strong>Takrorlash:</strong> <code>PRAGMA foreign_keys = ON</code> qoidasini talabalar eslab qolishi juda muhim — 6- va 7-boblarda bu eng ko‘p uchraydigan amaliy xato manbai.</p>
-        </aside>
       </section>
 
       <!-- ================================================================
@@ -1365,10 +1298,6 @@ Avto mijoz_id = 1
             <strong>Matndan model ajratish qoidasi:</strong> <strong>Otlar</strong> → Mohiyat (jadval) yoki Atribut (ustun); <strong>Fe’llar</strong> → Aloqa (<code>tuzadi</code>, <code>ishlaydi</code>). <code>1</code>, <code>N</code>, <code>M</code> belgilari — kardinallik.
           </div>
         </div>
-
-        <aside class="speaker-notes-source">
-          <p><strong>O‘xshatish:</strong> Dasturlashda avval algoritm, keyin kod yozilganidek, bazada ham avval ER-model, keyin <code>CREATE TABLE</code> yoziladi. To‘lib qolgan bazani qayta tuzatish juda qimmatga tushadi.</p>
-        </aside>
       </section>
 
       <!-- ================================================================
@@ -1438,7 +1367,7 @@ CREATE TABLE shartnomalar (
                  REFERENCES mijozlar(mijoz_id)
 );</code></pre>
               <div class="code-output">
-                <div class="code-output-label">Guruhlash natijasi (LEFT JOIN + COUNT)</div>
+                <div class="code-output-label">Shartnomalarni sanash natijasi (JOIN — 13-mavzuda)</div>
 Karimov: 3 ta shartnoma
 Azizova: 1 ta shartnoma
 Olimov:  0 ta shartnoma
@@ -1446,10 +1375,6 @@ Olimov:  0 ta shartnoma
             </div>
           </div>
         </div>
-
-        <aside class="speaker-notes-source">
-          <p><strong>Savol:</strong> “Nega <code>mijozlar</code> jadvaliga <code>shartnomalar</code> ustunini qo‘shib bo‘lmaydi?” — Chunki bitta mijozda 5 ta shartnoma bo‘lsa, 1 katakka 5 ta raqam yozish atomarlik qoidasini buzadi.</p>
-        </aside>
       </section>
 
       <!-- ================================================================
@@ -1526,10 +1451,6 @@ CREATE TABLE xodim_maxfiy (
             </div>
           </div>
         </div>
-
-        <aside class="speaker-notes-source">
-          <p><strong>Tushuntirish:</strong> <code>xodim_maxfiy</code> jadvalida <code>xodim_id</code> bir vaqtning o‘zida ham birlamchi, ham tashqi kalit. Shu sababli bitta xodim uchun ikkinchi maxfiy yozuv yaratish imkonsiz.</p>
-        </aside>
       </section>
 
       <!-- ================================================================
@@ -1602,10 +1523,6 @@ CREATE TABLE xodim_maxfiy (
             </div>
           </div>
         </div>
-
-        <aside class="speaker-notes-source">
-          <p><strong>Asosiy fikr:</strong> Relyatsion bazada N:M ni bevosita 2 jadval bilan qurib bo‘lmaydi — u har doim 3-jadval (oraliq jadval) orqali ikkita 1:N bog‘liqlikka ajratiladi. Talaba↔Fan, Buyurtma↔Mahsulot ham xuddi shunday!</p>
-        </aside>
       </section>
 
       <!-- ================================================================
@@ -1642,11 +1559,16 @@ CREATE TABLE xodim_maxfiy (
                 <span class="code-lang"><span class="code-dots"><span></span><span></span><span></span></span>Yangilash anomaliyasi — jonli taqqoslash</span>
                 <button type="button" class="copy-btn">Nusxalash</button>
               </div>
-              <pre><code class="language-python"># Bitta jadval: faqat 1-satr tuzatildi -> zidlik!
-jadval[0]["mijoz_tel"] = "+998909998877"
+              <pre><code class="language-python"># 1-usul (bitta jadval): faqat 1-satr tuzatildi -> zidlik!
+jadval = [{"raqam": "SH-001", "tel": "+998901112233"},
+          {"raqam": "SH-003", "tel": "+998901112233"}]
+jadval[0]["tel"] = "+998909998877"
 
-# Alohida jadvallar (3NF): faqat 1 joyda o'zgartiramiz
-mijozlar[1]["telefon"] = "+998909998877"</code></pre>
+# 2-usul (3NF, alohida jadval): faqat 1 joyda o'zgaradi
+mijoz = {1: "+998901112233"}
+mijoz[1] = "+998909998877"
+print("1-usul:", jadval[0]["tel"], "|", jadval[1]["tel"])
+print("2-usul:", mijoz[1], "|", mijoz[1])</code></pre>
               <div class="code-output">
                 <div class="code-output-label">Natija</div>
 Bitta jadval:      SH-001 -> +998909998877 | SH-003 -> +998901112233  [ZID]
@@ -1667,10 +1589,6 @@ Alohida jadvallar: SH-001 -> +998909998877 | SH-003 -> +998909998877  [OK]
             </div>
           </div>
         </div>
-
-        <aside class="speaker-notes-source">
-          <p><strong>Hayotiy o‘xshatish:</strong> Har bir shartnoma papkasiga mijoz telefonini qo‘lda yozish o‘rniga mijozlar ro‘yxatini alohida daftarda saqlasangiz, raqam o‘zgarganda bir marta tuzatish kifoya.</p>
-        </aside>
       </section>
 
       <!-- ================================================================
@@ -1687,7 +1605,7 @@ Alohida jadvallar: SH-001 -> +998909998877 | SH-003 -> +998909998877  [OK]
 
         <div class="slide-body" id="normLab">
           <div class="norm-tabs">
-            <button type="button" class="tab-btn active" data-step="0">0. Boshlang‘ich (0NF)</button>
+            <button type="button" class="tab-btn active" data-step="0">0. Boshlang‘ich (tartibsiz)</button>
             <button type="button" class="tab-btn" data-step="1">1-qadam: 1NF (Atomar)</button>
             <button type="button" class="tab-btn" data-step="2">2-qadam: 2NF (Ajratish)</button>
             <button type="button" class="tab-btn" data-step="3"><i data-lucide="check-circle-2"></i>3-qadam: 3NF (Yakuniy)</button>
@@ -1780,7 +1698,7 @@ Alohida jadvallar: SH-001 -> +998909998877 | SH-003 -> +998909998877  [OK]
           <!-- Panel 2: 2NF -->
           <div class="norm-panel" data-step="2">
             <div class="callout text-sm">
-              <strong>2NF bajarildi:</strong> Shartnoma ma’lumotlari va xizmatlar ro‘yxati 2 jadvalga ajratildi. Lekin <code>mijoz_tel</code> shartnomaga emas, mijozga bog‘liq (tranzitiv bog‘liqlik)!
+              <strong>2NF bajarildi:</strong> Shartnoma va xizmatlar 2 jadvalga ajratildi. Lekin <code>mijoz_tel</code> shartnomaga emas, mijozga tegishli (<strong>tranzitiv bog‘liqlik</strong>: shartnoma → mijoz → telefon zanjiri)!
             </div>
             <div class="grid-2">
               <div class="card">
@@ -1840,10 +1758,6 @@ Alohida jadvallar: SH-001 -> +998909998877 | SH-003 -> +998909998877  [OK]
             </div>
           </div>
         </div>
-
-        <aside class="speaker-notes-source">
-          <p><strong>Interaktiv namoyish:</strong> Yuqoridagi 4 ta tugmani (0NF → 1NF → 2NF → 3NF) ketma-ket bosib, har bir qadamda qizil/sariq muammolar qanday yo‘qolishini talabalar bilan birga kuzating.</p>
-        </aside>
       </section>
 
       <!-- ================================================================
@@ -1889,10 +1803,6 @@ Alohida jadvallar: SH-001 -> +998909998877 | SH-003 -> +998909998877  [OK]
             <strong>4-bob xulosasi:</strong> Konseptual ER-model → Mantiqiy 1:1 / 1:N / N:M jadvallar → 3NF normallashtirish. Kundalik tizimlar uchun 3NF oltin standartdir.
           </div>
         </div>
-
-        <aside class="speaker-notes-source">
-          <p><strong>Eslatma:</strong> 4-bob amaliyot uchun eng muhim nazariy poydevor — 7-bobdagi yuridik firma loyihasi aynan shu ER-model va 3NF qoidalari asosida quriladi.</p>
-        </aside>
       </section>
 
       <!-- ================================================================
@@ -1966,10 +1876,6 @@ Alohida jadvallar: SH-001 -> +998909998877 | SH-003 -> +998909998877  [OK]
             </div>
           </div>
         </div>
-
-        <aside class="speaker-notes-source">
-          <p><strong>Asosiy farq:</strong> SQLite alohida server jarayoni sifatida ishlamaydi — u ilovaning ichida kutubxona sifatida turadi va faylni bevosita o‘qiydi. Bir vaqtda faqat 1 yozuvchi ishlashi uning asosiy cheklovidir.</p>
-        </aside>
       </section>
 
       <!-- ================================================================
@@ -2038,16 +1944,12 @@ SELECT familiya FROM mijozlar WHERE familiya = 'Azizova';</code></pre>
 
               <div class="callout fragment mt-auto text-sm">
                 <strong><code>SEARCH</code> vs <code>SCAN</code>:</strong><br/>
-                • <code>SEARCH</code> — B-daraxt bo‘yicha to‘g‘ridan-to‘g‘ri qidiruv (millisoniya).<br/>
+                • <code>SEARCH</code> — kalit (<code>rowid</code> — ichki satr raqami) bo‘yicha B-daraxtda tezkor qidiruv.<br/>
                 • <code>SCAN</code> — butun jadvalni boshidan oxirigacha o‘qib chiqish. Tezlashtirish uchun <code>CREATE INDEX</code> qo‘llanadi!
               </div>
             </div>
           </div>
         </div>
-
-        <aside class="speaker-notes-source">
-          <p><strong>So‘rov oqimi:</strong> SQL matni avval tokenlarga ajraladi, Parser grammatikani tekshiradi (xato bo‘lsa shu yerda <code>syntax error</code>), Kod generatori eng qisqa rejani tuzib bayt-kod chiqaradi, VDBE uni B-daraxt va Pager orqali bajaradi.</p>
-        </aside>
       </section>
 
       <!-- ================================================================
@@ -2092,8 +1994,14 @@ SELECT familiya FROM mijozlar WHERE familiya = 'Azizova';</code></pre>
                 <span class="code-lang"><span class="code-dots"><span></span><span></span><span></span></span>Python • Sahifalar va fayl sarlavhasi</span>
                 <button type="button" class="copy-btn">Nusxalash</button>
               </div>
-              <pre><code class="language-python">sahifa = ulanish.execute("PRAGMA page_size").fetchone()[0]
+              <pre><code class="language-python">import sqlite3
+
+ulanish = sqlite3.connect("firma.db")
+ulanish.execute("CREATE TABLE IF NOT EXISTS a (id INT)")
+ulanish.execute("CREATE TABLE IF NOT EXISTS b (id INT)")
+sahifa = ulanish.execute("PRAGMA page_size").fetchone()[0]
 soni   = ulanish.execute("PRAGMA page_count").fetchone()[0]
+ulanish.close()
 
 with open("firma.db", "rb") as f:
     print("Sarlavha:", f.read(16))
@@ -2123,10 +2031,6 @@ har qanday dastur uning tuzilmasini bilib oladi.
             </div>
           </div>
         </div>
-
-        <aside class="speaker-notes-source">
-          <p><strong>10-mavzuga bog‘lash:</strong> Ikkilik rejim (<code>"rb"</code>) bilan dastlabki 16 baytni o‘qib, istalgan fayl haqiqatan SQLite bazasi ekanini (<code>b'SQLite format 3\x00'</code>) tekshirish mumkin!</p>
-        </aside>
       </section>
 
       <!-- ================================================================
@@ -2190,10 +2094,6 @@ SELECT qiymat, typeof(qiymat) FROM sinov;</code></pre>
             </div>
           </div>
         </div>
-
-        <aside class="speaker-notes-source">
-          <p><strong>Muqobil usul:</strong> Agar eski SQLite versiyasida <code>STRICT</code> ishlamasa, ustunga <code>CHECK (typeof(summa) = 'integer')</code> qo‘yish orqali ham xuddi shu himoyani olish mumkin.</p>
-        </aside>
       </section>
 
       <!-- ================================================================
@@ -2224,7 +2124,7 @@ SELECT qiymat, typeof(qiymat) FROM sinov;</code></pre>
             </div>
             <div class="card fragment" style="border-top: 4px solid var(--emerald);">
               <h3 class="card-title">D — Durability</h3>
-              <p class="text-sm"><strong>Barqarorlik.</strong> <code>COMMIT</code> dan so‘ng elektr uzilsa ham o‘zgarish yo‘qolmaydi (jurnal/WAL).</p>
+              <p class="text-sm"><strong>Barqarorlik.</strong> <code>COMMIT</code> dan so‘ng elektr uzilsa ham o‘zgarish yo‘qolmaydi (tiklash jurnali orqali).</p>
             </div>
           </div>
 
@@ -2253,10 +2153,6 @@ SELECT qiymat, typeof(qiymat) FROM sinov;</code></pre>
             <strong>Boshqaruv buyruqlari:</strong> <code>BEGIN</code> (boshlash) • <code>COMMIT</code> (tasdiqlash) • <code>ROLLBACK</code> (bekor qilish). SQL tili bir xil — SQLite’dagi bilim PostgreSQL’da ham ishlaydi!
           </div>
         </div>
-
-        <aside class="speaker-notes-source">
-          <p><strong>Bank o‘tkazmasi misoli:</strong> Karimovdan 5 mln yechishda <code>CHECK (qoldiq &gt;= 0)</code> ishlaganda, Azizovaga qo‘shib qo‘yilgan 5 mln ham <code>ROLLBACK</code> bilan orqaga qaytariladi — bu Atomicity ning jonli isboti.</p>
-        </aside>
       </section>
 
       <!-- ================================================================
@@ -2302,10 +2198,6 @@ SELECT qiymat, typeof(qiymat) FROM sinov;</code></pre>
             <strong>5-bob xulosasi:</strong> SQLite serversiz kutubxona bo‘lib, 6 qatlamli arxitektura, 4096 baytli sahifalar, <code>sqlite_master</code> sxemasi, <code>STRICT</code> rejimi va ACID tranzaksiyalarni bitta <code>.db</code> faylda birlashtiradi.
           </div>
         </div>
-
-        <aside class="speaker-notes-source">
-          <p><strong>O‘tish:</strong> SQLite qanday ishlashini tushundik; endi 6-bobda Python’ning <code>sqlite3</code> moduli orqali uni amalda boshqarishni ko‘ramiz.</p>
-        </aside>
       </section>
 
       <!-- ================================================================
@@ -2330,11 +2222,11 @@ SELECT qiymat, typeof(qiymat) FROM sinov;</code></pre>
                 </div>
                 <pre><code class="language-python">import sqlite3
 
-ulanish = sqlite3.connect("baza.db") # 1. Ulanish
-kursor = ulanish.cursor()            #    Kursor
-kursor.execute("SQL so‘rovi")        # 2. So‘rov
-ulanish.commit()                     # 3. Tasdiqlash
-ulanish.close()                      # 4. Yopish</code></pre>
+ulanish = sqlite3.connect("baza.db")  # 1. Ulanish
+kursor = ulanish.cursor()             #    Kursor
+kursor.execute("SELECT 1")            # 2. SQL so'rovi
+ulanish.commit()                      # 3. Tasdiqlash
+ulanish.close()                       # 4. Yopish</code></pre>
               </div>
 
               <div class="card fragment mt-auto">
@@ -2362,10 +2254,6 @@ ulanish.close()                      # 4. Yopish</code></pre>
             </div>
           </div>
         </div>
-
-        <aside class="speaker-notes-source">
-          <p><strong>Qulaylik:</strong> <code>ulanish.execute(...)</code> chaqirilganda SQLite ichida kursor avtomatik yaratiladi, shuning uchun ko‘pchilik qisqa misollarda alohida <code>cursor()</code> ochmasdan ham yozish mumkin.</p>
-        </aside>
       </section>
 
       <!-- ================================================================
@@ -2427,10 +2315,6 @@ Jadvallar: ['advokatlar', 'mijozlar', 'shartnomalar']
             </div>
           </div>
         </div>
-
-        <aside class="speaker-notes-source">
-          <p><strong>Yaxshi amaliyot:</strong> Katta loyihalarda SQL sxemani alohida <code>sxema.sql</code> faylda saqlash kodni toza qiladi. <code>IF NOT EXISTS</code> esa dasturni qayta ishga tushirganda <code>OperationalError: table already exists</code> chiqishining oldini oladi.</p>
-        </aside>
       </section>
 
       <!-- ================================================================
@@ -2453,7 +2337,9 @@ Jadvallar: ['advokatlar', 'mijozlar', 'shartnomalar']
                   <span class="code-lang"><span class="code-dots"><span></span><span></span><span></span></span>Python • Xavfsiz ulanish funksiyasi</span>
                   <button type="button" class="copy-btn">Nusxalash</button>
                 </div>
-                <pre><code class="language-python">def ulanish_ochish(fayl):
+                <pre><code class="language-python">import sqlite3
+
+def ulanish_ochish(fayl):
     """Tashqi kalitlar yoqilgan ulanish qaytaradi."""
     ulanish = sqlite3.connect(fayl)
     ulanish.execute("PRAGMA foreign_keys = ON")
@@ -2486,8 +2372,16 @@ ulanish_ochish() -> PRAGMA foreign_keys = 1 [YONIQ]
                   <span class="code-lang"><span class="code-dots"><span></span><span></span><span></span></span>Bog‘lanishlarni avtomatik topish</span>
                   <button type="button" class="copy-btn">Nusxalash</button>
                 </div>
-                <pre><code class="language-python">for fk in ulanish.execute("PRAGMA foreign_key_list(shartnomalar)"):
-    print(f"shartnomalar.{fk[3]} -> {fk[2]}.{fk[4]}")</code></pre>
+                <pre><code class="language-python">import sqlite3
+
+u = sqlite3.connect(":memory:")
+u.executescript("""
+    CREATE TABLE mijozlar (mijoz_id INTEGER PRIMARY KEY);
+    CREATE TABLE shartnomalar (
+        mijoz_id INTEGER REFERENCES mijozlar(mijoz_id));
+""")
+for fk in u.execute("PRAGMA foreign_key_list(shartnomalar)"):
+    print(f"shartnomalar.{fk[3]} -&gt; {fk[2]}.{fk[4]}")</code></pre>
                 <div class="code-output">
                   <div class="code-output-label">Natija</div>
 shartnomalar.mijoz_id -> mijozlar.mijoz_id
@@ -2496,10 +2390,6 @@ shartnomalar.mijoz_id -> mijozlar.mijoz_id
             </div>
           </div>
         </div>
-
-        <aside class="speaker-notes-source">
-          <p><strong>Python eslatmasi:</strong> O‘zgaruvchi nomida o‘zbekcha tutuq belgisi (<code>‘</code>) ishlatib bo‘lmaydi, shuning uchun <code>boglanishlar</code> deb yoziladi. 7-bob loyihasida <code>ulanish_ochish()</code> va <code>PRAGMA</code> orqali to‘liq sxema hisoboti avtomatik tuziladi.</p>
-        </aside>
       </section>
 
       <!-- ================================================================
@@ -2557,10 +2447,6 @@ shartnomalar.mijoz_id -> mijozlar.mijoz_id
             </div>
           </div>
         </div>
-
-        <aside class="speaker-notes-source">
-          <p><strong>Jonli sinov:</strong> Avval “f-satr (Xavfli)” + <code>x' OR '1'='1</code> holatini ko‘rsating (barcha pasportlar chiqib ketdi!), keyin bitta bosish bilan “Parametr ? (Xavfsiz)” ga o‘tkazing va hujum qanday to‘silishini ko‘rsating. Shuningdek, parametr faqat qiymatlar uchun ekanini (jadval/ustun nomi uchun emas) eslating.</p>
-        </aside>
       </section>
 
       <!-- ================================================================
@@ -2583,14 +2469,16 @@ shartnomalar.mijoz_id -> mijozlar.mijoz_id
                   <span class="code-lang"><span class="code-dots"><span></span><span></span><span></span></span>Python • with ulanish vs closing()</span>
                   <button type="button" class="copy-btn">Nusxalash</button>
                 </div>
-                <pre><code class="language-python">from contextlib import closing
+                <pre><code class="language-python">import sqlite3
+from contextlib import closing
 
-with closing(sqlite3.connect("firma.db")) as ulanish:
-    ulanish.row_factory = sqlite3.Row
-    with ulanish:  # xatosiz -> COMMIT, xato -> ROLLBACK
-        ulanish.execute("INSERT INTO mijozlar VALUES (1,'Olimov')")
-
-    satr = ulanish.execute("SELECT * FROM mijozlar").fetchone()
+# 1-with: tugagach ulanishni avtomatik yopadi
+with closing(sqlite3.connect(":memory:")) as u:
+    u.row_factory = sqlite3.Row
+    u.execute("CREATE TABLE mijozlar (id INT, familiya TEXT)")
+    with u:  # 2-with: xatosiz -> COMMIT, xato -> ROLLBACK
+        u.execute("INSERT INTO mijozlar VALUES (1, 'Olimov')")
+    satr = u.execute("SELECT * FROM mijozlar").fetchone()
     print(satr["familiya"], dict(satr))</code></pre>
               </div>
 
@@ -2622,10 +2510,6 @@ with closing(sqlite3.connect("firma.db")) as ulanish:
             </div>
           </div>
         </div>
-
-        <aside class="speaker-notes-source">
-          <p><strong>9-mavzu bilan bog‘lash:</strong> Istisnolar har doim aniqrog‘idan (<code>IntegrityError</code>, <code>OperationalError</code>) umumiyrog‘iga (<code>sqlite3.Error</code>) qarab <code>try-except</code> da ushlanadi.</p>
-        </aside>
       </section>
 
       <!-- ================================================================
@@ -2671,10 +2555,6 @@ with closing(sqlite3.connect("firma.db")) as ulanish:
             <strong>6-bob xulosasi:</strong> <code>ulanish_ochish()</code> + <code>PRAGMA foreign_keys = ON</code> + parametrlangan so‘rovlar + <code>with closing(...)</code> + <code>with ulanish:</code> = ishonchli Python DB kodi!
           </div>
         </div>
-
-        <aside class="speaker-notes-source">
-          <p><strong>Amaliyotga o‘tish:</strong> Endi barcha 6 bobda o‘rganganlarimizni bitta to‘liq loyihada — 7-bobdagi Yuridik firma ma’lumotlar bazasida birlashtiramiz.</p>
-        </aside>
       </section>
 
       <!-- ================================================================
@@ -2753,10 +2633,6 @@ with closing(sqlite3.connect("firma.db")) as ulanish:
             </svg>
           </div>
         </div>
-
-        <aside class="speaker-notes-source">
-          <p><strong>Tahlil:</strong> 5 ta asosiy mohiyat (Mijoz, Shartnoma, Xizmat, Advokat, To‘lov) + 2 ta N:M oraliq jadval = jami <strong>7 ta jadval</strong>. Natijada barcha aloqalar toza 1:N ko‘rinishiga keldi.</p>
-        </aside>
       </section>
 
       <!-- ================================================================
@@ -2815,10 +2691,6 @@ with closing(sqlite3.connect("firma.db")) as ulanish:
             <strong>Nozik qoida (<code>UNIQUE</code> + <code>NULL</code>):</strong> SQL’da ikki <code>NULL</code> teng hisoblanmagani uchun STIR’siz bir nechta jismoniy shaxs mijozni qo‘shish mumkin, lekin ikkita MChJ bir xil STIR bilan kirita olmaydi!
           </div>
         </div>
-
-        <aside class="speaker-notes-source">
-          <p><strong>Normallashtirish tekshiruvi:</strong> 1NF — barcha kataklar atomar; 2NF — oraliq jadvallarda <code>miqdor</code> va <code>rol</code> butun tarkibiy kalitga bog‘liq; 3NF — narx <code>xizmatlar</code>da, telefon <code>mijozlar</code>da saqlanadi.</p>
-        </aside>
       </section>
 
       <!-- ================================================================
@@ -2873,10 +2745,6 @@ Kutilgan natijaga mos: 7 / 7 ✓
             </div>
           </div>
         </div>
-
-        <aside class="speaker-notes-source">
-          <p><strong>Jonli demo:</strong> Darsda terminalda <code>python yuridik_firma_mb.py</code> ni ishga tushirib ko‘rsating, so‘ng <code>natijalar/sxema_hisoboti.txt</code> va <code>yaxlitlik_sinovlari.csv</code> fayllarini ochib tahlil qiling.</p>
-        </aside>
       </section>
 
       <!-- ================================================================
@@ -2922,10 +2790,6 @@ Kutilgan natijaga mos: 7 / 7 ✓
             <strong>Qo‘shimcha murakkab vazifalar:</strong> (5) <code>sqlite_master</code> dan <code>UNIQUE</code>/<code>CHECK</code> sonini hisoblovchi hisobot; (6) 1.2-bo‘limdagi normallashtirilmagan CSV’ni 3NF bazaga ko‘chirish va zid telefonlarni logga yozish.
           </div>
         </div>
-
-        <aside class="speaker-notes-source">
-          <p><strong>Uyga vazifa taqsimoti:</strong> Talabalarni o‘z yo‘nalishiga mos (Iqtisodiyot, Menejment yoki Yurisprudensiya) bitta variantni tanlashga yo‘naltiring. <code>yuridik_firma_mb.py</code> fayli shablon sifatida xizmat qiladi.</p>
-        </aside>
       </section>
 
       <!-- ================================================================
@@ -2972,23 +2836,10 @@ Kutilgan natijaga mos: 7 / 7 ✓
             <strong>Keyingi qadam → 12-mavzu:</strong> Endi yaratilgan jadvallarimiz ustida ma’lumot qo‘shish, o‘qish, yangilash va o‘chirish (<strong>SQL CRUD</strong>) hamda 13-mavzuda filtrlash, <code>JOIN</code> va guruhlash so‘rovlarini chuqur o‘rganamiz!
           </div>
         </div>
-
-        <aside class="speaker-notes-source">
-          <p><strong>Yakunlash:</strong> Har bir savol kartochkasini bosib kalit javobni ochish mumkin. Talabalarga prezentatsiyani PDF qilib saqlash (pastki paneldagi <strong>PDF</strong> tugmasi) yoki <code>yuridik_firma_mb.py</code> ni sinab ko‘rishni tavsiya qiling.</p>
-        </aside>
       </section>
 
     </div>
   </main>
-
-  <!-- Speaker Notes Dock (Toggle with N) -->
-  <aside class="notes-dock" id="notesDock" aria-label="O‘qituvchi izohlari">
-    <div class="notes-dock-header">
-      <span class="inline-ico-label"><i data-lucide="file-text"></i>O‘qituvchi izohi (Speaker Notes)</span>
-      <span class="muted" style="font-weight:600; text-transform:none;">Yopish uchun <kbd>N</kbd> bosing</span>
-    </div>
-    <div class="notes-dock-content" id="notesDockContent"></div>
-  </aside>
 
   <!-- Bottom Control Toolbar -->
   <footer class="toolbar">
@@ -3004,7 +2855,6 @@ Kutilgan natijaga mos: 7 / 7 ✓
     </div>
 
     <div class="toolbar-group">
-      <button type="button" class="tb-btn" id="btnNotes" title="O‘qituvchi izohi (N)"><i data-lucide="file-text"></i><span>Izoh</span></button>
       <button type="button" class="tb-btn" id="btnOverview" title="Barcha slaydlar (O)"><i data-lucide="layout-grid"></i><span>Panjara</span></button>
       <button type="button" class="tb-btn" id="btnTheme" title="Yorug‘ / Tungi rejim (D)"><i data-lucide="moon"></i><span>Tungi</span></button>
       <button type="button" class="tb-btn" id="btnPrint" title="PDF qilib saqlash (Ctrl+P)"><i data-lucide="printer"></i><span>PDF</span></button>
