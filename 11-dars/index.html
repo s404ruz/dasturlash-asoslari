@@ -1,0 +1,3037 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>11-mavzu: Ma’lumotlar bazasi va relyatsion model asoslari</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Progress Bar -->
+  <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+
+  <!-- Main Stage Viewport -->
+  <main class="stage-viewport" id="stageViewport">
+    <div class="deck-stage" id="deckStage">
+
+      <!-- ================================================================
+           SLIDE 1: TITUL (MUQOVA)
+           ================================================================ -->
+      <section class="slide slide-cover" data-chapter="Kirish" data-title="11-mavzu: Ma’lumotlar bazasi va relyatsion model asoslari">
+        <div>
+          <div class="cover-kicker">11-MAVZU • DASTURLASH VA MA’LUMOTLAR BAZASI</div>
+          <h1 class="cover-title">Ma’lumotlar bazasi va relyatsion model asoslari</h1>
+          <p class="cover-subtitle">
+            Oddiy fayllardan tartibli relyatsion ma’lumotlar bazalariga o‘tish: kalitlar, yaxlitlik cheklovlari,
+            ER-loyihalash, normallashtirish (1NF–3NF), SQLite arxitekturasi va Python <code>sqlite3</code> amaliyoti.
+          </p>
+          <div class="domain-chips">
+            <span class="domain-chip"><i data-lucide="bar-chart-3" class="ico-accent"></i>Iqtisodiyot</span>
+            <span class="domain-chip"><i data-lucide="building-2" class="ico-teal"></i>Menejment</span>
+            <span class="domain-chip"><i data-lucide="scale" class="ico-violet"></i>Yurisprudensiya</span>
+            <span class="domain-chip"><i data-lucide="code-2" class="ico-emerald"></i>Python + SQLite</span>
+          </div>
+        </div>
+
+        <div>
+          <div class="cover-roadmap">
+            <div class="roadmap-item" data-goto="3">
+              <div class="roadmap-num">1-bob</div>
+              <div class="roadmap-label">MB va MBBT tushunchalari</div>
+            </div>
+            <div class="roadmap-item" data-goto="8" style="border-top-color: var(--teal);">
+              <div class="roadmap-num" style="color: var(--teal);">2-bob</div>
+              <div class="roadmap-label">Relyatsion model asoslari</div>
+            </div>
+            <div class="roadmap-item" data-goto="13" style="border-top-color: var(--emerald);">
+              <div class="roadmap-num" style="color: var(--emerald);">3-bob</div>
+              <div class="roadmap-label">Kalitlar va yaxlitlik</div>
+            </div>
+            <div class="roadmap-item" data-goto="19" style="border-top-color: var(--violet);">
+              <div class="roadmap-num" style="color: var(--violet);">4-bob</div>
+              <div class="roadmap-label">ER-model va 1NF–3NF</div>
+            </div>
+            <div class="roadmap-item" data-goto="26" style="border-top-color: var(--amber);">
+              <div class="roadmap-num" style="color: var(--amber);">5-bob</div>
+              <div class="roadmap-label">SQLite arxitekturasi</div>
+            </div>
+            <div class="roadmap-item" data-goto="32" style="border-top-color: var(--accent);">
+              <div class="roadmap-num">6-bob</div>
+              <div class="roadmap-label">Python sqlite3 moduli</div>
+            </div>
+            <div class="roadmap-item" data-goto="38" style="border-top-color: var(--rose);">
+              <div class="roadmap-num" style="color: var(--rose);">7-bob</div>
+              <div class="roadmap-label">Kompleks amaliyot</div>
+            </div>
+          </div>
+
+          <div class="cover-footer">
+            <div class="kbd-row">
+              <span><kbd>→</kbd> / <kbd>Space</kbd> Keyingi qadam</span>
+              <span><kbd>M</kbd> Boblar menyusi</span>
+              <span><kbd>N</kbd> O‘qituvchi izohi</span>
+              <span><kbd>D</kbd> Tungi rejim</span>
+              <span><kbd>F</kbd> To‘liq ekran</span>
+            </div>
+            <span>7 bob • 42 slayd • Oflayn HTML</span>
+          </div>
+        </div>
+
+        <aside class="speaker-notes-source">
+          <p><strong>Kirish nutqi:</strong> Talabalarga 10-mavzuda o‘rganilgan matnli va CSV fayllardan endi ma’lumotlar bazalariga o‘tayotganimizni eslating. Pastdagi 7 bob kartochkalarini bosib istalgan bobga tezkor o‘tish mumkin. Dars davomida <strong>N</strong> tugmasi orqali ushbu izohlarni ko‘rib borishingiz mumkin.</p>
+        </aside>
+      </section>
+
+      <!-- ================================================================
+           SLIDE 2: MUNDARIJA (KURS XARITASI)
+           ================================================================ -->
+      <section class="slide" data-chapter="Kirish" data-title="Mavzu rejasi (Mundarija)">
+        <header class="slide-header">
+          <div class="slide-header-left">
+            <span class="chapter-pill">Mundarija</span>
+            <h2 class="slide-title">11-mavzu xaritasi: 7 bobda nimalarni o‘rganamiz?</h2>
+          </div>
+          <span class="slide-num-badge"></span>
+        </header>
+
+        <div class="slide-body">
+          <div class="grid-2" style="gap: 14px; flex: 1;">
+            <div class="flex-col" style="gap: 10px;">
+              <div class="card" data-goto="3" style="cursor:pointer; border-left: 4px solid var(--accent);">
+                <h3 class="card-title">1. Ma’lumotlar bazasi va MBBT <span class="badge badge-blue">3–7</span></h3>
+                <p>Ma’lumot vs axborot, CSV cheklovlari, MBBT vazifalari, MB turlari va kasbiy o‘rni.</p>
+              </div>
+              <div class="card" data-goto="8" style="cursor:pointer; border-left: 4px solid var(--teal);">
+                <h3 class="card-title">2. Relyatsion model asoslari <span class="badge badge-blue">8–12</span></h3>
+                <p>Jadval, satr, ustun, domen, sxema, 5 qoida, ma’lumot turlari va <code>NULL</code>.</p>
+              </div>
+              <div class="card" data-goto="13" style="cursor:pointer; border-left: 4px solid var(--emerald);">
+                <h3 class="card-title">3. Kalitlar va ma’lumotlar yaxlitligi <span class="badge badge-green">13–18</span></h3>
+                <p>PK, nomzod/surrogat kalit, FK va <code>NOT NULL</code>, <code>UNIQUE</code>, <code>CHECK</code>, <code>DEFAULT</code>.</p>
+              </div>
+              <div class="card" data-goto="19" style="cursor:pointer; border-left: 4px solid var(--violet);">
+                <h3 class="card-title">4. Bog‘liqliklar va loyihalash <span class="badge badge-violet">19–25</span></h3>
+                <p>ER-model, 1:1 / 1:N / N:M oraliq jadval, normallashtirish (1NF, 2NF, 3NF).</p>
+              </div>
+            </div>
+
+            <div class="flex-col" style="gap: 10px;">
+              <div class="card" data-goto="26" style="cursor:pointer; border-left: 4px solid var(--amber);">
+                <h3 class="card-title">5. SQLite tizimi arxitekturasi <span class="badge badge-amber">26–31</span></h3>
+                <p>Serversiz model, 6 qatlam, sahifalar, dinamik turlash (<code>STRICT</code>), ACID tranzaksiyalar.</p>
+              </div>
+              <div class="card" data-goto="32" style="cursor:pointer; border-left: 4px solid var(--accent);">
+                <h3 class="card-title">6. Python <code>sqlite3</code> moduli <span class="badge badge-blue">32–37</span></h3>
+                <p>Ulanish, kursor, DDL, <code>PRAGMA</code>, parametrlangan so‘rovlar (SQL-in’ektsiya), <code>with</code>.</p>
+              </div>
+              <div class="card" data-goto="38" style="cursor:pointer; border-left: 4px solid var(--rose);">
+                <h3 class="card-title">7. Kompleks amaliy mashg‘ulot <span class="badge badge-red">38–42</span></h3>
+                <p>Yuridik firma MB loyihasi (7 jadval, 7 yaxlitlik sinovi, TXT/CSV hisobotlar).</p>
+              </div>
+              <div class="callout success mt-auto">
+                <strong>Yakuniy maqsad:</strong> Og‘zaki biznes-talabdan 3NF relyatsion sxema loyihalash va uni Python + SQLite’da sinab ishga tushirish. (CRUD so‘rovlari 12-mavzuda o‘rganiladi.)
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <aside class="speaker-notes-source">
+          <p><strong>Yo‘naltirish:</strong> Istalgan bob kartochkasini bosish orqali o‘sha bobga darhol o‘tish mumkin. Talabalarga 11-mavzu asosan loyihalash va sxemaga qaratilganini, <code>INSERT/SELECT/UPDATE/DELETE</code> ning to‘liq imkoniyatlari esa 12–13-mavzularda kelishini ayting.</p>
+        </aside>
+      </section>
+
+      <!-- ================================================================
+           SLIDE 3: 1.1 MA'LUMOT VA AXBOROT
+           ================================================================ -->
+      <section class="slide" data-chapter="1-bob. MB va MBBT" data-title="1.1. Ma’lumot va axborot">
+        <header class="slide-header">
+          <div class="slide-header-left">
+            <span class="chapter-pill">1-bob • 1.1</span>
+            <h2 class="slide-title">Ma’lumot (Data) va Axborot (Information)</h2>
+          </div>
+          <span class="slide-num-badge"></span>
+        </header>
+
+        <div class="slide-body">
+          <div class="grid-2">
+            <div class="card">
+              <h3 class="card-title"><i data-lucide="package" class="ico-accent"></i>Ma’lumot (Data)</h3>
+              <p>Qayd etilgan faktlar, sonlar, matnlar yoki sanalar. Alohida olinganda hali qaror qabul qilish uchun yetarli ma’no bermaydi.</p>
+              <p class="text-sm muted">Misol: <code>1500000</code>, <code>2026-03-15</code>, <code>Karimov A.</code></p>
+            </div>
+            <div class="card card-accent fragment">
+              <h3 class="card-title"><i data-lucide="lightbulb" class="ico-amber"></i>Axborot (Information)</h3>
+              <p>Muayyan <strong>kontekstda talqin qilingan</strong> va qaror qabul qilish uchun foydali bo‘lgan ma’lumot.</p>
+              <p class="text-sm">“Karimov A. bilan 2026-yil 15-martda 1,5 mln so‘mlik shartnoma tuzilgan.”</p>
+            </div>
+          </div>
+
+          <table class="data-table fragment">
+            <thead>
+              <tr>
+                <th style="width: 38%;">Xom ma’lumot</th>
+                <th>Kontekstdagi axborot</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>Karimov A.</code>, <code>2026-03-15</code>, <code>1500000</code></td>
+                <td>Mijoz Karimov A. bilan 15-martda 1,5 mln so‘mlik shartnoma tuzilgan</td>
+              </tr>
+              <tr>
+                <td><code>DI-101</code>, <code>4.2</code></td>
+                <td>DI-101 guruhining o‘rtacha bahosi 4,2 ga teng</td>
+              </tr>
+              <tr>
+                <td><code>120</code>, <code>95</code></td>
+                <td>Ombordagi 120 ta mahsulotdan 95 tasi sotilgan</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="callout fragment mt-auto">
+            <strong>Muhim fikr:</strong> Ma’lumotlar bazasi shunchaki “saqlash ombori” emas — u ma’lumotlarni tuzilmali saqlash, tez topish, bir vaqtda ko‘p foydalanuvchiga xizmat ko‘rsatish va xatolarning oldini olish vositasidir.
+          </div>
+        </div>
+
+        <aside class="speaker-notes-source">
+          <p><strong>Savol bilan boshlang:</strong> Doskaga faqat <code>1500000</code> deb yozib, talabalardan “Bu nima?” deb so‘rang (narx, maosh, qarzdorlik, aholi soni?). Kontekstsiz bu shunchaki ma’lumot; yozuvga birlashgach axborotga aylanadi.</p>
+        </aside>
+      </section>
+
+      <!-- ================================================================
+           SLIDE 4: 1.2 ODDIY FAYLLARDA SAQLASH CHEKLOVLARI
+           ================================================================ -->
+      <section class="slide" data-chapter="1-bob. MB va MBBT" data-title="1.2. Oddiy fayllarda (CSV) saqlash cheklovlari">
+        <header class="slide-header">
+          <div class="slide-header-left">
+            <span class="chapter-pill">1-bob • 1.2</span>
+            <h2 class="slide-title">Nega bitta CSV fayl yetarli emas?</h2>
+          </div>
+          <span class="slide-num-badge"></span>
+        </header>
+
+        <div class="slide-body">
+          <table class="data-table compact">
+            <thead>
+              <tr>
+                <th>shartnoma_raqami</th>
+                <th>mijoz</th>
+                <th>mijoz_telefoni</th>
+                <th>xizmat</th>
+                <th>summa</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>SH-001</code></td>
+                <td class="cell-warn">Karimov Anvar</td>
+                <td class="cell-warn">+998901112233</td>
+                <td>Konsultatsiya</td>
+                <td>500 000</td>
+              </tr>
+              <tr>
+                <td><code>SH-002</code></td>
+                <td class="cell-warn">Karimov Anvar</td>
+                <td class="cell-warn">+998901112233</td>
+                <td>Sudda vakillik</td>
+                <td>3 000 000</td>
+              </tr>
+              <tr>
+                <td><code>SH-003</code></td>
+                <td>Azizova Malika</td>
+                <td>+998935556677</td>
+                <td>Shartnoma ekspertizasi</td>
+                <td>800 000</td>
+              </tr>
+              <tr>
+                <td><code>SH-004</code></td>
+                <td class="cell-warn">Karimov Anvar</td>
+                <td class="cell-bad">+998901119999 ← ZID!</td>
+                <td>Konsultatsiya</td>
+                <td>500 000</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="grid-3" style="gap: 12px;">
+            <div class="card fragment">
+              <h3 class="card-title">1. Takrorlanish</h3>
+              <p>Karimovning ismi va telefoni har bir shartnomada qayta-qayta yozilgan.</p>
+            </div>
+            <div class="card fragment">
+              <h3 class="card-title">2. Qarama-qarshilik</h3>
+              <p><code>SH-004</code> da boshqa telefon: qaysi raqam to‘g‘ri ekanini bilib bo‘lmaydi.</p>
+            </div>
+            <div class="card fragment">
+              <h3 class="card-title">3. Yangilash qiyinligi</h3>
+              <p>Telefon o‘zgarsa, barcha satrlarni topib bittasini ham qoldirmay tuzatish kerak.</p>
+            </div>
+            <div class="card fragment">
+              <h3 class="card-title">4. Tekshiruv yo‘qligi</h3>
+              <p><code>summa</code> ga <code>"besh yuz ming"</code> yoki manfiy son yozishga to‘siq yo‘q.</p>
+            </div>
+            <div class="card fragment">
+              <h3 class="card-title">5. Bir vaqtda ishlash</h3>
+              <p>Ikki xodim bir vaqtda saqlasa, birining o‘zgarishi ikkinchisinikini o‘chirib yuboradi.</p>
+            </div>
+            <div class="card fragment">
+              <h3 class="card-title">6. Qidirish sekinligi</h3>
+              <p>Kerakli yozuvni topish uchun faylni boshidan oxirigacha o‘qib chiqish shart.</p>
+            </div>
+          </div>
+        </div>
+
+        <aside class="speaker-notes-source">
+          <p><strong>Tushuntirish:</strong> 10-mavzudagi CSV fayl kichik ro‘yxatlar uchun yaxshi, lekin yuridik firmada yuzlab shartnoma va bir nechta xodim ishlaganda shu 6 muammo darhol yuzaga chiqadi. Ma’lumotlar bazasida mijoz bir joyda saqlanadi, shartnomalar unga havola qiladi.</p>
+        </aside>
+      </section>
+
+      <!-- ================================================================
+           SLIDE 5: 1.3 MA'LUMOTLAR BAZASI, MBBT VA SQL (SVG)
+           ================================================================ -->
+      <section class="slide" data-chapter="1-bob. MB va MBBT" data-title="1.3. Ma’lumotlar bazasi, MBBT va SQL">
+        <header class="slide-header">
+          <div class="slide-header-left">
+            <span class="chapter-pill">1-bob • 1.3</span>
+            <h2 class="slide-title">Ma’lumotlar bazasi, MBBT va SQL</h2>
+          </div>
+          <span class="slide-num-badge"></span>
+        </header>
+
+        <div class="slide-body">
+          <div class="grid-2-wide-left" style="flex: 1;">
+            <div class="flex-col" style="gap: 12px;">
+              <div class="svg-box" style="flex: 1;">
+                <svg viewBox="0 0 640 310" aria-label="MBBT arxitekturasi">
+                  <defs>
+                    <marker id="arr1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+                      <path d="M0,1 L9,5 L0,9 z" fill="currentColor" style="color: var(--accent);" />
+                    </marker>
+                  </defs>
+                  <!-- Foydalanuvchi -->
+                  <rect x="170" y="10" width="300" height="46" rx="10" class="svg-box-fill" stroke-width="2" />
+                  <g transform="translate(194,23) scale(0.82)" fill="none" stroke="var(--accent)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></g>
+                  <text x="332" y="38" text-anchor="middle" font-size="16" class="svg-title">Foydalanuvchi (Mutaxassis)</text>
+                  <line x1="320" y1="56" x2="320" y2="82" class="svg-line-accent" marker-end="url(#arr1)" />
+
+                  <!-- Ilova -->
+                  <rect x="140" y="84" width="360" height="50" rx="10" class="svg-box-blue" stroke-width="2" />
+                  <g transform="translate(174,99) scale(0.84)" fill="none" stroke="var(--accent)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></g>
+                  <text x="334" y="114" text-anchor="middle" font-size="16" class="svg-title">Ilova (Python hisobot dasturi)</text>
+                  <line x1="320" y1="134" x2="320" y2="164" class="svg-line-accent" marker-end="url(#arr1)" />
+                  <text x="334" y="154" font-size="13" class="svg-sub">SQL so‘rovi</text>
+
+                  <!-- MBBT -->
+                  <rect x="140" y="166" width="360" height="54" rx="10" class="svg-box-teal" stroke-width="2" />
+                  <g transform="translate(160,174) scale(0.82)" fill="none" stroke="var(--teal)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32 1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41m11.32-11.32 1.41-1.41"/></g>
+                  <text x="330" y="191" text-anchor="middle" font-size="16" class="svg-title">MBBT / DBMS (SQLite, PostgreSQL)</text>
+                  <text x="320" y="210" text-anchor="middle" font-size="12.5" class="svg-sub">Boshqarish • Tekshirish • Xavfsizlik • Tiklash</text>
+                  <line x1="320" y1="220" x2="320" y2="248" class="svg-line-accent" marker-end="url(#arr1)" />
+                  <text x="334" y="239" font-size="13" class="svg-sub">o‘qish / yozish</text>
+
+                  <!-- MB -->
+                  <rect x="160" y="250" width="320" height="50" rx="10" class="svg-box-emerald" stroke-width="2" />
+                  <g transform="translate(206,258) scale(0.82)" fill="none" stroke="var(--emerald)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/></g>
+                  <text x="332" y="274" text-anchor="middle" font-size="16" class="svg-title">Ma’lumotlar bazasi</text>
+                  <text x="320" y="292" text-anchor="middle" font-size="12.5" class="svg-mono svg-sub">yuridik_firma.db (fayl yoki server)</text>
+                </svg>
+              </div>
+
+              <div class="code-card fragment">
+                <div class="code-bar">
+                  <span class="code-lang"><span class="code-dots"><span></span><span></span><span></span></span>Python • Birinchi tanishuv</span>
+                  <button type="button" class="copy-btn">Nusxalash</button>
+                </div>
+                <pre><code class="language-python">import sqlite3
+
+ulanish = sqlite3.connect(":memory:")
+versiya = ulanish.execute("SELECT sqlite_version()").fetchone()[0]
+print("MBBT: SQLite | Versiya:", versiya)
+ulanish.close()</code></pre>
+              </div>
+            </div>
+
+            <div class="card">
+              <h3 class="card-title">MBBT ning 6 ta asosiy vazifasi</h3>
+              <ol class="clean-list">
+                <li class="fragment"><strong>Ma’lumotlarni aniqlash:</strong> jadvallar, ustunlar, turlar va cheklovlarni yaratish.</li>
+                <li class="fragment"><strong>Boshqarish (CRUD):</strong> yozuv qo‘shish, o‘qish, o‘zgartirish va o‘chirish.</li>
+                <li class="fragment"><strong>Yaxlitlikni ta’minlash:</strong> noto‘g‘ri va zid ma’lumotlarni rad etish.</li>
+                <li class="fragment"><strong>Bir vaqtda ishlash:</strong> ko‘p foydalanuvchi ishlaganda buzilishdan saqlash.</li>
+                <li class="fragment"><strong>Xavfsizlik:</strong> kim nimani ko‘rishi va o‘zgartirishini nazorat qilish.</li>
+                <li class="fragment"><strong>Tiklash (Recovery):</strong> nosozlikda bazani to‘g‘ri holatga qaytarish.</li>
+              </ol>
+              <div class="callout mt-auto text-sm">
+                <strong><code>":memory:"</code></strong> — bazani faqat operativ xotirada yaratadi; sinov va dars misollari uchun juda qulay.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <aside class="speaker-notes-source">
+          <p><strong>Muhim farq:</strong> Ko‘p talabalar “SQLite — bu ma’lumotlar bazasi” deb aralashtiradi. Aniqlashtiring: <code>yuridik_firma.db</code> — ma’lumotlar bazasi, <strong>SQLite</strong> esa uni boshqaruvchi dastur (MBBT), <strong>SQL</strong> esa u bilan muloqot tili.</p>
+        </aside>
+      </section>
+
+      <!-- ================================================================
+           SLIDE 6: 1.4-1.5 MB TURLARI VA KASBIY O'RNI
+           ================================================================ -->
+      <section class="slide" data-chapter="1-bob. MB va MBBT" data-title="1.4–1.5. MB turlari va kasbiy faoliyatdagi o‘rni">
+        <header class="slide-header">
+          <div class="slide-header-left">
+            <span class="chapter-pill">1-bob • 1.4 – 1.5</span>
+            <h2 class="slide-title">Ma’lumotlar bazasi turlari va kasbiy qo‘llanishi</h2>
+          </div>
+          <span class="slide-num-badge"></span>
+        </header>
+
+        <div class="slide-body">
+          <table class="data-table compact">
+            <thead>
+              <tr>
+                <th>Tur</th>
+                <th>Saqlash shakli</th>
+                <th>Misol MBBT</th>
+                <th>Qo‘llanish holati</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="cell-good" style="background: var(--accent-soft);">
+                <td><span class="inline-ico-label"><i data-lucide="star" class="ico-accent"></i><strong>Relyatsion (SQL)</strong></span></td>
+                <td>Bog‘langan jadvallar (satr + ustun)</td>
+                <td>SQLite, PostgreSQL, MySQL</td>
+                <td>Buxgalteriya, bank, shartnomalar, reyestrlar</td>
+              </tr>
+              <tr>
+                <td><strong>Hujjatli (NoSQL)</strong></td>
+                <td>JSON ko‘rinishidagi hujjatlar</td>
+                <td>MongoDB</td>
+                <td>Tuzilmasi tez o‘zgaradigan kontent</td>
+              </tr>
+              <tr>
+                <td><strong>Kalit-qiymat (NoSQL)</strong></td>
+                <td>Lug‘atga o‘xshash juftliklar</td>
+                <td>Redis</td>
+                <td>Tezkor kesh, foydalanuvchi sessiyalari</td>
+              </tr>
+              <tr>
+                <td><strong>Graf (NoSQL)</strong></td>
+                <td>Tugunlar va bog‘lar</td>
+                <td>Neo4j</td>
+                <td>Ijtimoiy tarmoqlar, firibgarlik tahlili</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="grid-3 fragment" style="flex: 1;">
+            <div class="card" style="border-top: 4px solid var(--accent);">
+              <h3 class="card-title"><i data-lucide="bar-chart-3" class="ico-accent"></i>Iqtisodiyot</h3>
+              <ul class="clean-list text-sm">
+                <li>Bank hisobvaraqlari va tranzaksiyalar</li>
+                <li>Soliq to‘lovchilar reyestri</li>
+                <li>Statistik kuzatuvlar va narx dinamikasi</li>
+              </ul>
+            </div>
+            <div class="card" style="border-top: 4px solid var(--teal);">
+              <h3 class="card-title"><i data-lucide="building-2" class="ico-teal"></i>Menejment</h3>
+              <ul class="clean-list text-sm">
+                <li>Xodimlar kadrlar bazasi</li>
+                <li>Mijozlar bilan ishlash (CRM)</li>
+                <li>Ombor hisobi va yetkazib berish</li>
+              </ul>
+            </div>
+            <div class="card" style="border-top: 4px solid var(--violet);">
+              <h3 class="card-title"><i data-lucide="scale" class="ico-violet"></i>Yurisprudensiya</h3>
+              <ul class="clean-list text-sm">
+                <li>Normativ-huquqiy hujjatlar bazasi</li>
+                <li>Sud ishlari reyestri</li>
+                <li>Notarial harakatlar va shartnomalar</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="callout fragment text-sm">
+            <strong>Nega relyatsion model?</strong> Iqtisodiyot, boshqaruv va huquq tizimlarining aksariyati qat’iy aniqlik va jadvallararo bog‘lanishni talab qiladi — bu aynan relyatsion bazalarning kuchli tomoni.
+          </div>
+        </div>
+
+        <aside class="speaker-notes-source">
+          <p><strong>Kasbiy bog‘liqlik:</strong> Dasturchi bo‘lmagan mutaxassis ham MB tuzilishini tushunsa, IT jamoaga aniq texnik topshiriq bera oladi, hisobot sifatini baholay oladi va xatolarni tez topadi.</p>
+        </aside>
+      </section>
+
+      <!-- ================================================================
+           SLIDE 7: 1-BOB MINI-VIKTORINA
+           ================================================================ -->
+      <section class="slide" data-chapter="1-bob. MB va MBBT" data-title="1-bob yakuni: Mini-viktorina">
+        <header class="slide-header">
+          <div class="slide-header-left">
+            <span class="chapter-pill">1-bob • Tekshiruv</span>
+            <h2 class="slide-title">1-bob bo‘yicha tezkor mini-viktorina</h2>
+          </div>
+          <span class="slide-num-badge"></span>
+        </header>
+
+        <div class="slide-body">
+          <div class="quiz-grid">
+            <div class="quiz-card" data-explain="yuridik_firma.db — saqlanayotgan ma’lumotlar bazasining o‘zi; SQLite esa uni boshqaruvchi MBBT (DBMS) dasturidir.">
+              <span class="badge badge-blue" style="width:fit-content;">1-savol</span>
+              <p class="quiz-q">Quyidagi juftliklardan qaysi birida “Ma’lumotlar bazasi” va “MBBT” to‘g‘ri ajratilgan?</p>
+              <div class="quiz-options">
+                <button type="button" class="quiz-opt" data-correct="false">A) SQLite — MB, Python — MBBT</button>
+                <button type="button" class="quiz-opt" data-correct="true">B) <code>yuridik_firma.db</code> — MB, SQLite — MBBT</button>
+                <button type="button" class="quiz-opt" data-correct="false">C) SQL — MB, PostgreSQL — ilova</button>
+              </div>
+              <div class="quiz-feedback"></div>
+              <button type="button" class="quiz-reset-btn">Qayta urinish</button>
+            </div>
+
+            <div class="quiz-card" data-explain="sqlite3.connect(':memory:') bazani diskda emas, operativ xotirada yaratadi; dastur yopilgach u avtomatik o‘chadi (sinovlar uchun qulay).">
+              <span class="badge badge-blue" style="width:fit-content;">2-savol</span>
+              <p class="quiz-q"><code>sqlite3.connect(":memory:")</code> buyrug‘i nima qiladi?</p>
+              <div class="quiz-options">
+                <button type="button" class="quiz-opt" data-correct="false">A) Diskda “memory.db” nomli doimiy fayl yaratadi</button>
+                <button type="button" class="quiz-opt" data-correct="false">B) Masofaviy serverga ulanadi</button>
+                <button type="button" class="quiz-opt" data-correct="true">C) Faqat operativ xotirada vaqtinchalik baza ochadi</button>
+              </div>
+              <div class="quiz-feedback"></div>
+              <button type="button" class="quiz-reset-btn">Qayta urinish</button>
+            </div>
+          </div>
+
+          <div class="callout success">
+            <strong>1-bob xulosasi:</strong> Ma’lumot kontekstda axborotga aylanadi. CSV’dagi takrorlanish va zidliklarni bartaraf etish uchun MBBT va relyatsion ma’lumotlar bazasidan foydalanamiz.
+          </div>
+        </div>
+
+        <aside class="speaker-notes-source">
+          <p><strong>Auditoriya bilan ishlash:</strong> Avval talabalardan og‘zaki javob so‘rang, so‘ng variantni bosing va izohni birga muhokama qiling.</p>
+        </aside>
+      </section>
+
+      <!-- ================================================================
+           SLIDE 8: 2.1-2.2 RELYATSION MODEL VA JADVAL TARKIBI (SVG)
+           ================================================================ -->
+      <section class="slide" data-chapter="2-bob. Relyatsion model" data-title="2.1–2.2. Relyatsion model va jadval tarkibi">
+        <header class="slide-header">
+          <div class="slide-header-left">
+            <span class="chapter-pill teal">2-bob • 2.1 – 2.2</span>
+            <h2 class="slide-title">Relyatsion model (E. Kodd, 1970) va jadval tarkibi</h2>
+          </div>
+          <span class="slide-num-badge"></span>
+        </header>
+
+        <div class="slide-body">
+          <div class="svg-box" style="padding: 14px 18px;">
+            <svg viewBox="0 0 1120 315" aria-label="Relyatsion jadval anatomiyasi">
+              <!-- Title callout: Munosabat -->
+              <rect x="40" y="12" width="290" height="36" rx="8" class="svg-box-blue" stroke-width="1.8" />
+              <text x="185" y="35" text-anchor="middle" font-size="14" class="svg-title">Munosabat (Jadval): mijozlar</text>
+
+              <!-- Atribut label -->
+              <rect x="470" y="12" width="250" height="36" rx="8" class="svg-box-teal" stroke-width="1.8" />
+              <text x="595" y="35" text-anchor="middle" font-size="14" class="svg-title">Atribut (Ustun): telefon</text>
+              <line x1="595" y1="48" x2="640" y2="76" stroke="var(--teal)" stroke-width="2" />
+
+              <!-- Domen label -->
+              <rect x="780" y="12" width="310" height="36" rx="8" class="svg-box-violet" stroke-width="1.8" />
+              <text x="935" y="35" text-anchor="middle" font-size="14" class="svg-title">Domen: {'jismoniy', 'yuridik'}</text>
+              <line x1="935" y1="48" x2="935" y2="76" stroke="var(--violet)" stroke-width="2" />
+
+              <!-- Table Header -->
+              <rect x="40" y="76" width="1040" height="44" rx="8" class="svg-box-fill" stroke-width="2" />
+              <rect x="540" y="76" width="240" height="44" class="svg-box-teal" stroke-width="1.5" />
+              <rect x="780" y="76" width="300" height="44" class="svg-box-violet" stroke-width="1.5" />
+              <text x="105" y="103" text-anchor="middle" font-size="15" class="svg-mono svg-title">mijoz_id</text>
+              <text x="275" y="103" text-anchor="middle" font-size="15" class="svg-mono svg-title">familiya</text>
+              <text x="455" y="103" text-anchor="middle" font-size="15" class="svg-mono svg-title">ism</text>
+              <text x="660" y="103" text-anchor="middle" font-size="15" class="svg-mono svg-title">telefon</text>
+              <text x="930" y="103" text-anchor="middle" font-size="15" class="svg-mono svg-title">toifa</text>
+
+              <!-- Row 1 (highlighted as Kortej) -->
+              <rect x="40" y="122" width="1040" height="44" class="svg-box-emerald" stroke-width="2" />
+              <text x="105" y="149" text-anchor="middle" font-size="15" class="svg-title">1</text>
+              <text x="275" y="149" text-anchor="middle" font-size="15" class="svg-title">Karimov</text>
+              <text x="455" y="149" text-anchor="middle" font-size="15" class="svg-title">Anvar</text>
+              <text x="660" y="149" text-anchor="middle" font-size="15" class="svg-mono svg-title">+998901112233</text>
+              <text x="930" y="149" text-anchor="middle" font-size="15" class="svg-title">jismoniy</text>
+
+              <!-- Row 2 -->
+              <rect x="40" y="166" width="1040" height="42" class="svg-box-fill" stroke-width="1.2" />
+              <text x="105" y="192" text-anchor="middle" font-size="15" class="svg-sub">2</text>
+              <text x="275" y="192" text-anchor="middle" font-size="15" class="svg-sub">Azizova</text>
+              <text x="455" y="192" text-anchor="middle" font-size="15" class="svg-sub">Malika</text>
+              <text x="660" y="192" text-anchor="middle" font-size="15" class="svg-mono svg-sub">+998935556677</text>
+              <text x="930" y="192" text-anchor="middle" font-size="15" class="svg-sub">jismoniy</text>
+
+              <!-- Row 3 -->
+              <rect x="40" y="208" width="1040" height="42" class="svg-box-fill" stroke-width="1.2" />
+              <text x="105" y="234" text-anchor="middle" font-size="15" class="svg-sub">3</text>
+              <text x="275" y="234" text-anchor="middle" font-size="15" class="svg-sub">“Baraka Savdo” MChJ</text>
+              <text x="455" y="234" text-anchor="middle" font-size="15" class="svg-muted">NULL</text>
+              <text x="660" y="234" text-anchor="middle" font-size="15" class="svg-mono svg-sub">+998712223344</text>
+              <text x="930" y="234" text-anchor="middle" font-size="15" class="svg-sub">yuridik</text>
+
+              <!-- Bottom annotations -->
+              <rect x="40" y="266" width="330" height="38" rx="8" class="svg-box-emerald" stroke-width="1.6" />
+              <text x="205" y="290" text-anchor="middle" font-size="14" class="svg-title">Kortej (Satr / Yozuv): 1 ta obyekt</text>
+
+              <rect x="400" y="266" width="320" height="38" rx="8" class="svg-box-amber" stroke-width="1.6" />
+              <text x="560" y="290" text-anchor="middle" font-size="14" class="svg-title">Daraja (Degree) = 5 ustun</text>
+
+              <rect x="750" y="266" width="330" height="38" rx="8" class="svg-box-blue" stroke-width="1.6" />
+              <text x="915" y="290" text-anchor="middle" font-size="14" class="svg-title">Quvvat (Cardinality) = 3 satr</text>
+            </svg>
+          </div>
+
+          <div class="grid-2 fragment">
+            <div class="card">
+              <h3 class="card-title">Asosiy g‘oya</h3>
+              <p>Ma’lumotlarga xotiradagi bayt manzili orqali emas, <strong>qiymatlari</strong> orqali murojaat qilinadi: <em>“summasi 1 mln so‘mdan katta shartnomalarni ber”</em>.</p>
+            </div>
+            <div class="card">
+              <h3 class="card-title">Domen nima uchun muhim?</h3>
+              <p>Ustun qabul qila oladigan ruxsat etilgan qiymatlar to‘plami. Masalan, <code>toifa = "talaba"</code> yoki <code>summa = -500</code> domendan tashqarida.</p>
+            </div>
+          </div>
+        </div>
+
+        <aside class="speaker-notes-source">
+          <p><strong>Eslatma:</strong> 6-mavzudagi Python <code>tuple</code> (kortej) atamasi aynan relyatsion modeldagi satr bilan bir xil ma’noga ega. Jadval darajasi — ustunlar soni, quvvati — satrlar soni.</p>
+        </aside>
+      </section>
+
+      <!-- ================================================================
+           SLIDE 9: 2.3 JADVAL SXEMASI VA CREATE TABLE
+           ================================================================ -->
+      <section class="slide" data-chapter="2-bob. Relyatsion model" data-title="2.3. Jadval sxemasi va CREATE TABLE">
+        <header class="slide-header">
+          <div class="slide-header-left">
+            <span class="chapter-pill teal">2-bob • 2.3</span>
+            <h2 class="slide-title">Jadval sxemasi va <code>CREATE TABLE</code></h2>
+          </div>
+          <span class="slide-num-badge"></span>
+        </header>
+
+        <div class="slide-body">
+          <div class="grid-2" style="flex: 1;">
+            <div class="flex-col">
+              <div class="card card-accent">
+                <h3 class="card-title">Qisqa sxema yozuvi</h3>
+                <p><code>mijozlar(mijoz_id, familiya, ism, telefon, toifa)</code></p>
+                <p><code>shartnomalar(shartnoma_id, raqam, mijoz_id, sana, summa)</code></p>
+              </div>
+
+              <table class="data-table compact fragment">
+                <thead>
+                  <tr>
+                    <th>Jihat</th>
+                    <th>Sxema (Qolip)</th>
+                    <th>Ma’lumotlar (Yozuv)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>Nimani ifodalaydi</strong></td>
+                    <td>Jadval tuzilmasi</td>
+                    <td>Aniq qiymatlar</td>
+                  </tr>
+                  <tr>
+                    <td><strong>O‘zgarish tezligi</strong></td>
+                    <td>Kam o‘zgaradi</td>
+                    <td>Har kuni o‘zgaradi</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Kim belgilaydi</strong></td>
+                    <td>MB loyihalovchisi</td>
+                    <td>Foydalanuvchi / ilova</td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <div class="callout fragment text-sm mt-auto">
+                <code>PRAGMA table_info(jadval)</code> — SQLite’da jadval ustunlari (nomi, turi, NOT NULL, DEFAULT, PK) haqida ma’lumot qaytaradi.
+              </div>
+            </div>
+
+            <div class="code-card">
+              <div class="code-bar">
+                <span class="code-lang"><span class="code-dots"><span></span><span></span><span></span></span>Python + SQL • Sxema yaratish</span>
+                <button type="button" class="copy-btn">Nusxalash</button>
+              </div>
+              <pre><code class="language-python">import sqlite3
+
+ulanish = sqlite3.connect(":memory:")
+ulanish.execute("""
+    CREATE TABLE mijozlar (
+        mijoz_id INTEGER,
+        familiya TEXT,
+        ism      TEXT,
+        telefon  TEXT,
+        toifa    TEXT
+    )
+""")
+
+for ustun in ulanish.execute("PRAGMA table_info(mijozlar)"):
+    print(ustun[1], "-", ustun[2])</code></pre>
+              <div class="code-output">
+                <div class="code-output-label">Natija</div>
+mijoz_id - INTEGER
+familiya - TEXT
+ism - TEXT
+telefon - TEXT
+toifa - TEXT
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <aside class="speaker-notes-source">
+          <p><strong>O‘xshatish:</strong> Sxemani bo‘sh anketaga (blank), ma’lumotlarni esa to‘ldirilgan anketalarga qiyoslang. Jadval yaratilgach, unda sxema bor, lekin hali satrlar yo‘q.</p>
+        </aside>
+      </section>
+
+      <!-- ================================================================
+           SLIDE 10: 2.4 RELYATSION MODELNING 5 QOIDASI
+           ================================================================ -->
+      <section class="slide" data-chapter="2-bob. Relyatsion model" data-title="2.4. Relyatsion modelning 5 qoidasi">
+        <header class="slide-header">
+          <div class="slide-header-left">
+            <span class="chapter-pill teal">2-bob • 2.4</span>
+            <h2 class="slide-title">Relyatsion jadvalning 5 ta majburiy qoidasi</h2>
+          </div>
+          <span class="slide-num-badge"></span>
+        </header>
+
+        <div class="slide-body">
+          <div class="grid-2-wide-left" style="flex: 1;">
+            <ul class="check-list">
+              <li class="fragment"><span class="ico" style="color:var(--accent);">1.</span><span><strong>Atomarlik:</strong> har bir katakda faqat <em>bitta</em> bo‘linmas qiymat bo‘ladi (bir katakda ikkita telefon raqam bo‘lmaydi!).</span></li>
+              <li class="fragment"><span class="ico" style="color:var(--accent);">2.</span><span><strong>Bir xil domen:</strong> ustundagi barcha qiymatlar bitta turga/domenga tegishli (<code>summa</code> — faqat son).</span></li>
+              <li class="fragment"><span class="ico" style="color:var(--accent);">3.</span><span><strong>Ustun nomlari noyob:</strong> bitta jadvalda ikkita <code>telefon</code> ustuni bo‘lmaydi.</span></li>
+              <li class="fragment"><span class="ico" style="color:var(--accent);">4.</span><span><strong>Bir xil satrlar yo‘q:</strong> har bir satr kalit orqali boshqalaridan farqlanadi.</span></li>
+              <li class="fragment"><span class="ico" style="color:var(--accent);">5.</span><span><strong>Tartib ahamiyatsiz:</strong> jadval ma’nosi satr yoki ustunlar qaysi tartibda turganiga bog‘liq emas.</span></li>
+            </ul>
+
+            <div class="flex-col">
+              <div class="card" style="border-color: var(--rose);">
+                <h3 class="card-title" style="color: var(--rose);"><i data-lucide="x-circle" class="ico-rose"></i>Atomarlik buzilishi</h3>
+                <table class="data-table compact">
+                  <thead><tr><th>Xodim</th><th>Telefon</th></tr></thead>
+                  <tbody>
+                    <tr><td>Rahimov Botir</td><td>+998901234567</td></tr>
+                    <tr><td>Sobirova Dilnoza</td><td class="cell-bad">+998931112233, +998977778899</td></tr>
+                  </tbody>
+                </table>
+                <p class="text-sm">Bir katakda 2 ta raqam bo‘lsa, raqam bo‘yicha qidirish va hisoblash qiyinlashadi. Yechim — telefonlarni alohida jadvalga chiqarish (4-bob).</p>
+              </div>
+
+              <div class="callout warn mt-auto">
+                <strong>Excel ≠ Relyatsion jadval:</strong> Excel’da bitta ustunga ham matn, ham son yozish yoki kataklarni birlashtirish mumkin. MBBT esa bunday xatolarni sxema darajasida to‘sadi.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <aside class="speaker-notes-source">
+          <p><strong>Muhokama:</strong> Talabalardan Excel’da ko‘rgan “chiroyli, lekin buzilgan” jadvallarini (birlashtirilgan kataklar, bitta katakda vergul bilan bir nechta fan/telefon) eslashni so‘rang.</p>
+        </aside>
+      </section>
+
+      <!-- ================================================================
+           SLIDE 11: 2.5-2.6 MA'LUMOT TURLARI, NULL VA PYTHON TAQQOSLASH
+           ================================================================ -->
+      <section class="slide" data-chapter="2-bob. Relyatsion model" data-title="2.5–2.6. Ma’lumot turlari, NULL va Python taqqoslash">
+        <header class="slide-header">
+          <div class="slide-header-left">
+            <span class="chapter-pill teal">2-bob • 2.5 – 2.6</span>
+            <h2 class="slide-title">SQLite turlari, pul aniqligi va <code>NULL</code> qoidasi</h2>
+          </div>
+          <span class="slide-num-badge"></span>
+        </header>
+
+        <div class="slide-body">
+          <div class="grid-2" style="flex: 1;">
+            <div class="flex-col">
+              <table class="data-table compact">
+                <thead>
+                  <tr><th>SQLite turi</th><th>Python</th><th>Misol ustunlar</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td><code>INTEGER</code></td><td><code>int</code></td><td><code>mijoz_id</code>, <code>summa</code> (so‘m/tiyin)</td></tr>
+                  <tr><td><code>REAL</code></td><td><code>float</code></td><td><code>foiz_stavkasi</code>, <code>kurs</code></td></tr>
+                  <tr><td><code>TEXT</code></td><td><code>str</code></td><td><code>familiya</code>, sana (<code>YYYY-MM-DD</code>)</td></tr>
+                  <tr><td><code>BLOB</code></td><td><code>bytes</code></td><td>Skanerlangan hujjat, rasm</td></tr>
+                  <tr><td><code>NULL</code></td><td><code>None</code></td><td>Kiritilmagan / noma’lum qiymat</td></tr>
+                </tbody>
+              </table>
+
+              <div class="callout warn fragment text-sm">
+                <strong>Pul summasi va sana:</strong><br/>
+                • <code>0.1 + 0.1 + 0.1 == 0.30000000000000004</code> → Pulni <code>REAL</code> emas, eng kichik birlikda <code>INTEGER</code> saqlang.<br/>
+                • Sanani <code>TEXT</code> sifatida <code>2026-03-15</code> (ISO) yozing — matncha saralash ham to‘g‘ri ishlaydi.
+              </div>
+            </div>
+
+            <div class="flex-col">
+              <div class="code-card">
+                <div class="code-bar">
+                  <span class="code-lang"><span class="code-dots"><span></span><span></span><span></span></span>NULL ≠ 0 ≠ ''</span>
+                  <button type="button" class="copy-btn">Nusxalash</button>
+                </div>
+                <pre><code class="language-python">for ifoda in ["NULL", "0", "''", "NULL = NULL", "NULL IS NULL"]:
+    q = ulanish.execute(f"SELECT {ifoda}").fetchone()[0]
+    print(f"{ifoda:<13} -> {q!r}")</code></pre>
+                <div class="code-output">
+                  <div class="code-output-label">Natija</div>
+NULL          -> None
+0             -> 0
+''            -> ''
+NULL = NULL   -> None   # Rost emas! Noma'lum = Noma'lum
+NULL IS NULL  -> 1      # To'g'ri tekshirish usuli!
+                </div>
+              </div>
+
+              <div class="card fragment mt-auto">
+                <h3 class="card-title">Relyatsion jadval ↔ Python</h3>
+                <p class="text-sm">Jadval ≈ <code>list[dict]</code>, Satr ≈ <code>tuple/dict</code>, Ustun ≈ lug‘at kaliti. <strong>Farqi:</strong> Python xotirada vaqtinchalik, MBBT esa doimiy saqlaydi va domen qoidalarini avtomatik tekshiradi.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <aside class="speaker-notes-source">
+          <p><strong>Diqqatni torting:</strong> Ikki noma’lum qiymatning tengligini aniqlab bo‘lmagani uchun SQL’da <code>NULL = NULL</code> rost bermaydi! Doimo <code>IS NULL</code> yoki <code>IS NOT NULL</code> ishlatiladi.</p>
+        </aside>
+      </section>
+
+      <!-- ================================================================
+           SLIDE 12: 2-BOB MINI-VIKTORINA
+           ================================================================ -->
+      <section class="slide" data-chapter="2-bob. Relyatsion model" data-title="2-bob yakuni: Mini-viktorina">
+        <header class="slide-header">
+          <div class="slide-header-left">
+            <span class="chapter-pill teal">2-bob • Tekshiruv</span>
+            <h2 class="slide-title">2-bob bo‘yicha tezkor mini-viktorina</h2>
+          </div>
+          <span class="slide-num-badge"></span>
+        </header>
+
+        <div class="slide-body">
+          <div class="quiz-grid">
+            <div class="quiz-card" data-explain="REAL (float) kasr sonlarni ikkilik sanoq tizimida taxminiy saqlaydi (0.1 + 0.1 + 0.1 ≠ 0.3). Shuning uchun pul summalari eng kichik birlikda INTEGER sifatida saqlanadi.">
+              <span class="badge badge-blue" style="width:fit-content;">1-savol</span>
+              <p class="quiz-q">Moliyaviy summalarni (so‘m/tiyin) SQLite’da qaysi turda saqlash tavsiya etiladi?</p>
+              <div class="quiz-options">
+                <button type="button" class="quiz-opt" data-correct="true">A) <code>INTEGER</code> (aniq butun birlikda)</button>
+                <button type="button" class="quiz-opt" data-correct="false">B) <code>REAL</code> (har doim aniq yaxlitlaydi)</button>
+                <button type="button" class="quiz-opt" data-correct="false">C) <code>BLOB</code> (ikkilik ko‘rinishda)</button>
+              </div>
+              <div class="quiz-feedback"></div>
+              <button type="button" class="quiz-reset-btn">Qayta urinish</button>
+            </div>
+
+            <div class="quiz-card" data-explain="SQL’da NULL noma’lum qiymatni bildiradi. NULL = NULL yana NULL (Python’da None) qaytaradi; tekshirish uchun IS NULL ishlatiladi.">
+              <span class="badge badge-blue" style="width:fit-content;">2-savol</span>
+              <p class="quiz-q">SQLite’da <code>SELECT NULL = NULL</code> so‘rovi Python’ga qanday qiymat qaytaradi?</p>
+              <div class="quiz-options">
+                <button type="button" class="quiz-opt" data-correct="false">A) <code>1</code> (True)</button>
+                <button type="button" class="quiz-opt" data-correct="false">B) <code>0</code> (False)</button>
+                <button type="button" class="quiz-opt" data-correct="true">C) <code>None</code> (NULL)</button>
+              </div>
+              <div class="quiz-feedback"></div>
+              <button type="button" class="quiz-reset-btn">Qayta urinish</button>
+            </div>
+          </div>
+
+          <div class="callout success">
+            <strong>2-bob xulosasi:</strong> Relyatsion modelda barcha ma’lumotlar atomar katakli jadvallarda saqlanadi. Sxema — jadval qolipi, <code>NULL</code> — noma’lum qiymat.
+          </div>
+        </div>
+
+        <aside class="speaker-notes-source">
+          <p><strong>Tekshiruv:</strong> Ikkinchi savolda ko‘pchilik talabalar <code>1</code> (rost) deb o‘ylaydi — aynan shu joyda “Mening cho‘ntagimdagi noma’lum pul sizning cho‘ntagingizdagi noma’lum pulga tengmi? Bilmaymiz!” misolini ayting.</p>
+        </aside>
+      </section>
+
+      <!-- ================================================================
+           SLIDE 13: 3.1 MA'LUMOTLAR YAXLITLIGI TURLARI
+           ================================================================ -->
+      <section class="slide" data-chapter="3-bob. Kalitlar va yaxlitlik" data-title="3.1. Ma’lumotlar yaxlitligining 3 turi">
+        <header class="slide-header">
+          <div class="slide-header-left">
+            <span class="chapter-pill emerald">3-bob • 3.1</span>
+            <h2 class="slide-title">Ma’lumotlar yaxlitligi (Data Integrity)</h2>
+          </div>
+          <span class="slide-num-badge"></span>
+        </header>
+
+        <div class="slide-body">
+          <p style="margin:0; font-size:16.5px; color:var(--text-secondary);">
+            <strong>Ma’lumotlar yaxlitligi</strong> — bazadagi ma’lumotlarning to‘g‘ri, to‘liq va o‘zaro muvofiq bo‘lishi.
+            Qoidalar sxemada <strong>bir marta</strong> yoziladi va MBBT ularni har bir yozuv uchun avtomatik tekshiradi.
+          </p>
+
+          <div class="grid-3" style="flex: 1;">
+            <div class="card fragment" style="border-top: 5px solid var(--accent);">
+              <span class="badge badge-blue" style="width:fit-content;">1-tur</span>
+              <h3 class="card-title">Obyekt yaxlitligi</h3>
+              <p class="card-subtitle">Entity Integrity</p>
+              <p>Har bir satr jadvalda <strong>noyob</strong> va aniq identifikatsiyalanadi.</p>
+              <div class="callout mt-auto text-sm"><strong>Vosita:</strong> <code>PRIMARY KEY</code></div>
+            </div>
+
+            <div class="card fragment" style="border-top: 5px solid var(--teal);">
+              <span class="badge badge-green" style="width:fit-content;">2-tur</span>
+              <h3 class="card-title">Havola yaxlitligi</h3>
+              <p class="card-subtitle">Referential Integrity</p>
+              <p>Boshqa jadvalga havola faqat <strong>mavjud yozuvga</strong> ko‘rsatishi shart.</p>
+              <div class="callout success mt-auto text-sm"><strong>Vosita:</strong> <code>FOREIGN KEY</code></div>
+            </div>
+
+            <div class="card fragment" style="border-top: 5px solid var(--violet);">
+              <span class="badge badge-violet" style="width:fit-content;">3-tur</span>
+              <h3 class="card-title">Domen yaxlitligi</h3>
+              <p class="card-subtitle">Domain Integrity</p>
+              <p>Ustun qiymatlari ruxsat etilgan <strong>tur va chegaraga</strong> mos bo‘ladi.</p>
+              <div class="callout warn mt-auto text-sm"><strong>Vosita:</strong> Tur, <code>NOT NULL</code>, <code>CHECK</code>, <code>UNIQUE</code></div>
+            </div>
+          </div>
+
+          <div class="callout danger fragment text-sm">
+            <strong>Yaxlitlik buzilsa nima bo‘ladi?</strong> Mavjud bo‘lmagan mijozga yozilgan shartnoma yoki manfiy summali to‘lov butun moliyaviy hisobotni noto‘g‘ri qilib qo‘yadi.
+          </div>
+        </div>
+
+        <aside class="speaker-notes-source">
+          <p><strong>Muhim nuqta:</strong> Python kodida <code>if</code> bilan tekshirish o‘rniga qoidani MB sxemasiga yozishning afzalligi — bazaga qaysi dastur yoki xodim ulanmasin, qoida baribir buzilmaydi.</p>
+        </aside>
+      </section>
+
+      <!-- ================================================================
+           SLIDE 14: 3.2 BIRLAMCHI, NOMZOD VA TARKIBIY KALITLAR
+           ================================================================ -->
+      <section class="slide" data-chapter="3-bob. Kalitlar va yaxlitlik" data-title="3.2. Birlamchi, nomzod va tarkibiy kalitlar">
+        <header class="slide-header">
+          <div class="slide-header-left">
+            <span class="chapter-pill emerald">3-bob • 3.2</span>
+            <h2 class="slide-title">Birlamchi kalit (PK), nomzod va tarkibiy kalitlar</h2>
+          </div>
+          <span class="slide-num-badge"></span>
+        </header>
+
+        <div class="slide-body">
+          <div class="grid-2" style="flex: 1;">
+            <div class="flex-col">
+              <div class="card card-accent">
+                <h3 class="card-title"><i data-lucide="key-round" class="ico-accent"></i>Birlamchi kalitga 2 talab</h3>
+                <ul class="clean-list">
+                  <li><strong>Noyoblik:</strong> ikki satrda bir xil kalit bo‘lmaydi.</li>
+                  <li><strong>Majburiylik:</strong> qiymati <code>NULL</code> bo‘lmaydi.</li>
+                </ul>
+                <p class="text-sm muted">Hayotiy misollar: JShShIR, STIR, talaba ID, davlat raqami.</p>
+              </div>
+
+              <div class="card fragment">
+                <h3 class="card-title">Nomzod va muqobil kalitlar</h3>
+                <p><code>xodimlar</code> jadvalida <code>xodim_id</code>, <code>jshshir</code> va <code>pasport</code> — barchasi <strong>nomzod kalit</strong>. Bittasi PK bo‘lib tanlanadi, qolganlari <strong>muqobil (alternativ)</strong> kalit bo‘ladi.</p>
+              </div>
+
+              <div class="code-card fragment mt-auto">
+                <div class="code-bar">
+                  <span class="code-lang"><span class="code-dots"><span></span><span></span><span></span></span>SQL • Tarkibiy (kompozit) kalit</span>
+                  <button type="button" class="copy-btn">Nusxalash</button>
+                </div>
+                <pre><code class="language-sql">CREATE TABLE baholar (
+    talaba_id INTEGER,
+    fan_id    INTEGER,
+    baho      INTEGER,
+    PRIMARY KEY (talaba_id, fan_id)
+);</code></pre>
+              </div>
+            </div>
+
+            <div class="code-card">
+              <div class="code-bar">
+                <span class="code-lang"><span class="code-dots"><span></span><span></span><span></span></span>Python • PK takrorlanishini rad etadi</span>
+                <button type="button" class="copy-btn">Nusxalash</button>
+              </div>
+              <pre><code class="language-python">import sqlite3
+
+ulanish = sqlite3.connect(":memory:")
+ulanish.execute("""
+    CREATE TABLE mijozlar (
+        mijoz_id INTEGER PRIMARY KEY,
+        familiya TEXT
+    )
+""")
+ulanish.execute("INSERT INTO mijozlar VALUES (1, 'Karimov')")
+
+try:
+    ulanish.execute("INSERT INTO mijozlar VALUES (1, 'Azizova')")
+except sqlite3.IntegrityError as xatolik:
+    print("Rad etildi:", xatolik)</code></pre>
+              <div class="code-output">
+                <div class="code-output-label">Natija</div>
+Rad etildi: UNIQUE constraint failed: mijozlar.mijoz_id
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <aside class="speaker-notes-source">
+          <p><strong>Tushuntirish:</strong> Tarkibiy kalitda alohida <code>talaba_id</code> ham, <code>fan_id</code> ham takrorlanishi mumkin, lekin ularning <strong>juftligi</strong> <code>(talaba_id, fan_id)</code> takrorlanmaydi.</p>
+        </aside>
+      </section>
+
+      <!-- ================================================================
+           SLIDE 15: 3.3 TABIIY VA SURROGAT KALITLAR
+           ================================================================ -->
+      <section class="slide" data-chapter="3-bob. Kalitlar va yaxlitlik" data-title="3.3. Tabiiy va surrogat kalitlar">
+        <header class="slide-header">
+          <div class="slide-header-left">
+            <span class="chapter-pill emerald">3-bob • 3.3</span>
+            <h2 class="slide-title">Tabiiy (Natural) vs Surrogat (Surrogate) kalit</h2>
+          </div>
+          <span class="slide-num-badge"></span>
+        </header>
+
+        <div class="slide-body">
+          <table class="data-table compact">
+            <thead>
+              <tr>
+                <th>Jihat</th>
+                <th>Tabiiy kalit (masalan, STIR, pasport)</th>
+                <th>Surrogat kalit (masalan, <code>mijoz_id = 17</code>)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Ma’nosi</strong></td>
+                <td>Real predmet sohada ma’noga ega</td>
+                <td>Faqat bazada tartib raqami sifatida</td>
+              </tr>
+              <tr>
+                <td><strong>O‘zgarish ehtimoli</strong></td>
+                <td class="cell-warn">O‘zgarishi mumkin (pasport almashtiriladi)</td>
+                <td class="cell-good">Hech qachon o‘zgarmaydi</td>
+              </tr>
+              <tr>
+                <td><strong>Hajmi va maxfiylik</strong></td>
+                <td>Uzun (14 xonali JShShIR), shaxsiy ma’lumot</td>
+                <td>Qisqa butun son, shaxsiy ma’lumot emas</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="grid-2-wide-left fragment" style="flex: 1;">
+            <div class="code-card">
+              <div class="code-bar">
+                <span class="code-lang"><span class="code-dots"><span></span><span></span><span></span></span>Python • Avtomatik surrogat kalit (lastrowid)</span>
+                <button type="button" class="copy-btn">Nusxalash</button>
+              </div>
+              <pre><code class="language-python">ulanish.execute("""
+    CREATE TABLE mijozlar (
+        mijoz_id INTEGER PRIMARY KEY,
+        stir     TEXT UNIQUE,
+        nomi     TEXT
+    )
+""")
+k = ulanish.execute(
+    "INSERT INTO mijozlar (stir, nomi) VALUES (?, ?)",
+    ("305123456", "Baraka Savdo MChJ")
+)
+print("Avto mijoz_id =", k.lastrowid)</code></pre>
+              <div class="code-output">
+                <div class="code-output-label">Natija</div>
+Avto mijoz_id = 1
+              </div>
+            </div>
+
+            <div class="callout success" style="display:flex; flex-direction:column; justify-content:center; gap:10px;">
+              <div><strong>Amaliy oltin qoida:</strong></div>
+              <div>1. Birlamchi kalit sifatida <strong>surrogat kalit</strong> (<code>INTEGER PRIMARY KEY</code>) oling.</div>
+              <div>2. Tabiiy kalitni (<code>stir</code>, <code>pasport</code>) alohida ustunda saqlab, unga <code>UNIQUE</code> qo‘ying.</div>
+              <div class="text-sm">Natija: fuqaro pasportini almashtirsa ham, unga bog‘langan yuzlab shartnomalar o‘zgarmaydi!</div>
+            </div>
+          </div>
+        </div>
+
+        <aside class="speaker-notes-source">
+          <p><strong>Misoldan xulosa:</strong> SQLite’da <code>INTEGER PRIMARY KEY</code> yozilganda kalit qiymatini kiritmasangiz ham MBBT o‘zi <code>1, 2, 3...</code> berib boradi. <code>kursor.lastrowid</code> oxirgi yaratilgan ID ni qaytaradi.</p>
+        </aside>
+      </section>
+
+      <!-- ================================================================
+           SLIDE 16: 3.4 TASHQI KALIT VA HAVOLA YAXLITLIGI (SVG)
+           ================================================================ -->
+      <section class="slide" data-chapter="3-bob. Kalitlar va yaxlitlik" data-title="3.4. Tashqi kalit va havola yaxlitligi">
+        <header class="slide-header">
+          <div class="slide-header-left">
+            <span class="chapter-pill emerald">3-bob • 3.4</span>
+            <h2 class="slide-title">Tashqi kalit (FK) va havola yaxlitligi</h2>
+          </div>
+          <span class="slide-num-badge"></span>
+        </header>
+
+        <div class="slide-body">
+          <div class="svg-box" style="padding: 10px 14px;">
+            <svg viewBox="0 0 1120 215" aria-label="Tashqi kalit bog'lanishi">
+              <defs>
+                <marker id="arrFk" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+                  <path d="M0,1 L9,5 L0,9 z" fill="currentColor" style="color: var(--emerald);" />
+                </marker>
+              </defs>
+              <!-- Parent table: mijozlar -->
+              <text x="190" y="24" text-anchor="middle" font-size="15" class="svg-title">mijozlar (Ota jadval)</text>
+              <rect x="40" y="34" width="300" height="36" rx="6" class="svg-box-blue" stroke-width="1.8" />
+              <text x="115" y="57" text-anchor="middle" font-size="14" class="svg-mono svg-title">mijoz_id (PK)</text>
+              <text x="260" y="57" text-anchor="middle" font-size="14" class="svg-mono svg-title">familiya</text>
+
+              <rect x="40" y="70" width="300" height="38" class="svg-box-fill" stroke-width="1.4" />
+              <text x="115" y="94" text-anchor="middle" font-size="14" class="svg-title">1</text>
+              <text x="260" y="94" text-anchor="middle" font-size="14" class="svg-sub">Karimov</text>
+
+              <rect x="40" y="108" width="300" height="38" class="svg-box-fill" stroke-width="1.4" />
+              <text x="115" y="132" text-anchor="middle" font-size="14" class="svg-title">2</text>
+              <text x="260" y="132" text-anchor="middle" font-size="14" class="svg-sub">Azizova</text>
+
+              <!-- Child table: shartnomalar -->
+              <text x="795" y="24" text-anchor="middle" font-size="15" class="svg-title">shartnomalar (Bola jadval)</text>
+              <rect x="510" y="34" width="570" height="36" rx="6" class="svg-box-emerald" stroke-width="1.8" />
+              <text x="580" y="57" text-anchor="middle" font-size="14" class="svg-mono svg-title">shartnoma_id</text>
+              <text x="710" y="57" text-anchor="middle" font-size="14" class="svg-mono svg-title">raqam</text>
+              <text x="845" y="57" text-anchor="middle" font-size="14" class="svg-mono svg-title">mijoz_id (FK)</text>
+              <text x="995" y="57" text-anchor="middle" font-size="14" class="svg-mono svg-title">summa</text>
+
+              <rect x="510" y="70" width="570" height="34" class="svg-box-fill" stroke-width="1.4" />
+              <text x="580" y="92" text-anchor="middle" font-size="14" class="svg-sub">1</text>
+              <text x="710" y="92" text-anchor="middle" font-size="14" class="svg-mono svg-sub">SH-001</text>
+              <text x="845" y="92" text-anchor="middle" font-size="14" class="svg-title">1</text>
+              <text x="995" y="92" text-anchor="middle" font-size="14" class="svg-sub">500 000</text>
+
+              <rect x="510" y="104" width="570" height="34" class="svg-box-fill" stroke-width="1.4" />
+              <text x="580" y="126" text-anchor="middle" font-size="14" class="svg-sub">2</text>
+              <text x="710" y="126" text-anchor="middle" font-size="14" class="svg-mono svg-sub">SH-002</text>
+              <text x="845" y="126" text-anchor="middle" font-size="14" class="svg-title">1</text>
+              <text x="995" y="126" text-anchor="middle" font-size="14" class="svg-sub">3 000 000</text>
+
+              <rect x="510" y="138" width="570" height="34" class="svg-box-fill" stroke-width="1.4" />
+              <text x="580" y="160" text-anchor="middle" font-size="14" class="svg-sub">3</text>
+              <text x="710" y="160" text-anchor="middle" font-size="14" class="svg-mono svg-sub">SH-003</text>
+              <text x="845" y="160" text-anchor="middle" font-size="14" class="svg-title">2</text>
+              <text x="995" y="160" text-anchor="middle" font-size="14" class="svg-sub">800 000</text>
+
+              <rect x="510" y="172" width="570" height="34" class="svg-box-rose" stroke-width="1.6" />
+              <text x="580" y="194" text-anchor="middle" font-size="14" class="svg-sub">4</text>
+              <text x="710" y="194" text-anchor="middle" font-size="14" class="svg-mono svg-sub">SH-004</text>
+              <text x="845" y="194" text-anchor="middle" font-size="14" style="fill:var(--rose); font-weight:800;">99 — RAD ETILDI</text>
+              <text x="995" y="194" text-anchor="middle" font-size="14" class="svg-sub">700 000</text>
+
+              <!-- Arrows FK -> PK -->
+              <path d="M510,87 C440,87 420,89 346,89" stroke="var(--emerald)" stroke-width="2.4" fill="none" marker-end="url(#arrFk)" />
+              <path d="M510,121 C440,121 420,89 346,89" stroke="var(--emerald)" stroke-width="2.4" fill="none" marker-end="url(#arrFk)" />
+              <path d="M510,155 C430,155 420,127 346,127" stroke="var(--emerald)" stroke-width="2.4" fill="none" marker-end="url(#arrFk)" />
+              <text x="425" y="74" text-anchor="middle" font-size="12.5" class="svg-mono svg-sub">REFERENCES</text>
+            </svg>
+          </div>
+
+          <div class="grid-2" style="flex: 1;">
+            <div class="flex-col">
+              <div class="callout danger">
+                <strong>SQLite’da juda muhim!</strong> Tashqi kalitlar standart holatda <strong>o‘chirilgan</strong>. Har bir ulanishda yoqish shart:<br/>
+                <code>PRAGMA foreign_keys = ON;</code>
+              </div>
+              <div class="code-card mt-auto">
+                <div class="code-bar">
+                  <span class="code-lang"><span class="code-dots"><span></span><span></span><span></span></span>SQL • Tashqi kalit e’lon qilish</span>
+                  <button type="button" class="copy-btn">Nusxalash</button>
+                </div>
+                <pre><code class="language-sql">mijoz_id INTEGER NOT NULL
+         REFERENCES mijozlar(mijoz_id)
+         ON DELETE RESTRICT</code></pre>
+              </div>
+            </div>
+
+            <div class="card fragment">
+              <h3 class="card-title">Ota yozuv o‘chirilganda (<code>ON DELETE</code>)</h3>
+              <table class="data-table compact">
+                <thead><tr><th>Qoida</th><th>Nima sodir bo‘ladi?</th></tr></thead>
+                <tbody>
+                  <tr><td><code>RESTRICT</code> / <code>NO ACTION</code></td><td>O‘chirish rad etiladi (yuridik/moliyada tavsiya!)</td></tr>
+                  <tr><td><code>CASCADE</code></td><td>Bog‘liq bola yozuvlar ham birga o‘chiriladi</td></tr>
+                  <tr><td><code>SET NULL</code></td><td>Bola yozuvlardagi FK <code>NULL</code> ga o‘zgaradi</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <aside class="speaker-notes-source">
+          <p><strong>Eslatma:</strong> Yuridik va moliyaviy tizimlarda to‘lovi yoki shartnomasi bor mijozni <code>CASCADE</code> bilan o‘chirish xavfli — tarix yo‘qoladi. Shuning uchun odatda <code>ON DELETE RESTRICT</code> qo‘yiladi.</p>
+        </aside>
+      </section>
+
+      <!-- ================================================================
+           SLIDE 17: 3.5-3.6 CHEKLOVLAR VA LOYIHALASH CHEK-LISTI
+           ================================================================ -->
+      <section class="slide" data-chapter="3-bob. Kalitlar va yaxlitlik" data-title="3.5–3.6. Cheklovlar: NOT NULL, UNIQUE, CHECK, DEFAULT">
+        <header class="slide-header">
+          <div class="slide-header-left">
+            <span class="chapter-pill emerald">3-bob • 3.5 – 3.6</span>
+            <h2 class="slide-title">Cheklovlar: <code>NOT NULL</code>, <code>UNIQUE</code>, <code>CHECK</code>, <code>DEFAULT</code></h2>
+          </div>
+          <span class="slide-num-badge"></span>
+        </header>
+
+        <div class="slide-body">
+          <div class="grid-2" style="flex: 1;">
+            <div class="flex-col">
+              <table class="data-table compact">
+                <thead><tr><th>Cheklov</th><th>Vazifasi</th></tr></thead>
+                <tbody>
+                  <tr><td><code>NOT NULL</code></td><td>Bo‘sh (<code>NULL</code>) bo‘lishini taqiqlaydi</td></tr>
+                  <tr><td><code>UNIQUE</code></td><td>Ustunda qiymat takrorlanishini taqiqlaydi</td></tr>
+                  <tr><td><code>CHECK (...)</code></td><td>Mantiqiy shart bajarilishini tekshiradi</td></tr>
+                  <tr><td><code>DEFAULT</code></td><td>Qiymat berilmasa standart qiymat yozadi</td></tr>
+                </tbody>
+              </table>
+
+              <div class="card card-accent fragment mt-auto">
+                <h3 class="card-title"><i data-lucide="clipboard-list" class="ico-accent"></i>Har ustun uchun 5 savol</h3>
+                <ol class="clean-list text-sm">
+                  <li>Majburiymi? → <code>NOT NULL</code></li>
+                  <li>Takrorlanmasligi kerakmi? → <code>UNIQUE</code> / <code>PK</code></li>
+                  <li>Chegarasi bormi? → <code>CHECK</code></li>
+                  <li>Standart qiymati bormi? → <code>DEFAULT</code></li>
+                  <li>Boshqa jadvalga bog‘liqmi? → <code>REFERENCES</code></li>
+                </ol>
+              </div>
+            </div>
+
+            <div class="code-card">
+              <div class="code-bar">
+                <span class="code-lang"><span class="code-dots"><span></span><span></span><span></span></span>SQL • Jadval va ustun cheklovlari</span>
+                <button type="button" class="copy-btn">Nusxalash</button>
+              </div>
+              <pre><code class="language-sql">CREATE TABLE shartnomalar (
+    shartnoma_id INTEGER PRIMARY KEY,
+    raqam        TEXT    NOT NULL UNIQUE,
+    summa        INTEGER NOT NULL CHECK (summa > 0),
+    holat        TEXT    NOT NULL DEFAULT 'faol'
+                 CHECK (holat IN ('faol', 'yakunlangan', 'bekor'))
+);
+
+-- Jadval darajasidagi cheklov (2 ustun bog'liq):
+-- UNIQUE (tur_id, raqam)
+-- CHECK (kuchga_kirishi IS NULL OR kuchga_kirishi >= qabul_sanasi)</code></pre>
+              <div class="code-output">
+                <div class="code-output-label">Sinov natijalari</div>
+✓ ('SH-001', 500000)         -> qabul (holat='faol')
+✗ ('SH-001', 900000)         -> UNIQUE constraint failed
+✗ (summa=300000, raqam=NULL) -> NOT NULL constraint failed
+✗ ('SH-002', -100)           -> CHECK failed: summa > 0
+✗ ('SH-003', 100, 'arxiv')   -> CHECK failed: holat IN (...)
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <aside class="speaker-notes-source">
+          <p><strong>Jadval darajasidagi cheklov:</strong> Agar qoida ikki ustunni solishtirsa (masalan, hujjatning kuchga kirish sanasi qabul qilingan sanasidan oldin bo‘lmasligi), u bitta ustunga emas, jadval oxiriga yoziladi.</p>
+        </aside>
+      </section>
+
+      <!-- ================================================================
+           SLIDE 18: 3-BOB MINI-VIKTORINA
+           ================================================================ -->
+      <section class="slide" data-chapter="3-bob. Kalitlar va yaxlitlik" data-title="3-bob yakuni: Mini-viktorina">
+        <header class="slide-header">
+          <div class="slide-header-left">
+            <span class="chapter-pill emerald">3-bob • Tekshiruv</span>
+            <h2 class="slide-title">3-bob bo‘yicha tezkor mini-viktorina</h2>
+          </div>
+          <span class="slide-num-badge"></span>
+        </header>
+
+        <div class="slide-body">
+          <div class="quiz-grid">
+            <div class="quiz-card" data-explain="SQLite’da tashqi kalitlar tekshiruvi tarixiy sabablarga ko‘ra standart holatda o‘chiq bo‘ladi. PRAGMA foreign_keys = ON berilmasa, mavjud bo‘lmagan mijoz_id = 99 ham xatoliksiz yozilib ketadi!">
+              <span class="badge badge-green" style="width:fit-content;">1-savol</span>
+              <p class="quiz-q"><code>PRAGMA foreign_keys = ON</code> bajarilmasa, <code>REFERENCES</code> yozilgan jadvalga mavjud bo‘lmagan <code>mijoz_id = 99</code> kiritsa nima bo‘ladi?</p>
+              <div class="quiz-options">
+                <button type="button" class="quiz-opt" data-correct="false">A) SQLite darhol <code>IntegrityError</code> beradi</button>
+                <button type="button" class="quiz-opt" data-correct="true">B) Yozuv tekshirilmasdan bazaga qo‘shilib ketadi</button>
+                <button type="button" class="quiz-opt" data-correct="false">C) Mijoz 99 avtomatik yaratiladi</button>
+              </div>
+              <div class="quiz-feedback"></div>
+              <button type="button" class="quiz-reset-btn">Qayta urinish</button>
+            </div>
+
+            <div class="quiz-card" data-explain="ON DELETE RESTRICT ota yozuvni (shartnomani) bog‘liq bola yozuvlar (to‘lovlar) mavjud bo‘lsa o‘chirishni rad etadi va moliyaviy tarixni saqlab qoladi.">
+              <span class="badge badge-green" style="width:fit-content;">2-savol</span>
+              <p class="quiz-q">To‘lovlari mavjud shartnoma tasodifan o‘chib ketmasligi uchun qaysi qoida tanlanadi?</p>
+              <div class="quiz-options">
+                <button type="button" class="quiz-opt" data-correct="true">A) <code>ON DELETE RESTRICT</code></button>
+                <button type="button" class="quiz-opt" data-correct="false">B) <code>ON DELETE CASCADE</code></button>
+                <button type="button" class="quiz-opt" data-correct="false">C) <code>ON DELETE SET NULL</code></button>
+              </div>
+              <div class="quiz-feedback"></div>
+              <button type="button" class="quiz-reset-btn">Qayta urinish</button>
+            </div>
+          </div>
+
+          <div class="callout success">
+            <strong>3-bob xulosasi:</strong> PK obyekt yaxlitligini, FK havola yaxlitligini, <code>NOT NULL / UNIQUE / CHECK / DEFAULT</code> esa domen yaxlitligini avtomatik kafolatlaydi.
+          </div>
+        </div>
+
+        <aside class="speaker-notes-source">
+          <p><strong>Takrorlash:</strong> <code>PRAGMA foreign_keys = ON</code> qoidasini talabalar eslab qolishi juda muhim — 6- va 7-boblarda bu eng ko‘p uchraydigan amaliy xato manbai.</p>
+        </aside>
+      </section>
+
+      <!-- ================================================================
+           SLIDE 19: 4.1-4.2 LOYIHALASH BOSQICHLARI VA ER-MODEL (SVG)
+           ================================================================ -->
+      <section class="slide" data-chapter="4-bob. Bog‘liqliklar va loyihalash" data-title="4.1–4.2. Loyihalash bosqichlari va ER-model">
+        <header class="slide-header">
+          <div class="slide-header-left">
+            <span class="chapter-pill violet">4-bob • 4.1 – 4.2</span>
+            <h2 class="slide-title">Loyihalash bosqichlari va ER-model (P. Chen, 1976)</h2>
+          </div>
+          <span class="slide-num-badge"></span>
+        </header>
+
+        <div class="slide-body">
+          <div class="grid-3">
+            <div class="card" style="border-left: 4px solid var(--accent);">
+              <h3 class="card-title">1. Konseptual</h3>
+              <p class="text-sm">Qanday obyekt va aloqalar bor? → <strong>ER-diagramma</strong></p>
+            </div>
+            <div class="card" style="border-left: 4px solid var(--violet);">
+              <h3 class="card-title">2. Mantiqiy</h3>
+              <p class="text-sm">Qanday jadvallarga aylanadi? → <strong>Sxema, PK/FK, 3NF</strong></p>
+            </div>
+            <div class="card" style="border-left: 4px solid var(--emerald);">
+              <h3 class="card-title">3. Fizik</h3>
+              <p class="text-sm">MBBT’da qanday yaratiladi? → <strong><code>CREATE TABLE</code>, turlar</strong></p>
+            </div>
+          </div>
+
+          <div class="svg-box fragment" style="flex: 1;">
+            <svg viewBox="0 0 1100 250" aria-label="Yuridik firma ER-diagrammasi">
+              <!-- MIJOZ -->
+              <rect x="40" y="34" width="200" height="62" rx="12" class="svg-box-blue" stroke-width="2.2" />
+              <text x="140" y="70" text-anchor="middle" font-size="18" class="svg-title">MIJOZ</text>
+
+              <!-- Line MIJOZ - SHARTNOMA -->
+              <line x1="240" y1="65" x2="430" y2="65" class="svg-line-accent" />
+              <text x="262" y="54" font-size="15" class="svg-title">1</text>
+              <text x="410" y="54" font-size="15" class="svg-title">N</text>
+              <rect x="292" y="48" width="88" height="28" rx="14" class="svg-box-fill" stroke-width="1.4" />
+              <text x="336" y="67" text-anchor="middle" font-size="13" class="svg-sub">tuzadi</text>
+
+              <!-- SHARTNOMA -->
+              <rect x="430" y="34" width="230" height="62" rx="12" class="svg-box-violet" stroke-width="2.2" />
+              <text x="545" y="70" text-anchor="middle" font-size="18" class="svg-title">SHARTNOMA</text>
+
+              <!-- Line SHARTNOMA - TO'LOV -->
+              <line x1="660" y1="65" x2="860" y2="65" class="svg-line-accent" />
+              <text x="682" y="54" font-size="15" class="svg-title">1</text>
+              <text x="840" y="54" font-size="15" class="svg-title">N</text>
+              <rect x="712" y="48" width="96" height="28" rx="14" class="svg-box-fill" stroke-width="1.4" />
+              <text x="760" y="67" text-anchor="middle" font-size="13" class="svg-sub">bo‘yicha</text>
+
+              <!-- TO'LOV -->
+              <rect x="860" y="34" width="200" height="62" rx="12" class="svg-box-emerald" stroke-width="2.2" />
+              <text x="960" y="70" text-anchor="middle" font-size="18" class="svg-title">TO‘LOV</text>
+
+              <!-- Line SHARTNOMA - ADVOKAT -->
+              <line x1="545" y1="96" x2="545" y2="176" class="svg-line-accent" />
+              <text x="560" y="116" font-size="15" class="svg-title">N</text>
+              <text x="560" y="168" font-size="15" class="svg-title">M</text>
+              <rect x="495" y="122" width="100" height="28" rx="14" class="svg-box-fill" stroke-width="1.4" />
+              <text x="545" y="141" text-anchor="middle" font-size="13" class="svg-sub">ishlaydi</text>
+
+              <!-- ADVOKAT -->
+              <rect x="430" y="176" width="230" height="60" rx="12" class="svg-box-amber" stroke-width="2.2" />
+              <text x="545" y="212" text-anchor="middle" font-size="18" class="svg-title">ADVOKAT</text>
+            </svg>
+          </div>
+
+          <div class="callout fragment text-sm">
+            <strong>Matndan model ajratish qoidasi:</strong> <strong>Otlar</strong> → Mohiyat (jadval) yoki Atribut (ustun); <strong>Fe’llar</strong> → Aloqa (<code>tuzadi</code>, <code>ishlaydi</code>). <code>1</code>, <code>N</code>, <code>M</code> belgilari — kardinallik.
+          </div>
+        </div>
+
+        <aside class="speaker-notes-source">
+          <p><strong>O‘xshatish:</strong> Dasturlashda avval algoritm, keyin kod yozilganidek, bazada ham avval ER-model, keyin <code>CREATE TABLE</code> yoziladi. To‘lib qolgan bazani qayta tuzatish juda qimmatga tushadi.</p>
+        </aside>
+      </section>
+
+      <!-- ================================================================
+           SLIDE 20: 4.3 "BIR-GA-KO'P" (1:N) BOG'LIQLIK
+           ================================================================ -->
+      <section class="slide" data-chapter="4-bob. Bog‘liqliklar va loyihalash" data-title="4.3. “Bir-ga-ko‘p” (1:N) bog‘liqlik">
+        <header class="slide-header">
+          <div class="slide-header-left">
+            <span class="chapter-pill violet">4-bob • 4.3</span>
+            <h2 class="slide-title">“Bir-ga-ko‘p” (1:N) bog‘liqlik — eng ko‘p uchraydigan tur</h2>
+          </div>
+          <span class="slide-num-badge"></span>
+        </header>
+
+        <div class="slide-body">
+          <div class="grid-2" style="flex: 1;">
+            <div class="flex-col">
+              <div class="svg-box">
+                <svg viewBox="0 0 540 160" aria-label="1:N bog'liqlik">
+                  <rect x="20" y="45" width="180" height="70" rx="10" class="svg-box-blue" stroke-width="2" />
+                  <text x="110" y="75" text-anchor="middle" font-size="16" class="svg-title">mijozlar</text>
+                  <text x="110" y="98" text-anchor="middle" font-size="12.5" class="svg-mono svg-sub">PK: mijoz_id</text>
+
+                  <line x1="200" y1="80" x2="310" y2="80" class="svg-line-accent" />
+                  <!-- Crow's foot for N -->
+                  <line x1="286" y1="80" x2="310" y2="66" class="svg-line-accent" />
+                  <line x1="286" y1="80" x2="310" y2="94" class="svg-line-accent" />
+                  <text x="214" y="68" font-size="15" class="svg-title">1</text>
+                  <text x="292" y="58" font-size="15" class="svg-title">N</text>
+
+                  <rect x="310" y="38" width="210" height="84" rx="10" class="svg-box-emerald" stroke-width="2" />
+                  <text x="415" y="66" text-anchor="middle" font-size="16" class="svg-title">shartnomalar</text>
+                  <text x="415" y="88" text-anchor="middle" font-size="12.5" class="svg-mono svg-sub">PK: shartnoma_id</text>
+                  <text x="415" y="108" text-anchor="middle" font-size="12.5" class="svg-mono" style="fill:var(--emerald); font-weight:800;">FK: mijoz_id (asosiy bog‘)</text>
+                </svg>
+              </div>
+
+              <div class="card fragment">
+                <h3 class="card-title">Hayotiy misollar</h3>
+                <ul class="clean-list text-sm">
+                  <li>1 mijoz → ko‘p shartnoma</li>
+                  <li>1 bo‘lim → ko‘p xodim</li>
+                  <li>1 shartnoma → ko‘p to‘lov</li>
+                  <li>1 guruh → ko‘p talaba</li>
+                </ul>
+              </div>
+
+              <div class="callout fragment mt-auto text-sm">
+                <strong>Qoida:</strong> Tashqi kalit har doim <strong>“ko‘p” (N) tomondagi</strong> jadvalga qo‘shiladi. Aksincha qilish atomarlikni buzadi!
+              </div>
+            </div>
+
+            <div class="code-card">
+              <div class="code-bar">
+                <span class="code-lang"><span class="code-dots"><span></span><span></span><span></span></span>SQL • 1:N bog‘liqlik sxemasi</span>
+                <button type="button" class="copy-btn">Nusxalash</button>
+              </div>
+              <pre><code class="language-sql">CREATE TABLE mijozlar (
+    mijoz_id INTEGER PRIMARY KEY,
+    familiya TEXT NOT NULL
+);
+
+CREATE TABLE shartnomalar (
+    shartnoma_id INTEGER PRIMARY KEY,
+    raqam        TEXT NOT NULL UNIQUE,
+    mijoz_id     INTEGER NOT NULL
+                 REFERENCES mijozlar(mijoz_id)
+);</code></pre>
+              <div class="code-output">
+                <div class="code-output-label">Guruhlash natijasi (LEFT JOIN + COUNT)</div>
+Karimov: 3 ta shartnoma
+Azizova: 1 ta shartnoma
+Olimov:  0 ta shartnoma
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <aside class="speaker-notes-source">
+          <p><strong>Savol:</strong> “Nega <code>mijozlar</code> jadvaliga <code>shartnomalar</code> ustunini qo‘shib bo‘lmaydi?” — Chunki bitta mijozda 5 ta shartnoma bo‘lsa, 1 katakka 5 ta raqam yozish atomarlik qoidasini buzadi.</p>
+        </aside>
+      </section>
+
+      <!-- ================================================================
+           SLIDE 21: 4.4 "BIR-GA-BIR" (1:1) BOG'LIQLIK
+           ================================================================ -->
+      <section class="slide" data-chapter="4-bob. Bog‘liqliklar va loyihalash" data-title="4.4. “Bir-ga-bir” (1:1) bog‘liqlik">
+        <header class="slide-header">
+          <div class="slide-header-left">
+            <span class="chapter-pill violet">4-bob • 4.4</span>
+            <h2 class="slide-title">“Bir-ga-bir” (1:1) bog‘liqlik</h2>
+          </div>
+          <span class="slide-num-badge"></span>
+        </header>
+
+        <div class="slide-body">
+          <div class="grid-2" style="flex: 1;">
+            <div class="flex-col">
+              <div class="svg-box">
+                <svg viewBox="0 0 540 155" aria-label="1:1 bog'liqlik">
+                  <rect x="20" y="38" width="195" height="80" rx="10" class="svg-box-blue" stroke-width="2" />
+                  <text x="117" y="66" text-anchor="middle" font-size="16" class="svg-title">xodimlar</text>
+                  <text x="117" y="88" text-anchor="middle" font-size="12.5" class="svg-mono svg-sub">PK: xodim_id</text>
+                  <text x="117" y="106" text-anchor="middle" font-size="12" class="svg-muted">familiya, lavozim</text>
+
+                  <line x1="215" y1="78" x2="315" y2="78" class="svg-line-accent" />
+                  <text x="230" y="66" font-size="15" class="svg-title">1</text>
+                  <text x="296" y="66" font-size="15" class="svg-title">1</text>
+
+                  <rect x="315" y="34" width="205" height="88" rx="10" class="svg-box-amber" stroke-width="2" />
+                  <text x="417" y="62" text-anchor="middle" font-size="16" class="svg-title">xodim_maxfiy</text>
+                  <text x="417" y="84" text-anchor="middle" font-size="12.5" class="svg-mono" style="fill:var(--amber); font-weight:800;">PK = FK: xodim_id</text>
+                  <g transform="translate(350,94) scale(0.62)" fill="none" stroke="var(--amber)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></g>
+                  <text x="424" y="106" text-anchor="middle" font-size="12" class="svg-muted">pasport, maosh</text>
+                </svg>
+              </div>
+
+              <div class="card fragment">
+                <h3 class="card-title">Qachon alohida jadvalga ajratiladi?</h3>
+                <ul class="clean-list text-sm">
+                  <li><strong>Maxfiylik:</strong> maosh va pasportga faqat kadrlar bo‘limi kirishi kerak.</li>
+                  <li><strong>Kam to‘ldirilish:</strong> faqat yuridik shaxslarda bo‘ladigan bank rekvizitlari.</li>
+                  <li><strong>Juda ko‘p ustun:</strong> mantiqiy guruhlarga bo‘lish qulayligi.</li>
+                </ul>
+              </div>
+
+              <div class="callout warn fragment mt-auto text-sm">
+                <strong>Qoida:</strong> Ikkinchi jadvaldagi FK ga <code>UNIQUE</code> qo‘yiladi (yoki <code>FK</code> ning o‘zi <code>PRIMARY KEY</code> qilinadi). <code>UNIQUE</code> bo‘lmasa, 1:N bo‘lib qoladi!
+              </div>
+            </div>
+
+            <div class="code-card">
+              <div class="code-bar">
+                <span class="code-lang"><span class="code-dots"><span></span><span></span><span></span></span>SQL • 1:1 (PK = FK usuli)</span>
+                <button type="button" class="copy-btn">Nusxalash</button>
+              </div>
+              <pre><code class="language-sql">CREATE TABLE xodimlar (
+    xodim_id INTEGER PRIMARY KEY,
+    familiya TEXT NOT NULL,
+    lavozim  TEXT NOT NULL
+);
+
+CREATE TABLE xodim_maxfiy (
+    xodim_id INTEGER PRIMARY KEY
+             REFERENCES xodimlar(xodim_id),
+    pasport  TEXT NOT NULL UNIQUE,
+    maosh    INTEGER NOT NULL CHECK (maosh > 0)
+);</code></pre>
+              <div class="code-output">
+                <div class="code-output-label">1-xodimga 2-maxfiy yozuv kiritilsa</div>
+✓ (1, 'AA1234567', 9000000) -> qo‘shildi
+✗ (1, 'AB7654321', 9500000) -> UNIQUE constraint failed:
+                               xodim_maxfiy.xodim_id
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <aside class="speaker-notes-source">
+          <p><strong>Tushuntirish:</strong> <code>xodim_maxfiy</code> jadvalida <code>xodim_id</code> bir vaqtning o‘zida ham birlamchi, ham tashqi kalit. Shu sababli bitta xodim uchun ikkinchi maxfiy yozuv yaratish imkonsiz.</p>
+        </aside>
+      </section>
+
+      <!-- ================================================================
+           SLIDE 22: 4.5 "KO'P-GA-KO'P" (N:M) VA ORALIQ JADVAL (SVG)
+           ================================================================ -->
+      <section class="slide" data-chapter="4-bob. Bog‘liqliklar va loyihalash" data-title="4.5. “Ko‘p-ga-ko‘p” (N:M) va oraliq jadval">
+        <header class="slide-header">
+          <div class="slide-header-left">
+            <span class="chapter-pill violet">4-bob • 4.5</span>
+            <h2 class="slide-title">“Ko‘p-ga-ko‘p” (N:M) bog‘liqlik va oraliq jadval</h2>
+          </div>
+          <span class="slide-num-badge"></span>
+        </header>
+
+        <div class="slide-body">
+          <div class="svg-box" style="padding: 10px 16px;">
+            <svg viewBox="0 0 1100 135" aria-label="N:M oraliq jadval">
+              <rect x="20" y="25" width="230" height="84" rx="10" class="svg-box-amber" stroke-width="2" />
+              <text x="135" y="58" text-anchor="middle" font-size="16" class="svg-title">advokatlar</text>
+              <text x="135" y="82" text-anchor="middle" font-size="13" class="svg-mono svg-sub">PK: advokat_id</text>
+
+              <line x1="250" y1="67" x2="365" y2="67" class="svg-line-accent" />
+              <text x="266" y="55" font-size="15" class="svg-title">1</text>
+              <text x="342" y="55" font-size="15" class="svg-title">N</text>
+
+              <rect x="365" y="14" width="370" height="106" rx="10" class="svg-box-violet" stroke-width="2.2" />
+              <text x="550" y="42" text-anchor="middle" font-size="16" class="svg-title">shartnoma_advokat (Oraliq jadval)</text>
+              <text x="550" y="66" text-anchor="middle" font-size="13" class="svg-mono svg-sub">PK (shartnoma_id, advokat_id)</text>
+              <text x="550" y="88" text-anchor="middle" font-size="13" class="svg-mono" style="fill:var(--violet); font-weight:700;">FK → shartnomalar, FK → advokatlar</text>
+              <text x="550" y="108" text-anchor="middle" font-size="12.5" class="svg-sub">Qo‘shimcha atribut: rol ('asosiy' / 'yordamchi')</text>
+
+              <line x1="735" y1="67" x2="850" y2="67" class="svg-line-accent" />
+              <text x="752" y="55" font-size="15" class="svg-title">N</text>
+              <text x="830" y="55" font-size="15" class="svg-title">1</text>
+
+              <rect x="850" y="25" width="230" height="84" rx="10" class="svg-box-blue" stroke-width="2" />
+              <text x="965" y="58" text-anchor="middle" font-size="16" class="svg-title">shartnomalar</text>
+              <text x="965" y="82" text-anchor="middle" font-size="13" class="svg-mono svg-sub">PK: shartnoma_id</text>
+            </svg>
+          </div>
+
+          <div class="grid-2" style="flex: 1;">
+            <div class="code-card">
+              <div class="code-bar">
+                <span class="code-lang"><span class="code-dots"><span></span><span></span><span></span></span>SQL • Oraliq (junction) jadval</span>
+                <button type="button" class="copy-btn">Nusxalash</button>
+              </div>
+              <pre><code class="language-sql">CREATE TABLE shartnoma_advokat (
+    shartnoma_id INTEGER NOT NULL
+                 REFERENCES shartnomalar(shartnoma_id),
+    advokat_id   INTEGER NOT NULL
+                 REFERENCES advokatlar(advokat_id),
+    rol          TEXT NOT NULL DEFAULT 'yordamchi'
+                 CHECK (rol IN ('asosiy', 'yordamchi')),
+    PRIMARY KEY (shartnoma_id, advokat_id)
+);</code></pre>
+            </div>
+
+            <div class="card fragment">
+              <h3 class="card-title">3 ta bog‘liqlik turi — yakuniy jadval</h3>
+              <table class="data-table compact">
+                <thead><tr><th>Tur</th><th>Misol</th><th>Amalga oshirish</th></tr></thead>
+                <tbody>
+                  <tr><td><strong>1:1</strong></td><td>Xodim ↔ maxfiy</td><td>FK + <code>UNIQUE</code> (yoki FK = PK)</td></tr>
+                  <tr><td><strong>1:N</strong></td><td>Mijoz → shartnomalar</td><td>“Ko‘p” tomonga FK</td></tr>
+                  <tr><td><strong>N:M</strong></td><td>Advokat ↔ shartnoma</td><td>2 ta FK li <strong>oraliq jadval</strong></td></tr>
+                </tbody>
+              </table>
+              <p class="text-sm mt-auto">Tarkibiy PK <code>(shartnoma_id, advokat_id)</code> bitta advokatni bitta shartnomaga ikki marta biriktirishni to‘sadi.</p>
+            </div>
+          </div>
+        </div>
+
+        <aside class="speaker-notes-source">
+          <p><strong>Asosiy fikr:</strong> Relyatsion bazada N:M ni bevosita 2 jadval bilan qurib bo‘lmaydi — u har doim 3-jadval (oraliq jadval) orqali ikkita 1:N bog‘liqlikka ajratiladi. Talaba↔Fan, Buyurtma↔Mahsulot ham xuddi shunday!</p>
+        </aside>
+      </section>
+
+      <!-- ================================================================
+           SLIDE 23: 4.6 NORMALLASHTIRISH VA 3 ANOMALIYA
+           ================================================================ -->
+      <section class="slide" data-chapter="4-bob. Bog‘liqliklar va loyihalash" data-title="4.6. Normallashtirish va 3 xil anomaliya">
+        <header class="slide-header">
+          <div class="slide-header-left">
+            <span class="chapter-pill violet">4-bob • 4.6</span>
+            <h2 class="slide-title">Normallashtirish: nega hamma narsani bitta jadvalga yozmaymiz?</h2>
+          </div>
+          <span class="slide-num-badge"></span>
+        </header>
+
+        <div class="slide-body">
+          <div class="grid-3">
+            <div class="card fragment" style="border-top: 4px solid var(--rose);">
+              <h3 class="card-title">1. Qo‘shish anomaliyasi</h3>
+              <p class="text-sm">Yangi xizmat turini hali shartnoma tuzilmagan bo‘lsa bazaga kiritib bo‘lmaydi.</p>
+            </div>
+            <div class="card fragment" style="border-top: 4px solid var(--amber);">
+              <h3 class="card-title">2. Yangilash anomaliyasi</h3>
+              <p class="text-sm">Mijoz telefoni o‘zgarsa, ko‘p satrni tuzatish kerak; bittasi qolsa — zidlik!</p>
+            </div>
+            <div class="card fragment" style="border-top: 4px solid var(--violet);">
+              <h3 class="card-title">3. O‘chirish anomaliyasi</h3>
+              <p class="text-sm">Mijozning yagona shartnomasi o‘chirilsa, mijozning o‘zi haqidagi ma’lumot ham yo‘qoladi.</p>
+            </div>
+          </div>
+
+          <div class="grid-2 fragment" style="flex: 1;">
+            <div class="code-card">
+              <div class="code-bar">
+                <span class="code-lang"><span class="code-dots"><span></span><span></span><span></span></span>Yangilash anomaliyasi — jonli taqqoslash</span>
+                <button type="button" class="copy-btn">Nusxalash</button>
+              </div>
+              <pre><code class="language-python"># Bitta jadval: faqat 1-satr tuzatildi -> zidlik!
+jadval[0]["mijoz_tel"] = "+998909998877"
+
+# Alohida jadvallar (3NF): faqat 1 joyda o'zgartiramiz
+mijozlar[1]["telefon"] = "+998909998877"</code></pre>
+              <div class="code-output">
+                <div class="code-output-label">Natija</div>
+Bitta jadval:      SH-001 -> +998909998877 | SH-003 -> +998901112233  [ZID]
+Alohida jadvallar: SH-001 -> +998909998877 | SH-003 -> +998909998877  [OK]
+              </div>
+            </div>
+
+            <div class="card card-accent" style="justify-content:center; gap: 12px;">
+              <h3 class="card-title"><i data-lucide="trophy" class="ico-amber"></i>Uch normal shaklning oltin qoidasi</h3>
+              <p style="font-size: 17px; color: var(--text-main);">
+                Har bir ustun <strong>“kalitga, butun kalitga va faqat kalitga”</strong> bog‘liq bo‘lishi kerak:
+              </p>
+              <ul class="clean-list text-sm">
+                <li><strong>1NF (“kalitga”):</strong> bitta katakda bitta qiymat (atomarlik).</li>
+                <li><strong>2NF (“butun kalitga”):</strong> tarkibiy kalitning qismiga bog‘liqlik yo‘q.</li>
+                <li><strong>3NF (“faqat kalitga”):</strong> boshqa obyekt atributi o‘z jadvalida.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <aside class="speaker-notes-source">
+          <p><strong>Hayotiy o‘xshatish:</strong> Har bir shartnoma papkasiga mijoz telefonini qo‘lda yozish o‘rniga mijozlar ro‘yxatini alohida daftarda saqlasangiz, raqam o‘zgarganda bir marta tuzatish kifoya.</p>
+        </aside>
+      </section>
+
+      <!-- ================================================================
+           SLIDE 24: 4.6 INTERAKTIV LABORATORIYA — 1NF -> 2NF -> 3NF
+           ================================================================ -->
+      <section class="slide" data-chapter="4-bob. Bog‘liqliklar va loyihalash" data-title="4.6. Interaktiv laboratoriya: 1NF → 2NF → 3NF">
+        <header class="slide-header">
+          <div class="slide-header-left">
+            <span class="chapter-pill violet">4-bob • Interaktiv laboratoriya</span>
+            <h2 class="slide-title">Bosqichma-bosqich normallashtirish: 1NF → 2NF → 3NF</h2>
+          </div>
+          <span class="slide-num-badge"></span>
+        </header>
+
+        <div class="slide-body" id="normLab">
+          <div class="norm-tabs">
+            <button type="button" class="tab-btn active" data-step="0">0. Boshlang‘ich (0NF)</button>
+            <button type="button" class="tab-btn" data-step="1">1-qadam: 1NF (Atomar)</button>
+            <button type="button" class="tab-btn" data-step="2">2-qadam: 2NF (Ajratish)</button>
+            <button type="button" class="tab-btn" data-step="3"><i data-lucide="check-circle-2"></i>3-qadam: 3NF (Yakuniy)</button>
+          </div>
+
+          <!-- Panel 0: Unnormalized -->
+          <div class="norm-panel active" data-step="0">
+            <div class="callout danger text-sm">
+              <strong>Muammo:</strong> <code>xizmatlar</code> ustunida bir katakda 2 ta qiymat bor (atomarlik buzilgan), mijoz va advokat telefonlari takrorlanmoqda.
+            </div>
+            <table class="data-table compact">
+              <thead>
+                <tr><th>raqam</th><th>mijoz</th><th>mijoz_tel</th><th>xizmatlar</th><th>advokat</th><th>advokat_tel</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>SH-001</code></td>
+                  <td class="cell-warn">Karimov A.</td>
+                  <td class="cell-warn">+998901112233</td>
+                  <td class="cell-bad">Konsultatsiya, Ekspertiza</td>
+                  <td class="cell-warn">Rahimov B.</td>
+                  <td class="cell-warn">+998971110000</td>
+                </tr>
+                <tr>
+                  <td><code>SH-002</code></td>
+                  <td>Azizova M.</td>
+                  <td>+998935556677</td>
+                  <td>Sudda vakillik</td>
+                  <td class="cell-warn">Rahimov B.</td>
+                  <td class="cell-warn">+998971110000</td>
+                </tr>
+                <tr>
+                  <td><code>SH-003</code></td>
+                  <td class="cell-warn">Karimov A.</td>
+                  <td class="cell-warn">+998901112233</td>
+                  <td>Konsultatsiya</td>
+                  <td>Sobirova D.</td>
+                  <td>+998972220000</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Panel 1: 1NF -->
+          <div class="norm-panel" data-step="1">
+            <div class="callout warn text-sm">
+              <strong>1NF bajarildi:</strong> Har katakda faqat 1 ta xizmat! Lekin <code>SH-001</code> ning mijozi va advokati endi 2 satrda takrorlandi (qisman bog‘liqlik).
+            </div>
+            <table class="data-table compact">
+              <thead>
+                <tr><th>raqam</th><th>mijoz</th><th>mijoz_tel</th><th>xizmat (Atomar)</th><th>advokat</th><th>advokat_tel</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>SH-001</code></td>
+                  <td class="cell-warn">Karimov A.</td>
+                  <td class="cell-warn">+998901112233</td>
+                  <td class="cell-good">Konsultatsiya</td>
+                  <td class="cell-warn">Rahimov B.</td>
+                  <td class="cell-warn">+998971110000</td>
+                </tr>
+                <tr>
+                  <td><code>SH-001</code></td>
+                  <td class="cell-warn">Karimov A.</td>
+                  <td class="cell-warn">+998901112233</td>
+                  <td class="cell-good">Ekspertiza</td>
+                  <td class="cell-warn">Rahimov B.</td>
+                  <td class="cell-warn">+998971110000</td>
+                </tr>
+                <tr>
+                  <td><code>SH-002</code></td>
+                  <td>Azizova M.</td>
+                  <td>+998935556677</td>
+                  <td class="cell-good">Sudda vakillik</td>
+                  <td>Rahimov B.</td>
+                  <td>+998971110000</td>
+                </tr>
+                <tr>
+                  <td><code>SH-003</code></td>
+                  <td>Karimov A.</td>
+                  <td>+998901112233</td>
+                  <td class="cell-good">Konsultatsiya</td>
+                  <td>Sobirova D.</td>
+                  <td>+998972220000</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Panel 2: 2NF -->
+          <div class="norm-panel" data-step="2">
+            <div class="callout text-sm">
+              <strong>2NF bajarildi:</strong> Shartnoma ma’lumotlari va xizmatlar ro‘yxati 2 jadvalga ajratildi. Lekin <code>mijoz_tel</code> shartnomaga emas, mijozga bog‘liq (tranzitiv bog‘liqlik)!
+            </div>
+            <div class="grid-2">
+              <div class="card">
+                <h3 class="card-title"><code>shartnomalar</code></h3>
+                <table class="data-table compact">
+                  <thead><tr><th>raqam (PK)</th><th>mijoz</th><th>mijoz_tel</th><th>advokat</th><th>advokat_tel</th></tr></thead>
+                  <tbody>
+                    <tr><td><code>SH-001</code></td><td>Karimov A.</td><td class="cell-warn">...2233</td><td>Rahimov B.</td><td class="cell-warn">...0000</td></tr>
+                    <tr><td><code>SH-002</code></td><td>Azizova M.</td><td>...6677</td><td>Rahimov B.</td><td class="cell-warn">...0000</td></tr>
+                    <tr><td><code>SH-003</code></td><td>Karimov A.</td><td class="cell-warn">...2233</td><td>Sobirova D.</td><td>...0000</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="card">
+                <h3 class="card-title"><code>shartnoma_xizmatlari</code></h3>
+                <table class="data-table compact">
+                  <thead><tr><th>raqam (PK/FK)</th><th>xizmat (PK)</th></tr></thead>
+                  <tbody>
+                    <tr><td><code>SH-001</code></td><td>Konsultatsiya</td></tr>
+                    <tr><td><code>SH-001</code></td><td>Ekspertiza</td></tr>
+                    <tr><td><code>SH-002</code></td><td>Sudda vakillik</td></tr>
+                    <tr><td><code>SH-003</code></td><td>Konsultatsiya</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- Panel 3: 3NF -->
+          <div class="norm-panel" data-step="3">
+            <div class="callout success text-sm">
+              <span class="inline-ico-label"><i data-lucide="check-circle-2" class="ico-emerald"></i><strong>3NF bajarildi:</strong></span> Mijozlar, advokatlar va xizmatlar o‘z jadvallariga chiqarildi. Endi har bir fakt bazada <strong>faqat bir marta</strong> saqlanadi — barcha 3 anomaliya yo‘qoldi!
+            </div>
+            <div class="grid-3">
+              <div class="card" style="border-top:3px solid var(--accent);">
+                <h3 class="card-title text-sm"><code>mijozlar</code></h3>
+                <p class="text-xs"><code>mijoz_id (PK)</code>, familiya, telefon</p>
+              </div>
+              <div class="card" style="border-top:3px solid var(--amber);">
+                <h3 class="card-title text-sm"><code>advokatlar</code></h3>
+                <p class="text-xs"><code>advokat_id (PK)</code>, familiya, telefon</p>
+              </div>
+              <div class="card" style="border-top:3px solid var(--teal);">
+                <h3 class="card-title text-sm"><code>xizmatlar</code></h3>
+                <p class="text-xs"><code>xizmat_id (PK)</code>, nomi</p>
+              </div>
+            </div>
+            <div class="grid-2">
+              <div class="card card-accent">
+                <h3 class="card-title text-sm"><code>shartnomalar</code></h3>
+                <p class="text-sm"><code>shartnoma_id (PK)</code>, <code>raqam</code>, <code>mijoz_id → mijozlar</code>, <code>advokat_id → advokatlar</code></p>
+              </div>
+              <div class="card card-accent">
+                <h3 class="card-title text-sm"><code>shartnoma_xizmatlari</code></h3>
+                <p class="text-sm"><code>shartnoma_id → shartnomalar</code>, <code>xizmat_id → xizmatlar</code> (Tarkibiy PK)</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <aside class="speaker-notes-source">
+          <p><strong>Interaktiv namoyish:</strong> Yuqoridagi 4 ta tugmani (0NF → 1NF → 2NF → 3NF) ketma-ket bosib, har bir qadamda qizil/sariq muammolar qanday yo‘qolishini talabalar bilan birga kuzating.</p>
+        </aside>
+      </section>
+
+      <!-- ================================================================
+           SLIDE 25: 4-BOB MINI-VIKTORINA
+           ================================================================ -->
+      <section class="slide" data-chapter="4-bob. Bog‘liqliklar va loyihalash" data-title="4-bob yakuni: Mini-viktorina">
+        <header class="slide-header">
+          <div class="slide-header-left">
+            <span class="chapter-pill violet">4-bob • Tekshiruv</span>
+            <h2 class="slide-title">4-bob bo‘yicha tezkor mini-viktorina</h2>
+          </div>
+          <span class="slide-num-badge"></span>
+        </header>
+
+        <div class="slide-body">
+          <div class="quiz-grid">
+            <div class="quiz-card" data-explain="Ko‘p-ga-ko‘p (N:M) bog‘liqlikni relyatsion bazada ikki tashqi kalitli 3-jadval — oraliq (junction) jadval orqali amalga oshiramiz. Unda miqdor kabi qo‘shimcha atribut ham saqlanadi.">
+              <span class="badge badge-violet" style="width:fit-content;">1-savol</span>
+              <p class="quiz-q">Bitta buyurtmada ko‘p mahsulot, bitta mahsulot esa ko‘p buyurtmada qatnashsa (N:M), u qanday tuziladi?</p>
+              <div class="quiz-options">
+                <button type="button" class="quiz-opt" data-correct="false">A) <code>buyurtmalar</code> katagiga mahsulotlarni vergul bilan yozish</button>
+                <button type="button" class="quiz-opt" data-correct="true">B) Ikkita FK li oraliq <code>buyurtma_mahsulotlari</code> jadvali yaratish</button>
+                <button type="button" class="quiz-opt" data-correct="false">C) Ikkala jadvalga <code>UNIQUE</code> qo‘yish</button>
+              </div>
+              <div class="quiz-feedback"></div>
+              <button type="button" class="quiz-reset-btn">Qayta urinish</button>
+            </div>
+
+            <div class="quiz-card" data-explain="Mijoz telefoni shartnoma kalitiga emas, kalit bo‘lmagan mijoz ustuniga bog‘liq (tranzitiv bog‘liqlik). Bu 3NF (uchinchi normal shakl) buzilishidir.">
+              <span class="badge badge-violet" style="width:fit-content;">2-savol</span>
+              <p class="quiz-q"><code>shartnomalar(raqam, mijoz_id, mijoz_telefoni)</code> jadvalida qaysi normal shakl buzilgan?</p>
+              <div class="quiz-options">
+                <button type="button" class="quiz-opt" data-correct="false">A) 1NF (atomarlik buzilgan)</button>
+                <button type="button" class="quiz-opt" data-correct="true">B) 3NF (<code>mijoz_telefoni</code> mijozga tegishli — tranzitiv bog‘liqlik)</button>
+                <button type="button" class="quiz-opt" data-correct="false">C) Hech qaysi shakl buzilmagan</button>
+              </div>
+              <div class="quiz-feedback"></div>
+              <button type="button" class="quiz-reset-btn">Qayta urinish</button>
+            </div>
+          </div>
+
+          <div class="callout success">
+            <strong>4-bob xulosasi:</strong> Konseptual ER-model → Mantiqiy 1:1 / 1:N / N:M jadvallar → 3NF normallashtirish. Kundalik tizimlar uchun 3NF oltin standartdir.
+          </div>
+        </div>
+
+        <aside class="speaker-notes-source">
+          <p><strong>Eslatma:</strong> 4-bob amaliyot uchun eng muhim nazariy poydevor — 7-bobdagi yuridik firma loyihasi aynan shu ER-model va 3NF qoidalari asosida quriladi.</p>
+        </aside>
+      </section>
+
+      <!-- ================================================================
+           SLIDE 26: 5.1 SQLITE SERVERSIZ VS MIJOZ-SERVER (SVG)
+           ================================================================ -->
+      <section class="slide" data-chapter="5-bob. SQLite arxitekturasi" data-title="5.1. SQLite: Serversiz vs Mijoz-server MBBT">
+        <header class="slide-header">
+          <div class="slide-header-left">
+            <span class="chapter-pill amber">5-bob • 5.1</span>
+            <h2 class="slide-title">SQLite (R. Hipp, 2000): Serversiz MBBT arxitekturasi</h2>
+          </div>
+          <span class="slide-num-badge"></span>
+        </header>
+
+        <div class="slide-body">
+          <div class="svg-box" style="padding: 12px 18px;">
+            <svg viewBox="0 0 1100 220" aria-label="SQLite va Mijoz-server farqi">
+              <defs>
+                <marker id="arrSq" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+                  <path d="M0,1 L9,5 L0,9 z" fill="currentColor" style="color: var(--accent);" />
+                </marker>
+              </defs>
+              <!-- Left: SQLite -->
+              <text x="235" y="24" text-anchor="middle" font-size="16" class="svg-title">SQLite (Serversiz / Kutubxona)</text>
+              <rect x="65" y="38" width="340" height="104" rx="12" class="svg-box-blue" stroke-width="2" />
+              <text x="235" y="64" text-anchor="middle" font-size="15" class="svg-title">Ilova (Python dasturi)</text>
+              <rect x="105" y="76" width="260" height="50" rx="8" class="svg-box-amber" stroke-width="1.8" />
+              <text x="235" y="106" text-anchor="middle" font-size="14" class="svg-title">SQLite kutubxonasi (sqlite3)</text>
+
+              <line x1="235" y1="126" x2="235" y2="168" class="svg-line-accent" marker-end="url(#arrSq)" />
+              <rect x="115" y="170" width="240" height="38" rx="8" class="svg-box-emerald" stroke-width="1.8" />
+              <text x="235" y="194" text-anchor="middle" font-size="14" class="svg-mono svg-title">baza.db (bitta fayl)</text>
+
+              <!-- Divider -->
+              <line x1="510" y1="20" x2="510" y2="205" stroke="var(--border-strong)" stroke-dasharray="6,6" stroke-width="2" />
+
+              <!-- Right: Client-Server -->
+              <text x="810" y="24" text-anchor="middle" font-size="16" class="svg-title">Mijoz-server (PostgreSQL, MySQL)</text>
+              <rect x="550" y="42" width="150" height="44" rx="8" class="svg-box-fill" stroke-width="1.8" />
+              <text x="625" y="69" text-anchor="middle" font-size="14" class="svg-title">Ilova 1</text>
+
+              <rect x="550" y="102" width="150" height="44" rx="8" class="svg-box-fill" stroke-width="1.8" />
+              <text x="625" y="129" text-anchor="middle" font-size="14" class="svg-title">Ilova 2</text>
+
+              <line x1="700" y1="64" x2="815" y2="84" class="svg-line-accent" marker-end="url(#arrSq)" />
+              <line x1="700" y1="124" x2="815" y2="104" class="svg-line-accent" marker-end="url(#arrSq)" />
+              <text x="756" y="58" text-anchor="middle" font-size="12" class="svg-muted">tarmoq</text>
+
+              <rect x="820" y="42" width="240" height="104" rx="12" class="svg-box-teal" stroke-width="2" />
+              <text x="940" y="88" text-anchor="middle" font-size="16" class="svg-title">MBBT Serveri</text>
+              <text x="940" y="110" text-anchor="middle" font-size="12.5" class="svg-sub">PostgreSQL / MySQL</text>
+
+              <line x1="940" y1="146" x2="940" y2="168" class="svg-line-accent" marker-end="url(#arrSq)" />
+              <rect x="820" y="170" width="240" height="38" rx="8" class="svg-box-fill" stroke-width="1.8" />
+              <text x="940" y="194" text-anchor="middle" font-size="14" class="svg-sub">Server fayllari to‘plami</text>
+            </svg>
+          </div>
+
+          <div class="grid-3 fragment">
+            <div class="card">
+              <h3 class="card-title"><i data-lucide="zap" class="ico-amber"></i>Zero-config</h3>
+              <p class="text-sm">Server o‘rnatish, parol yoki port sozlash shart emas. Python bilan tayyor keladi.</p>
+            </div>
+            <div class="card">
+              <h3 class="card-title"><i data-lucide="folder" class="ico-accent"></i>Bitta fayl</h3>
+              <p class="text-sm">Jadvallar, sxema va indekslar 1 ta kross-platforma <code>.db</code> faylida saqlanadi.</p>
+            </div>
+            <div class="card">
+              <h3 class="card-title"><i data-lucide="globe" class="ico-emerald"></i>Milliardlab qurilma</h3>
+              <p class="text-sm">Android, iOS, Chrome, macOS va Windows ichida ishlaydi — “o‘yinchoq” emas!</p>
+            </div>
+          </div>
+        </div>
+
+        <aside class="speaker-notes-source">
+          <p><strong>Asosiy farq:</strong> SQLite alohida server jarayoni sifatida ishlamaydi — u ilovaning ichida kutubxona sifatida turadi va faylni bevosita o‘qiydi. Bir vaqtda faqat 1 yozuvchi ishlashi uning asosiy cheklovidir.</p>
+        </aside>
+      </section>
+
+      <!-- ================================================================
+           SLIDE 27: 5.2 SQLITE ICHKI QATLAMLARI VA EXPLAIN QUERY PLAN (SVG)
+           ================================================================ -->
+      <section class="slide" data-chapter="5-bob. SQLite arxitekturasi" data-title="5.2. SQLite 6 qatlami va EXPLAIN QUERY PLAN">
+        <header class="slide-header">
+          <div class="slide-header-left">
+            <span class="chapter-pill amber">5-bob • 5.2</span>
+            <h2 class="slide-title">SQLite ichki qatlamlari va so‘rov bajarilish yo‘li</h2>
+          </div>
+          <span class="slide-num-badge"></span>
+        </header>
+
+        <div class="slide-body">
+          <div class="grid-2-wide-left" style="flex: 1;">
+            <div class="svg-box">
+              <svg viewBox="0 0 640 430" aria-label="SQLite 6 qatlam arxitekturasi">
+                <rect x="20" y="10" width="410" height="48" rx="9" class="svg-box-blue" stroke-width="1.8" />
+                <text x="225" y="39" text-anchor="middle" font-size="15" class="svg-title">1. Interfeys (C API / Python sqlite3)</text>
+                <text x="445" y="39" font-size="12.5" class="svg-muted">← Ilova murojaati</text>
+
+                <rect x="20" y="68" width="410" height="92" rx="9" class="svg-box-violet" stroke-width="1.8" />
+                <text x="225" y="92" text-anchor="middle" font-size="15" class="svg-title">2. SQL Kompilyatori</text>
+                <text x="225" y="116" text-anchor="middle" font-size="13" class="svg-sub">Tokenizator → Parser → Kod generatori</text>
+                <text x="225" y="140" text-anchor="middle" font-size="12" class="svg-muted">Sintaksis tekshiruvi + bayt-kod yaratish</text>
+                <text x="445" y="116" font-size="12.5" class="svg-muted">← OperationalError</text>
+
+                <rect x="20" y="170" width="410" height="48" rx="9" class="svg-box-amber" stroke-width="1.8" />
+                <text x="225" y="199" text-anchor="middle" font-size="15" class="svg-title">3. Virtual mashina (VDBE)</text>
+                <text x="445" y="199" font-size="12.5" class="svg-muted">← Bayt-kodni bajaradi</text>
+
+                <rect x="20" y="228" width="410" height="48" rx="9" class="svg-box-teal" stroke-width="1.8" />
+                <text x="225" y="257" text-anchor="middle" font-size="15" class="svg-title">4. B-daraxt (B-Tree)</text>
+                <text x="445" y="257" font-size="12.5" class="svg-muted">← Tartibli tezkor qidiruv</text>
+
+                <rect x="20" y="286" width="410" height="48" rx="9" class="svg-box-emerald" stroke-width="1.8" />
+                <text x="225" y="315" text-anchor="middle" font-size="15" class="svg-title">5. Sahifa keshi (Pager)</text>
+                <text x="445" y="315" font-size="12.5" class="svg-muted">← Kesh, ACID jurnal</text>
+
+                <rect x="20" y="344" width="410" height="44" rx="9" class="svg-box-fill" stroke-width="1.8" />
+                <text x="225" y="371" text-anchor="middle" font-size="15" class="svg-title">6. OS interfeysi (VFS) → baza.db</text>
+                <text x="445" y="371" font-size="12.5" class="svg-muted">← Disk fayl tizimi</text>
+              </svg>
+            </div>
+
+            <div class="flex-col">
+              <div class="code-card">
+                <div class="code-bar">
+                  <span class="code-lang"><span class="code-dots"><span></span><span></span><span></span></span>SQL • EXPLAIN QUERY PLAN</span>
+                  <button type="button" class="copy-btn">Nusxalash</button>
+                </div>
+                <pre><code class="language-sql">-- 1) Birlamchi kalit bo'yicha:
+EXPLAIN QUERY PLAN
+SELECT familiya FROM mijozlar WHERE mijoz_id = 2;
+
+-- 2) Oddiy ustun bo'yicha:
+EXPLAIN QUERY PLAN
+SELECT familiya FROM mijozlar WHERE familiya = 'Azizova';</code></pre>
+                <div class="code-output">
+                  <div class="code-output-label">Kod generatori rejasi</div>
+1) SEARCH mijozlar USING INTEGER PRIMARY KEY (rowid=?)  [TEZ]
+2) SCAN mijozlar                                        [SEKIN]
+                </div>
+              </div>
+
+              <div class="callout fragment mt-auto text-sm">
+                <strong><code>SEARCH</code> vs <code>SCAN</code>:</strong><br/>
+                • <code>SEARCH</code> — B-daraxt bo‘yicha to‘g‘ridan-to‘g‘ri qidiruv (millisoniya).<br/>
+                • <code>SCAN</code> — butun jadvalni boshidan oxirigacha o‘qib chiqish. Tezlashtirish uchun <code>CREATE INDEX</code> qo‘llanadi!
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <aside class="speaker-notes-source">
+          <p><strong>So‘rov oqimi:</strong> SQL matni avval tokenlarga ajraladi, Parser grammatikani tekshiradi (xato bo‘lsa shu yerda <code>syntax error</code>), Kod generatori eng qisqa rejani tuzib bayt-kod chiqaradi, VDBE uni B-daraxt va Pager orqali bajaradi.</p>
+        </aside>
+      </section>
+
+      <!-- ================================================================
+           SLIDE 28: 5.3 MA'LUMOTLAR BAZASI FAYLI, SAHIFALAR VA SQLITE_MASTER (SVG)
+           ================================================================ -->
+      <section class="slide" data-chapter="5-bob. SQLite arxitekturasi" data-title="5.3. MB fayli, sahifalar va sqlite_master">
+        <header class="slide-header">
+          <div class="slide-header-left">
+            <span class="chapter-pill amber">5-bob • 5.3</span>
+            <h2 class="slide-title"><code>.db</code> fayli tuzilmasi, sahifalar va <code>sqlite_master</code></h2>
+          </div>
+          <span class="slide-num-badge"></span>
+        </header>
+
+        <div class="slide-body">
+          <div class="svg-box" style="padding: 12px 16px;">
+            <svg viewBox="0 0 1100 140" aria-label="SQLite fayli sahifalari">
+              <text x="550" y="20" text-anchor="middle" font-size="14.5" class="svg-title">firma.db (Hajmi = 3 × 4096 = 12 288 bayt)</text>
+              <!-- Page 1 -->
+              <rect x="20" y="34" width="350" height="92" rx="10" class="svg-box-blue" stroke-width="2" />
+              <rect x="30" y="44" width="145" height="72" rx="6" class="svg-box-amber" stroke-width="1.6" />
+              <text x="102" y="72" text-anchor="middle" font-size="13" class="svg-title">Sarlavha (100 B)</text>
+              <text x="102" y="94" text-anchor="middle" font-size="11.5" class="svg-mono svg-sub">SQLite format 3</text>
+              <text x="272" y="72" text-anchor="middle" font-size="14" class="svg-title">1-sahifa (4096 B)</text>
+              <text x="272" y="96" text-anchor="middle" font-size="12.5" class="svg-mono svg-sub">sqlite_master</text>
+
+              <!-- Page 2 -->
+              <rect x="385" y="34" width="340" height="92" rx="10" class="svg-box-teal" stroke-width="2" />
+              <text x="555" y="72" text-anchor="middle" font-size="15" class="svg-title">2-sahifa (4096 bayt)</text>
+              <text x="555" y="98" text-anchor="middle" font-size="13" class="svg-sub">mijozlar — B-daraxt ildizi</text>
+
+              <!-- Page 3 -->
+              <rect x="740" y="34" width="340" height="92" rx="10" class="svg-box-emerald" stroke-width="2" />
+              <text x="910" y="72" text-anchor="middle" font-size="15" class="svg-title">3-sahifa (4096 bayt)</text>
+              <text x="910" y="98" text-anchor="middle" font-size="13" class="svg-sub">shartnomalar — B-daraxt ildizi</text>
+            </svg>
+          </div>
+
+          <div class="grid-2" style="flex: 1;">
+            <div class="code-card">
+              <div class="code-bar">
+                <span class="code-lang"><span class="code-dots"><span></span><span></span><span></span></span>Python • Sahifalar va fayl sarlavhasi</span>
+                <button type="button" class="copy-btn">Nusxalash</button>
+              </div>
+              <pre><code class="language-python">sahifa = ulanish.execute("PRAGMA page_size").fetchone()[0]
+soni   = ulanish.execute("PRAGMA page_count").fetchone()[0]
+
+with open("firma.db", "rb") as f:
+    print("Sarlavha:", f.read(16))
+print(f"{soni} sahifa × {sahifa} B = {soni * sahifa} bayt")</code></pre>
+              <div class="code-output">
+                <div class="code-output-label">Natija</div>
+Sarlavha: b'SQLite format 3\x00'
+3 sahifa × 4096 B = 12288 bayt
+              </div>
+            </div>
+
+            <div class="code-card fragment">
+              <div class="code-bar">
+                <span class="code-lang"><span class="code-dots"><span></span><span></span><span></span></span>SQL • O‘zini tavsiflovchi sxema (sqlite_master)</span>
+                <button type="button" class="copy-btn">Nusxalash</button>
+              </div>
+              <pre><code class="language-sql">SELECT type, name, sql
+FROM sqlite_master
+WHERE type = 'table'
+ORDER BY name;</code></pre>
+              <div class="code-output">
+                <div class="code-output-label">Nima uchun foydali?</div>
+Har bir jadvalning asl CREATE TABLE matni faylning
+ichida saqlanadi — noma’lum .db faylni ochgan
+har qanday dastur uning tuzilmasini bilib oladi.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <aside class="speaker-notes-source">
+          <p><strong>10-mavzuga bog‘lash:</strong> Ikkilik rejim (<code>"rb"</code>) bilan dastlabki 16 baytni o‘qib, istalgan fayl haqiqatan SQLite bazasi ekanini (<code>b'SQLite format 3\x00'</code>) tekshirish mumkin!</p>
+        </aside>
+      </section>
+
+      <!-- ================================================================
+           SLIDE 29: 5.4 DINAMIK TURLASH, TUR YAQINLIGI VA STRICT
+           ================================================================ -->
+      <section class="slide" data-chapter="5-bob. SQLite arxitekturasi" data-title="5.4. Dinamik turlash, tur yaqinligi va STRICT">
+        <header class="slide-header">
+          <div class="slide-header-left">
+            <span class="chapter-pill amber">5-bob • 5.4</span>
+            <h2 class="slide-title">SQLite’da dinamik turlash, tur yaqinligi va <code>STRICT</code></h2>
+          </div>
+          <span class="slide-num-badge"></span>
+        </header>
+
+        <div class="slide-body">
+          <div class="grid-2" style="flex: 1;">
+            <div class="flex-col">
+              <div class="card card-accent">
+                <h3 class="card-title">Dinamik turlash (Python’ga o‘xshash)</h3>
+                <p class="text-sm">SQLite’da tur ustunga emas, <strong>har bir qiymatga</strong> tegishli (5 saqlash sinfi: <code>NULL</code>, <code>INTEGER</code>, <code>REAL</code>, <code>TEXT</code>, <code>BLOB</code>). Ustun turi — bu faqat <strong>tur yaqinligi</strong> (tavsiya).</p>
+              </div>
+
+              <div class="code-card fragment">
+                <div class="code-bar">
+                  <span class="code-lang"><span class="code-dots"><span></span><span></span><span></span></span>Oddiy INTEGER ustuniga har xil qiymatlar</span>
+                  <button type="button" class="copy-btn">Nusxalash</button>
+                </div>
+                <pre><code class="language-sql">CREATE TABLE sinov (qiymat INTEGER);
+-- [42, '42', '42.5', 'qirq ikki', NULL] yozilgach:
+SELECT qiymat, typeof(qiymat) FROM sinov;</code></pre>
+                <div class="code-output">
+                  <div class="code-output-label">typeof() natijasi</div>
+42          -> integer   | '42'        -> integer
+42.5        -> real      | 'qirq ikki' -> text  [XATOSIZ YOZILDI!]
+                </div>
+              </div>
+            </div>
+
+            <div class="flex-col">
+              <div class="callout danger text-sm">
+                <strong>Xavf:</strong> Standart jadvalda <code>summa INTEGER</code> ustuniga <code>'besh yuz ming'</code> yozilsa, SQLite xato bermasdan matn qilib saqlab qo‘yadi!
+              </div>
+
+              <div class="code-card fragment mt-auto">
+                <div class="code-bar">
+                  <span class="code-lang"><span class="code-dots"><span></span><span></span><span></span></span>Yechim: STRICT jadval (SQLite ≥ 3.37)</span>
+                  <button type="button" class="copy-btn">Nusxalash</button>
+                </div>
+                <pre><code class="language-sql">CREATE TABLE tolovlar (
+    tolov_id INTEGER PRIMARY KEY,
+    summa    INTEGER NOT NULL
+) STRICT;</code></pre>
+                <div class="code-output">
+                  <div class="code-output-label">Sinov natijasi</div>
+✓ 500000          -> qabul qilindi
+✓ '750000'        -> qabul (butun songa aylandi)
+✗ 'besh yuz ming' -> IntegrityError: cannot store TEXT
+                     value in INTEGER column tolovlar.summa
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <aside class="speaker-notes-source">
+          <p><strong>Muqobil usul:</strong> Agar eski SQLite versiyasida <code>STRICT</code> ishlamasa, ustunga <code>CHECK (typeof(summa) = 'integer')</code> qo‘yish orqali ham xuddi shu himoyani olish mumkin.</p>
+        </aside>
+      </section>
+
+      <!-- ================================================================
+           SLIDE 30: 5.5-5.6 TRANZAKSIYALAR (ACID) VA QO'LLANISH SOHALARI
+           ================================================================ -->
+      <section class="slide" data-chapter="5-bob. SQLite arxitekturasi" data-title="5.5–5.6. Tranzaksiyalar (ACID) va SQLite qo‘llanishi">
+        <header class="slide-header">
+          <div class="slide-header-left">
+            <span class="chapter-pill amber">5-bob • 5.5 – 5.6</span>
+            <h2 class="slide-title">Tranzaksiyalar (ACID) va SQLite’ni qachon tanlash kerak?</h2>
+          </div>
+          <span class="slide-num-badge"></span>
+        </header>
+
+        <div class="slide-body">
+          <div class="grid-4">
+            <div class="card fragment" style="border-top: 4px solid var(--accent);">
+              <h3 class="card-title">A — Atomicity</h3>
+              <p class="text-sm"><strong>Yo hammasi, yo hech narsa.</strong> Pul yechilib, ikkinchi hisobga tushmay qolmaydi.</p>
+            </div>
+            <div class="card fragment" style="border-top: 4px solid var(--teal);">
+              <h3 class="card-title">C — Consistency</h3>
+              <p class="text-sm"><strong>Muvofiqlik.</strong> Barcha <code>CHECK</code> va cheklovlar (qoldiq ≥ 0) har doim saqlanadi.</p>
+            </div>
+            <div class="card fragment" style="border-top: 4px solid var(--violet);">
+              <h3 class="card-title">I — Isolation</h3>
+              <p class="text-sm"><strong>Izolyatsiya.</strong> Boshqa foydalanuvchi “yarim bajarilgan” o‘tkazmani ko‘rmaydi.</p>
+            </div>
+            <div class="card fragment" style="border-top: 4px solid var(--emerald);">
+              <h3 class="card-title">D — Durability</h3>
+              <p class="text-sm"><strong>Barqarorlik.</strong> <code>COMMIT</code> dan so‘ng elektr uzilsa ham o‘zgarish yo‘qolmaydi (jurnal/WAL).</p>
+            </div>
+          </div>
+
+          <div class="grid-2 fragment" style="flex: 1;">
+            <div class="card" style="border-left: 4px solid var(--emerald);">
+              <h3 class="card-title"><i data-lucide="check-circle-2" class="ico-emerald"></i>SQLite ideal bo‘lgan holatlar</h3>
+              <ul class="clean-list text-sm">
+                <li>Mobil (Android/iOS) va desktop ilovalar</li>
+                <li>CSV/Excel ma’lumotlarini lokal SQL tahlil qilish</li>
+                <li>Ilova fayl formati, o‘quv loyihalari, prototiplar</li>
+                <li>Kichik va o‘rta veb-saytlar (100 minggacha murojaat/kun)</li>
+              </ul>
+            </div>
+
+            <div class="card" style="border-left: 4px solid var(--rose);">
+              <h3 class="card-title"><i data-lucide="alert-triangle" class="ico-rose"></i>Mijoz-server (PostgreSQL) afzal holatlar</h3>
+              <ul class="clean-list text-sm">
+                <li>Ko‘p foydalanuvchi <strong>bir vaqtda ko‘p yozadigan</strong> tizimlar (yirik bank)</li>
+                <li>Bir nechta serverdan tarmoq orqali ulanish kerak bo‘lsa</li>
+                <li>MBBT darajasida murakkab rollar va huquqlar tizimi</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="callout text-sm">
+            <strong>Boshqaruv buyruqlari:</strong> <code>BEGIN</code> (boshlash) • <code>COMMIT</code> (tasdiqlash) • <code>ROLLBACK</code> (bekor qilish). SQL tili bir xil — SQLite’dagi bilim PostgreSQL’da ham ishlaydi!
+          </div>
+        </div>
+
+        <aside class="speaker-notes-source">
+          <p><strong>Bank o‘tkazmasi misoli:</strong> Karimovdan 5 mln yechishda <code>CHECK (qoldiq &gt;= 0)</code> ishlaganda, Azizovaga qo‘shib qo‘yilgan 5 mln ham <code>ROLLBACK</code> bilan orqaga qaytariladi — bu Atomicity ning jonli isboti.</p>
+        </aside>
+      </section>
+
+      <!-- ================================================================
+           SLIDE 31: 5-BOB MINI-VIKTORINA
+           ================================================================ -->
+      <section class="slide" data-chapter="5-bob. SQLite arxitekturasi" data-title="5-bob yakuni: Mini-viktorina">
+        <header class="slide-header">
+          <div class="slide-header-left">
+            <span class="chapter-pill amber">5-bob • Tekshiruv</span>
+            <h2 class="slide-title">5-bob bo‘yicha tezkor mini-viktorina</h2>
+          </div>
+          <span class="slide-num-badge"></span>
+        </header>
+
+        <div class="slide-body">
+          <div class="quiz-grid">
+            <div class="quiz-card" data-explain="SEARCH — B-daraxt (indeks yoki PK) orqali tezkor to‘g‘ridan-to‘g‘ri qidiruv; SCAN esa butun jadvalni birma-bir o‘qib chiqishdir.">
+              <span class="badge badge-amber" style="width:fit-content;">1-savol</span>
+              <p class="quiz-q"><code>EXPLAIN QUERY PLAN</code> da <code>SEARCH</code> va <code>SCAN</code> o‘rtasidagi asosiy farq nima?</p>
+              <div class="quiz-options">
+                <button type="button" class="quiz-opt" data-correct="true">A) <code>SEARCH</code> kalit/indeks bilan tez topadi, <code>SCAN</code> butun jadvalni o‘qiydi</button>
+                <button type="button" class="quiz-opt" data-correct="false">B) <code>SCAN</code> tezroq, <code>SEARCH</code> sekinroq ishlaydi</button>
+                <button type="button" class="quiz-opt" data-correct="false">C) Ikkalasi bir xil ma’noni anglatadi</button>
+              </div>
+              <div class="quiz-feedback"></div>
+              <button type="button" class="quiz-reset-btn">Qayta urinish</button>
+            </div>
+
+            <div class="quiz-card" data-explain="Atomicity (Atomarlik) — tranzaksiyadagi barcha amallar yagona butun sifatida bajariladi: yo hammasi tasdiqlanadi, yo bitta xato bo‘lsa hammasi bekor qilinadi (ROLLBACK).">
+              <span class="badge badge-amber" style="width:fit-content;">2-savol</span>
+              <p class="quiz-q">Pul o‘tkazmasida ikkinchi amal xato berganda birinchi amalning ham bekor qilinishi ACID’ning qaysi harfi?</p>
+              <div class="quiz-options">
+                <button type="button" class="quiz-opt" data-correct="true">A) <strong>A</strong> — Atomicity (Atomarlik)</button>
+                <button type="button" class="quiz-opt" data-correct="false">B) <strong>I</strong> — Isolation (Izolyatsiya)</button>
+                <button type="button" class="quiz-opt" data-correct="false">C) <strong>D</strong> — Durability (Barqarorlik)</button>
+              </div>
+              <div class="quiz-feedback"></div>
+              <button type="button" class="quiz-reset-btn">Qayta urinish</button>
+            </div>
+          </div>
+
+          <div class="callout success">
+            <strong>5-bob xulosasi:</strong> SQLite serversiz kutubxona bo‘lib, 6 qatlamli arxitektura, 4096 baytli sahifalar, <code>sqlite_master</code> sxemasi, <code>STRICT</code> rejimi va ACID tranzaksiyalarni bitta <code>.db</code> faylda birlashtiradi.
+          </div>
+        </div>
+
+        <aside class="speaker-notes-source">
+          <p><strong>O‘tish:</strong> SQLite qanday ishlashini tushundik; endi 6-bobda Python’ning <code>sqlite3</code> moduli orqali uni amalda boshqarishni ko‘ramiz.</p>
+        </aside>
+      </section>
+
+      <!-- ================================================================
+           SLIDE 32: 6.1 SQLITE3 ULANISH VA KURSOR
+           ================================================================ -->
+      <section class="slide" data-chapter="6-bob. Python sqlite3 moduli" data-title="6.1. sqlite3: Ulanish (Connection) va Kursor (Cursor)">
+        <header class="slide-header">
+          <div class="slide-header-left">
+            <span class="chapter-pill">6-bob • 6.1</span>
+            <h2 class="slide-title">Python <code>sqlite3</code>: Ulanish va Kursor hayot sikli</h2>
+          </div>
+          <span class="slide-num-badge"></span>
+        </header>
+
+        <div class="slide-body">
+          <div class="grid-2-wide-right" style="flex: 1;">
+            <div class="flex-col">
+              <div class="code-card">
+                <div class="code-bar">
+                  <span class="code-lang"><span class="code-dots"><span></span><span></span><span></span></span>4 ta asosiy qadam</span>
+                  <button type="button" class="copy-btn">Nusxalash</button>
+                </div>
+                <pre><code class="language-python">import sqlite3
+
+ulanish = sqlite3.connect("baza.db") # 1. Ulanish
+kursor = ulanish.cursor()            #    Kursor
+kursor.execute("SQL so‘rovi")        # 2. So‘rov
+ulanish.commit()                     # 3. Tasdiqlash
+ulanish.close()                      # 4. Yopish</code></pre>
+              </div>
+
+              <div class="card fragment mt-auto">
+                <h3 class="card-title">Connection vs Cursor</h3>
+                <p class="text-sm"><strong><code>Connection</code></strong> — aloqa obyekti, tranzaksiya (<code>commit</code>, <code>rollback</code>) va <code>close()</code> ni boshqaradi.</p>
+                <p class="text-sm"><strong><code>Cursor</code></strong> — so‘rovni bajaradi va natija satrlari bo‘ylab yuradi (fayl ko‘rsatkichi kabi).</p>
+              </div>
+            </div>
+
+            <div class="flex-col">
+              <table class="data-table compact">
+                <thead><tr><th>Metod / Atribut</th><th>Vazifasi</th></tr></thead>
+                <tbody>
+                  <tr><td><code>execute(sql, params)</code></td><td>Bitta SQL so‘rovini bajaradi</td></tr>
+                  <tr><td><code>executemany(sql, seq)</code></td><td>Bitta so‘rovni ko‘p to‘plam bilan tez bajaradi</td></tr>
+                  <tr><td><code>executescript(skript)</code></td><td><code>;</code> bilan ajratilgan bir nechta SQL buyruqni bajaradi</td></tr>
+                  <tr><td><code>fetchone()</code> / <code>fetchall()</code></td><td>Navbatdagi 1 ta satrni / qolgan barcha satrlarni qaytaradi</td></tr>
+                  <tr><td><code>lastrowid</code> / <code>rowcount</code></td><td>Oxirgi qo‘shilgan ID / ta’sir qilgan satrlar soni</td></tr>
+                </tbody>
+              </table>
+
+              <div class="callout warn fragment mt-auto text-sm">
+                <strong>Eslatma:</strong> <code>connect("baza.db")</code> fayl yo‘q bo‘lsa uni avtomatik yaratadi. Yopilgan ulanishga so‘rov yuborilsa <code>sqlite3.ProgrammingError</code> chiqadi.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <aside class="speaker-notes-source">
+          <p><strong>Qulaylik:</strong> <code>ulanish.execute(...)</code> chaqirilganda SQLite ichida kursor avtomatik yaratiladi, shuning uchun ko‘pchilik qisqa misollarda alohida <code>cursor()</code> ochmasdan ham yozish mumkin.</p>
+        </aside>
+      </section>
+
+      <!-- ================================================================
+           SLIDE 33: 6.2 DDL VA .SQL FAYLDAN SXEMA YUKLASH
+           ================================================================ -->
+      <section class="slide" data-chapter="6-bob. Python sqlite3 moduli" data-title="6.2. DDL buyruqlari va .sql fayldan sxema yuklash">
+        <header class="slide-header">
+          <div class="slide-header-left">
+            <span class="chapter-pill">6-bob • 6.2</span>
+            <h2 class="slide-title">DDL: Jadval yaratish, o‘zgartirish va <code>.sql</code> fayldan yuklash</h2>
+          </div>
+          <span class="slide-num-badge"></span>
+        </header>
+
+        <div class="slide-body">
+          <div class="grid-2" style="flex: 1;">
+            <div class="flex-col">
+              <table class="data-table compact">
+                <thead><tr><th>DDL buyrug‘i</th><th>Vazifasi</th></tr></thead>
+                <tbody>
+                  <tr><td><code>CREATE TABLE IF NOT EXISTS</code></td><td><span class="inline-ico-label">Jadval bo‘lmasa yaratadi, bo‘lsa xato bermaydi <i data-lucide="check-circle-2" class="ico-emerald"></i></span></td></tr>
+                  <tr><td><code>ALTER TABLE ... ADD COLUMN</code></td><td>Mavjud jadvalga yangi ustun qo‘shadi</td></tr>
+                  <tr><td><code>ALTER TABLE ... RENAME TO</code></td><td>Jadval nomini o‘zgartiradi</td></tr>
+                  <tr><td><code>DROP TABLE IF EXISTS</code></td><td><span class="inline-ico-label">Jadvalni <strong>barcha ma’lumotlari bilan</strong> o‘chiradi <i data-lucide="alert-triangle" class="ico-rose"></i></span></td></tr>
+                </tbody>
+              </table>
+
+              <div class="callout danger fragment mt-auto text-sm">
+                <strong>Diqqat:</strong> <code>DROP TABLE</code> jadvalni qaytarib bo‘lmaydigan tarzda o‘chiradi — xuddi <code>shutil.rmtree()</code> kabi ehtiyot bo‘ling!
+              </div>
+            </div>
+
+            <div class="code-card">
+              <div class="code-bar">
+                <span class="code-lang"><span class="code-dots"><span></span><span></span><span></span></span>Python • Sxemani .sql fayldan yuklash</span>
+                <button type="button" class="copy-btn">Nusxalash</button>
+              </div>
+              <pre><code class="language-python">import sqlite3
+from pathlib import Path
+
+sxema = Path("sxema.sql").read_text(encoding="utf-8")
+
+ulanish = sqlite3.connect("yuridik_firma.db")
+ulanish.executescript(sxema)
+
+# Keyinchalik ustun qo'shish:
+ulanish.execute("ALTER TABLE mijozlar ADD COLUMN email TEXT")
+
+jadvallar = [
+    j[0] for j in ulanish.execute(
+        "SELECT name FROM sqlite_master WHERE type='table'"
+    )
+]
+print("Jadvallar:", jadvallar)</code></pre>
+              <div class="code-output">
+                <div class="code-output-label">Natija</div>
+Jadvallar: ['advokatlar', 'mijozlar', 'shartnomalar']
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <aside class="speaker-notes-source">
+          <p><strong>Yaxshi amaliyot:</strong> Katta loyihalarda SQL sxemani alohida <code>sxema.sql</code> faylda saqlash kodni toza qiladi. <code>IF NOT EXISTS</code> esa dasturni qayta ishga tushirganda <code>OperationalError: table already exists</code> chiqishining oldini oladi.</p>
+        </aside>
+      </section>
+
+      <!-- ================================================================
+           SLIDE 34: 6.3 TASHQI KALITLARNI YOQISH VA PRAGMA TEKSHIRUVI
+           ================================================================ -->
+      <section class="slide" data-chapter="6-bob. Python sqlite3 moduli" data-title="6.3. Tashqi kalitlarni yoqish va PRAGMA tekshiruvi">
+        <header class="slide-header">
+          <div class="slide-header-left">
+            <span class="chapter-pill">6-bob • 6.3</span>
+            <h2 class="slide-title"><code>PRAGMA foreign_keys = ON</code> va sxemani dasturda tekshirish</h2>
+          </div>
+          <span class="slide-num-badge"></span>
+        </header>
+
+        <div class="slide-body">
+          <div class="grid-2" style="flex: 1;">
+            <div class="flex-col">
+              <div class="code-card">
+                <div class="code-bar">
+                  <span class="code-lang"><span class="code-dots"><span></span><span></span><span></span></span>Python • Xavfsiz ulanish funksiyasi</span>
+                  <button type="button" class="copy-btn">Nusxalash</button>
+                </div>
+                <pre><code class="language-python">def ulanish_ochish(fayl):
+    """Tashqi kalitlar yoqilgan ulanish qaytaradi."""
+    ulanish = sqlite3.connect(fayl)
+    ulanish.execute("PRAGMA foreign_keys = ON")
+    return ulanish</code></pre>
+                <div class="code-output">
+                  <div class="code-output-label">Holatni tekshirish</div>
+Oddiy connect() -> PRAGMA foreign_keys = 0  [O'CHIQ]
+ulanish_ochish() -> PRAGMA foreign_keys = 1 [YONIQ]
+                </div>
+              </div>
+
+              <div class="callout fragment mt-auto text-sm">
+                <strong>Nima uchun funksiya yozamiz?</strong> <code>foreign_keys</code> sozlamasi faylda emas, <strong>har bir ulanishda</strong> saqlanadi. Bitta yordamchi funksiya orqali uni hech qachon unutmaysiz.
+              </div>
+            </div>
+
+            <div class="flex-col">
+              <table class="data-table compact">
+                <thead><tr><th>PRAGMA buyrug‘i</th><th>Nima qaytaradi?</th></tr></thead>
+                <tbody>
+                  <tr><td><code>table_info(jadval)</code></td><td>Ustunlar, turlar, <code>NOT NULL</code>, <code>DEFAULT</code>, PK</td></tr>
+                  <tr><td><code>foreign_key_list(jadval)</code></td><td>Tashqi kalitlar va ular havola qilgan ota jadvallar</td></tr>
+                  <tr><td><code>index_list(jadval)</code></td><td>Indekslar (jumladan <code>UNIQUE</code> indekslari)</td></tr>
+                  <tr><td><code>foreign_key_check</code></td><td>Havola yaxlitligini buzgan mavjud yozuvlar</td></tr>
+                </tbody>
+              </table>
+
+              <div class="code-card fragment mt-auto">
+                <div class="code-bar">
+                  <span class="code-lang"><span class="code-dots"><span></span><span></span><span></span></span>Bog‘lanishlarni avtomatik topish</span>
+                  <button type="button" class="copy-btn">Nusxalash</button>
+                </div>
+                <pre><code class="language-python">for fk in ulanish.execute("PRAGMA foreign_key_list(shartnomalar)"):
+    print(f"shartnomalar.{fk[3]} -> {fk[2]}.{fk[4]}")</code></pre>
+                <div class="code-output">
+                  <div class="code-output-label">Natija</div>
+shartnomalar.mijoz_id -> mijozlar.mijoz_id
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <aside class="speaker-notes-source">
+          <p><strong>Python eslatmasi:</strong> O‘zgaruvchi nomida o‘zbekcha tutuq belgisi (<code>‘</code>) ishlatib bo‘lmaydi, shuning uchun <code>boglanishlar</code> deb yoziladi. 7-bob loyihasida <code>ulanish_ochish()</code> va <code>PRAGMA</code> orqali to‘liq sxema hisoboti avtomatik tuziladi.</p>
+        </aside>
+      </section>
+
+      <!-- ================================================================
+           SLIDE 35: 6.4 INTERAKTIV LABORATORIYA — SQL-IN'EKTSIYA
+           ================================================================ -->
+      <section class="slide" data-chapter="6-bob. Python sqlite3 moduli" data-title="6.4. Interaktiv laboratoriya: SQL-in’ektsiya vs Parametrlar">
+        <header class="slide-header">
+          <div class="slide-header-left">
+            <span class="chapter-pill rose">6-bob • Interaktiv laboratoriya</span>
+            <h2 class="slide-title">SQL-in’ektsiya xavfi va parametrlangan so‘rovlar</h2>
+          </div>
+          <span class="slide-num-badge"></span>
+        </header>
+
+        <div class="slide-body" id="sqliLab">
+          <div class="sim-controls">
+            <div class="sim-group">
+              <span class="sim-group-label">Foydalanuvchi kiritishi:</span>
+              <button type="button" class="sim-pill" data-sqli-input="normal">Karimov</button>
+              <button type="button" class="sim-pill danger active" data-sqli-input="attack">x' OR '1'='1</button>
+            </div>
+            <div class="sim-group">
+              <span class="sim-group-label">So‘rov usuli:</span>
+              <button type="button" class="sim-pill danger active" data-sqli-mode="unsafe"><i data-lucide="shield-alert"></i>f-satr (Xavfli)</button>
+              <button type="button" class="sim-pill safe" data-sqli-mode="safe"><i data-lucide="shield-check"></i>Parametr ? (Xavfsiz)</button>
+            </div>
+          </div>
+
+          <div class="grid-2" style="flex: 1;">
+            <div class="code-card">
+              <div class="code-bar">
+                <span class="code-lang"><span class="code-dots"><span></span><span></span><span></span></span>Hosil bo‘lgan SQL va Baza natijasi</span>
+              </div>
+              <pre><code id="sqliSqlPreview"></code></pre>
+              <div class="code-output" style="flex: 1;">
+                <div class="code-output-label">fetchall() natijasi (mijozlar: familiya, pasport)</div>
+                <pre id="sqliResultPreview" style="margin:0; padding:0; color:inherit; font-size:13px;"></pre>
+              </div>
+            </div>
+
+            <div class="flex-col">
+              <div id="sqliVerdict" class="callout danger"></div>
+
+              <table class="data-table compact">
+                <thead><tr><th>Uslub</th><th>So‘rov</th><th>Qiymatlar</th></tr></thead>
+                <tbody>
+                  <tr><td><strong>Pozitsion <code>?</code></strong></td><td><code>WHERE familiya = ?</code></td><td>Kortej: <code>("Karimov",)</code></td></tr>
+                  <tr><td><strong>Nomlangan <code>:nom</code></strong></td><td><code>WHERE litsenziya = :lits</code></td><td>Lug‘at: <code>{"lits": "LT-0102"}</code></td></tr>
+                </tbody>
+              </table>
+
+              <div class="callout warn mt-auto text-sm">
+                <strong>Vergul qoidasi:</strong> Bitta parametrda <code>("Karimov",)</code> deb vergul yozish shart! Aks holda <code>("Karimov")</code> kortej emas, 7 harfli satrga aylanib xato beradi.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <aside class="speaker-notes-source">
+          <p><strong>Jonli sinov:</strong> Avval “f-satr (Xavfli)” + <code>x' OR '1'='1</code> holatini ko‘rsating (barcha pasportlar chiqib ketdi!), keyin bitta bosish bilan “Parametr ? (Xavfsiz)” ga o‘tkazing va hujum qanday to‘silishini ko‘rsating. Shuningdek, parametr faqat qiymatlar uchun ekanini (jadval/ustun nomi uchun emas) eslating.</p>
+        </aside>
+      </section>
+
+      <!-- ================================================================
+           SLIDE 36: 6.5-6.6 TRANZAKSIYALAR (WITH), ISTISNOLAR VA SQLITE3.ROW
+           ================================================================ -->
+      <section class="slide" data-chapter="6-bob. Python sqlite3 moduli" data-title="6.5–6.6. with bloki, istisnolar va sqlite3.Row">
+        <header class="slide-header">
+          <div class="slide-header-left">
+            <span class="chapter-pill">6-bob • 6.5 – 6.6</span>
+            <h2 class="slide-title">Tranzaksiya (<code>with</code>), istisnolar va <code>sqlite3.Row</code></h2>
+          </div>
+          <span class="slide-num-badge"></span>
+        </header>
+
+        <div class="slide-body">
+          <div class="grid-2" style="flex: 1;">
+            <div class="flex-col">
+              <div class="code-card">
+                <div class="code-bar">
+                  <span class="code-lang"><span class="code-dots"><span></span><span></span><span></span></span>Python • with ulanish vs closing()</span>
+                  <button type="button" class="copy-btn">Nusxalash</button>
+                </div>
+                <pre><code class="language-python">from contextlib import closing
+
+with closing(sqlite3.connect("firma.db")) as ulanish:
+    ulanish.row_factory = sqlite3.Row
+    with ulanish:  # xatosiz -> COMMIT, xato -> ROLLBACK
+        ulanish.execute("INSERT INTO mijozlar VALUES (1,'Olimov')")
+
+    satr = ulanish.execute("SELECT * FROM mijozlar").fetchone()
+    print(satr["familiya"], dict(satr))</code></pre>
+              </div>
+
+              <div class="callout warn fragment mt-auto text-sm">
+                <strong>Ko‘p uchraydigan xato:</strong><br/>
+                • <code>commit()</code> chaqirilmasa, dastur yopilishi bilan barcha <code>INSERT/UPDATE</code> lar <strong>yo‘qoladi</strong>!<br/>
+                • <code>with ulanish:</code> faqat tranzaksiyani tasdiqlaydi/bekor qiladi — ulanishni <strong>yopmaydi</strong> (yopish uchun <code>close()</code> yoki <code>closing()</code> kerak).
+              </div>
+            </div>
+
+            <div class="flex-col">
+              <div class="card">
+                <h3 class="card-title">Asosiy <code>sqlite3</code> istisnolari</h3>
+                <table class="data-table compact">
+                  <thead><tr><th>Istisno</th><th>Sababi</th></tr></thead>
+                  <tbody>
+                    <tr><td><code>IntegrityError</code></td><td><code>PK</code>, <code>UNIQUE</code>, <code>NOT NULL</code>, <code>CHECK</code>, <code>FK</code> buzildi</td></tr>
+                    <tr><td><code>OperationalError</code></td><td>SQL sintaksis xatosi, jadval topilmadi</td></tr>
+                    <tr><td><code>ProgrammingError</code></td><td>Yopilgan ulanish, parametr soni mos emas</td></tr>
+                    <tr><td><code>DatabaseError</code></td><td>Fayl buzilgan yoki SQLite bazasi emas</td></tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div class="card card-accent fragment mt-auto">
+                <h3 class="card-title"><code>sqlite3.Row</code> afzalligi</h3>
+                <p class="text-sm">Standart kortej <code>satr[1]</code> o‘rniga ustun nomi bilan <code>satr["familiya"]</code> deb murojaat qilish va <code>dict(satr)</code> ga aylantirish imkonini beradi (xuddi <code>csv.DictReader</code> kabi).</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <aside class="speaker-notes-source">
+          <p><strong>9-mavzu bilan bog‘lash:</strong> Istisnolar har doim aniqrog‘idan (<code>IntegrityError</code>, <code>OperationalError</code>) umumiyrog‘iga (<code>sqlite3.Error</code>) qarab <code>try-except</code> da ushlanadi.</p>
+        </aside>
+      </section>
+
+      <!-- ================================================================
+           SLIDE 37: 6-BOB MINI-VIKTORINA
+           ================================================================ -->
+      <section class="slide" data-chapter="6-bob. Python sqlite3 moduli" data-title="6-bob yakuni: Mini-viktorina">
+        <header class="slide-header">
+          <div class="slide-header-left">
+            <span class="chapter-pill">6-bob • Tekshiruv</span>
+            <h2 class="slide-title">6-bob bo‘yicha tezkor mini-viktorina</h2>
+          </div>
+          <span class="slide-num-badge"></span>
+        </header>
+
+        <div class="slide-body">
+          <div class="quiz-grid">
+            <div class="quiz-card" data-explain="Fayllardan farqli ravishda, with ulanish: faqat tranzaksiyani boshqaradi (xatosiz bo‘lsa COMMIT, istisno bo‘lsa ROLLBACK), lekin ulanishning o‘zini yopmaydi! Yopish uchun closing() yoki close() kerak.">
+              <span class="badge badge-blue" style="width:fit-content;">1-savol</span>
+              <p class="quiz-q"><code>with ulanish:</code> bloki xatoliksiz tugaganda nima sodir bo‘ladi?</p>
+              <div class="quiz-options">
+                <button type="button" class="quiz-opt" data-correct="false">A) Ulanish avtomatik yopiladi (<code>close()</code>)</button>
+                <button type="button" class="quiz-opt" data-correct="true">B) <code>commit()</code> bajariladi, lekin ulanish ochiq qoladi</button>
+                <button type="button" class="quiz-opt" data-correct="false">C) O‘zgarishlar bekor qilinadi (<code>rollback()</code>)</button>
+              </div>
+              <div class="quiz-feedback"></div>
+              <button type="button" class="quiz-reset-btn">Qayta urinish</button>
+            </div>
+
+            <div class="quiz-card" data-explain="Bitta qiymatli kortej yaratish uchun vergul shart: ('Olimov',). Vergulsiz ('Olimov') oddiy 6 harfli satr bo‘lib, SQLite 6 ta parametr deb o‘ylab ProgrammingError beradi.">
+              <span class="badge badge-blue" style="width:fit-content;">2-savol</span>
+              <p class="quiz-q">Bitta <code>?</code> parametrli so‘rovga <code>'Olimov'</code> qiymatini qaysi usulda uzatish to‘g‘ri?</p>
+              <div class="quiz-options">
+                <button type="button" class="quiz-opt" data-correct="false">A) <code>execute(sql, ("Olimov"))</code></button>
+                <button type="button" class="quiz-opt" data-correct="true">B) <code>execute(sql, ("Olimov",))</code></button>
+                <button type="button" class="quiz-opt" data-correct="false">C) <code>execute(f"... = '{ism}'")</code></button>
+              </div>
+              <div class="quiz-feedback"></div>
+              <button type="button" class="quiz-reset-btn">Qayta urinish</button>
+            </div>
+          </div>
+
+          <div class="callout success">
+            <strong>6-bob xulosasi:</strong> <code>ulanish_ochish()</code> + <code>PRAGMA foreign_keys = ON</code> + parametrlangan so‘rovlar + <code>with closing(...)</code> + <code>with ulanish:</code> = ishonchli Python DB kodi!
+          </div>
+        </div>
+
+        <aside class="speaker-notes-source">
+          <p><strong>Amaliyotga o‘tish:</strong> Endi barcha 6 bobda o‘rganganlarimizni bitta to‘liq loyihada — 7-bobdagi Yuridik firma ma’lumotlar bazasida birlashtiramiz.</p>
+        </aside>
+      </section>
+
+      <!-- ================================================================
+           SLIDE 38: 7.1-7.2 YURIDIK FIRMA LOYIHASI — TALAB VA ER-DIAGRAMMA (SVG)
+           ================================================================ -->
+      <section class="slide" data-chapter="7-bob. Kompleks amaliyot" data-title="7.1–7.2. Yuridik firma loyihasi va ER-diagramma">
+        <header class="slide-header">
+          <div class="slide-header-left">
+            <span class="chapter-pill rose">7-bob • 7.1 – 7.2</span>
+            <h2 class="slide-title">Kompleks loyiha: Yuridik firma MB (7 jadval, 3NF)</h2>
+          </div>
+          <span class="slide-num-badge"></span>
+        </header>
+
+        <div class="slide-body">
+          <div class="callout text-sm">
+            <strong>Buyurtmachi talabi:</strong> Firma jismoniy/yuridik mijozlar bilan shartnomalar tuzadi (1:N); har shartnomada bir nechta xizmat (N:M) va advokatlar (N:M, <code>asosiy/yordamchi</code>) bo‘ladi; mijoz bir necha marta naqd/karta/o‘tkazma bilan to‘lov qiladi (1:N), to‘lovlar tarixi hech qachon yo‘qolmasligi kerak.
+          </div>
+
+          <div class="svg-box" style="flex: 1;">
+            <svg viewBox="0 0 1120 380" aria-label="Yuridik firma 7 jadvalli ER-diagrammasi">
+              <!-- Top: XIZMATLAR -->
+              <rect x="440" y="10" width="240" height="52" rx="10" class="svg-box-teal" stroke-width="2" />
+              <text x="560" y="42" text-anchor="middle" font-size="16" class="svg-title">XIZMATLAR</text>
+
+              <line x1="560" y1="62" x2="560" y2="96" class="svg-line-accent" />
+              <text x="572" y="76" font-size="13.5" class="svg-title">1</text>
+              <text x="572" y="92" font-size="13.5" class="svg-title">N</text>
+
+              <!-- SHARTNOMA_XIZMATLARI -->
+              <rect x="395" y="96" width="330" height="52" rx="10" class="svg-box-violet" stroke-width="2" />
+              <text x="560" y="121" text-anchor="middle" font-size="15" class="svg-title">SHARTNOMA_XIZMATLARI</text>
+              <text x="560" y="140" text-anchor="middle" font-size="12" class="svg-mono svg-sub">Oraliq • PK(shartnoma_id, xizmat_id) + miqdor</text>
+
+              <line x1="560" y1="148" x2="560" y2="178" class="svg-line-accent" />
+              <text x="572" y="162" font-size="13.5" class="svg-title">N</text>
+              <text x="572" y="175" font-size="13.5" class="svg-title">1</text>
+
+              <!-- Middle row: MIJOZLAR - SHARTNOMALAR - TOLOVLAR -->
+              <rect x="40" y="178" width="230" height="58" rx="10" class="svg-box-blue" stroke-width="2" />
+              <text x="155" y="205" text-anchor="middle" font-size="16" class="svg-title">MIJOZLAR</text>
+              <text x="155" y="225" text-anchor="middle" font-size="12" class="svg-sub">jismoniy / yuridik • STIR</text>
+
+              <line x1="270" y1="207" x2="430" y2="207" class="svg-line-accent" />
+              <text x="285" y="196" font-size="14" class="svg-title">1</text>
+              <text x="412" y="196" font-size="14" class="svg-title">N</text>
+              <text x="350" y="225" text-anchor="middle" font-size="12" class="svg-muted">ON DELETE RESTRICT</text>
+
+              <rect x="430" y="178" width="260" height="58" rx="10" class="svg-box-blue" stroke-width="2.6" />
+              <text x="560" y="205" text-anchor="middle" font-size="17" class="svg-title">SHARTNOMALAR</text>
+              <text x="560" y="225" text-anchor="middle" font-size="12" class="svg-sub">markaziy jadval • raqam UNIQUE</text>
+
+              <line x1="690" y1="207" x2="850" y2="207" class="svg-line-accent" />
+              <text x="706" y="196" font-size="14" class="svg-title">1</text>
+              <text x="832" y="196" font-size="14" class="svg-title">N</text>
+              <text x="770" y="225" text-anchor="middle" font-size="12" class="svg-muted">ON DELETE RESTRICT</text>
+
+              <rect x="850" y="178" width="230" height="58" rx="10" class="svg-box-emerald" stroke-width="2" />
+              <text x="965" y="205" text-anchor="middle" font-size="16" class="svg-title">TOLOVLAR</text>
+              <text x="965" y="225" text-anchor="middle" font-size="12" class="svg-sub">summa &gt; 0 • naqd/karta/otkazma</text>
+
+              <!-- SHARTNOMA_ADVOKAT -->
+              <line x1="560" y1="236" x2="560" y2="264" class="svg-line-accent" />
+              <text x="572" y="249" font-size="13.5" class="svg-title">1</text>
+              <text x="572" y="261" font-size="13.5" class="svg-title">N</text>
+
+              <rect x="395" y="264" width="330" height="52" rx="10" class="svg-box-violet" stroke-width="2" />
+              <text x="560" y="289" text-anchor="middle" font-size="15" class="svg-title">SHARTNOMA_ADVOKAT</text>
+              <text x="560" y="308" text-anchor="middle" font-size="12" class="svg-mono svg-sub">Oraliq • PK(shartnoma_id, advokat_id) + rol</text>
+
+              <line x1="560" y1="316" x2="560" y2="338" class="svg-line-accent" />
+
+              <!-- ADVOKATLAR -->
+              <rect x="440" y="338" width="240" height="36" rx="9" class="svg-box-amber" stroke-width="2" />
+              <text x="560" y="361" text-anchor="middle" font-size="15" class="svg-title">ADVOKATLAR (litsenziya UNIQUE)</text>
+            </svg>
+          </div>
+        </div>
+
+        <aside class="speaker-notes-source">
+          <p><strong>Tahlil:</strong> 5 ta asosiy mohiyat (Mijoz, Shartnoma, Xizmat, Advokat, To‘lov) + 2 ta N:M oraliq jadval = jami <strong>7 ta jadval</strong>. Natijada barcha aloqalar toza 1:N ko‘rinishiga keldi.</p>
+        </aside>
+      </section>
+
+      <!-- ================================================================
+           SLIDE 39: 7.2 MANTIQIY SXEMA VA BIZNES CHEKLOVLARI
+           ================================================================ -->
+      <section class="slide" data-chapter="7-bob. Kompleks amaliyot" data-title="7.2. Mantiqiy sxema va biznes cheklovlari">
+        <header class="slide-header">
+          <div class="slide-header-left">
+            <span class="chapter-pill rose">7-bob • 7.2</span>
+            <h2 class="slide-title">Buyurtmachi talablarini SQL cheklovlariga tarjima qilish</h2>
+          </div>
+          <span class="slide-num-badge"></span>
+        </header>
+
+        <div class="slide-body">
+          <table class="data-table compact">
+            <thead>
+              <tr>
+                <th style="width: 48%;">Biznes qoida (Buyurtmachi talabi)</th>
+                <th>SQLite sxemasidagi cheklov</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Mijoz toifasi faqat jismoniy yoki yuridik</td>
+                <td><code>CHECK (toifa IN ('jismoniy', 'yuridik'))</code></td>
+              </tr>
+              <tr>
+                <td>STIR takrorlanmaydi, lekin jismoniy shaxslarda bo‘lmasligi mumkin</td>
+                <td><code>stir TEXT UNIQUE</code> (bir nechta <code>NULL</code> ga ruxsat)</td>
+              </tr>
+              <tr>
+                <td>Shartnoma raqami va advokat litsenziyasi noyob</td>
+                <td><code>raqam TEXT NOT NULL UNIQUE</code></td>
+              </tr>
+              <tr>
+                <td>Xizmat narxi, miqdor va to‘lov summasi musbat</td>
+                <td><code>CHECK (narx &gt; 0)</code>, <code>CHECK (summa &gt; 0)</code></td>
+              </tr>
+              <tr>
+                <td>To‘lov usuli faqat 3 xil</td>
+                <td><code>CHECK (usul IN ('naqd', 'karta', 'otkazma'))</code></td>
+              </tr>
+              <tr>
+                <td>To‘lovlar tarixi hech qachon yo‘qolmasin</td>
+                <td><code>tolovlar.shartnoma_id ... ON DELETE RESTRICT</code></td>
+              </tr>
+              <tr>
+                <td>Shartnoma o‘chirilsa, uning xizmat/advokat biriktiruvlari ham o‘chsin</td>
+                <td>Oraliq jadvallarda <code>ON DELETE CASCADE</code></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="callout fragment mt-auto text-sm">
+            <strong>Nozik qoida (<code>UNIQUE</code> + <code>NULL</code>):</strong> SQL’da ikki <code>NULL</code> teng hisoblanmagani uchun STIR’siz bir nechta jismoniy shaxs mijozni qo‘shish mumkin, lekin ikkita MChJ bir xil STIR bilan kirita olmaydi!
+          </div>
+        </div>
+
+        <aside class="speaker-notes-source">
+          <p><strong>Normallashtirish tekshiruvi:</strong> 1NF — barcha kataklar atomar; 2NF — oraliq jadvallarda <code>miqdor</code> va <code>rol</code> butun tarkibiy kalitga bog‘liq; 3NF — narx <code>xizmatlar</code>da, telefon <code>mijozlar</code>da saqlanadi.</p>
+        </aside>
+      </section>
+
+      <!-- ================================================================
+           SLIDE 40: 7.3-7.4 YAXLITLIK SINOVLARI VA PYTHON LOYIHA
+           ================================================================ -->
+      <section class="slide" data-chapter="7-bob. Kompleks amaliyot" data-title="7.3–7.4. Yaxlitlik sinovlari va yuridik_firma_mb.py">
+        <header class="slide-header">
+          <div class="slide-header-left">
+            <span class="chapter-pill rose">7-bob • 7.3 – 7.4</span>
+            <h2 class="slide-title"><code>yuridik_firma_mb.py</code> — 7 ta avtomatik yaxlitlik sinovi</h2>
+          </div>
+          <span class="slide-num-badge"></span>
+        </header>
+
+        <div class="slide-body">
+          <div class="grid-2-wide-left" style="flex: 1;">
+            <table class="data-table compact">
+              <thead>
+                <tr><th>#</th><th>Sinov holati</th><th>Natija</th><th>Ishlagan cheklov</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>1</td><td>Mavjud bo‘lmagan mijoz (<code>id=99</code>)</td><td class="cell-bad">RAD ✓</td><td><code>FOREIGN KEY</code></td></tr>
+                <tr><td>2</td><td>Takroriy shartnoma raqami</td><td class="cell-bad">RAD ✓</td><td><code>UNIQUE</code></td></tr>
+                <tr><td>3</td><td>Manfiy to‘lov summasi (<code>-500</code>)</td><td class="cell-bad">RAD ✓</td><td><code>CHECK (summa &gt; 0)</code></td></tr>
+                <tr><td>4</td><td>Noma’lum to‘lov usuli (<code>'kripto'</code>)</td><td class="cell-bad">RAD ✓</td><td><code>CHECK (usul IN ...)</code></td></tr>
+                <tr><td>5</td><td>Advokatni 2-marta biriktirish</td><td class="cell-bad">RAD ✓</td><td>Tarkibiy <code>PRIMARY KEY</code></td></tr>
+                <tr><td>6</td><td>To‘lovi bor shartnomani o‘chirish</td><td class="cell-bad">RAD ✓</td><td><code>ON DELETE RESTRICT</code></td></tr>
+                <tr><td>7</td><td>To‘g‘ri to‘lov (<code>500 000, 'naqd'</code>)</td><td class="cell-good">QABUL ✓</td><td>Barcha qoidalar mos</td></tr>
+              </tbody>
+            </table>
+
+            <div class="flex-col">
+              <div class="code-card">
+                <div class="code-bar">
+                  <span class="code-lang"><span class="code-dots"><span></span><span></span><span></span></span>Terminal • Dasturni ishga tushirish</span>
+                  <button type="button" class="copy-btn">Nusxalash</button>
+                </div>
+                <pre><code class="language-python"># Loyiha papkasida tayyor fayl:
+# python yuridik_firma_mb.py</code></pre>
+                <div class="code-output">
+                  <div class="code-output-label">Yaratiladigan fayllar</div>
+data/yuridik_firma.db
+natijalar/sxema_hisoboti.txt
+natijalar/yaxlitlik_sinovlari.csv
+Kutilgan natijaga mos: 7 / 7 ✓
+                </div>
+              </div>
+
+              <div class="callout danger fragment mt-auto text-sm">
+                <strong>Tajriba qiling:</strong> <code>PRAGMA foreign_keys = ON</code> qatorini olib tashlasangiz, 1- va 6-sinovlar <strong>qabul qilinib ketadi</strong> va to‘lovlar “egasiz” qoladi!
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <aside class="speaker-notes-source">
+          <p><strong>Jonli demo:</strong> Darsda terminalda <code>python yuridik_firma_mb.py</code> ni ishga tushirib ko‘rsating, so‘ng <code>natijalar/sxema_hisoboti.txt</code> va <code>yaxlitlik_sinovlari.csv</code> fayllarini ochib tahlil qiling.</p>
+        </aside>
+      </section>
+
+      <!-- ================================================================
+           SLIDE 41: 7.5 MUSTAQIL KOMPLEKS TOPSHIRIQLAR
+           ================================================================ -->
+      <section class="slide" data-chapter="7-bob. Kompleks amaliyot" data-title="7.5. Mustaqil kompleks topshiriqlar">
+        <header class="slide-header">
+          <div class="slide-header-left">
+            <span class="chapter-pill rose">7-bob • 7.5</span>
+            <h2 class="slide-title">Mustaqil amaliy loyihalar (Yo‘nalishlar bo‘yicha)</h2>
+          </div>
+          <span class="slide-num-badge"></span>
+        </header>
+
+        <div class="slide-body">
+          <p style="margin:0; font-size:15px; color:var(--text-secondary);">
+            Har bir loyihada 6 bosqichni bajaring: <strong>ER-diagramma → 3NF sxema → Cheklovlar → Python <code>sqlite3</code> → Kamida 5 ta yaxlitlik sinovi → Hisobot</strong>.
+          </p>
+
+          <div class="grid-2" style="flex: 1;">
+            <div class="card fragment" style="border-left: 4px solid var(--teal);">
+              <h3 class="card-title">1. Kichik do‘kon <span class="badge badge-green">Menejment</span></h3>
+              <p class="text-sm">Toifalar, mahsulotlar (narx ≥ 0, qoldiq ≥ 0), mijozlar, buyurtmalar (holat: <code>yangi / yetkazilmoqda / yetkazildi / bekor</code>) va buyurtma-mahsulot oraliq jadvali.</p>
+            </div>
+
+            <div class="card fragment" style="border-left: 4px solid var(--accent);">
+              <h3 class="card-title">2. Bank kreditlari <span class="badge badge-blue">Iqtisodiyot</span></h3>
+              <p class="text-sm">Mijozlar, kreditlar (foiz 0..100, muddat 1..360 oy) va oylik to‘lovlar. To‘lovlari mavjud kreditni o‘chirib bo‘lmasin (<code>RESTRICT</code>).</p>
+            </div>
+
+            <div class="card fragment" style="border-left: 4px solid var(--violet);">
+              <h3 class="card-title">3. Sud ishlari reyestri <span class="badge badge-violet">Yurisprudensiya</span></h3>
+              <p class="text-sm">Sud ishlari (<code>fuqarolik / jinoyat / ma’muriy / iqtisodiy</code>), shaxslar va N:M oraliq jadval (rol: <code>da’vogar / javobgar / guvoh / uchinchi shaxs</code>).</p>
+            </div>
+
+            <div class="card fragment" style="border-left: 4px solid var(--amber);">
+              <h3 class="card-title">4. Kadrlar bo‘limi <span class="badge badge-amber">Menejment</span></h3>
+              <p class="text-sm">Bo‘limlar (1:N), lavozimlar (1:N), xodim maxfiy ma’lumotlari (1:1 — pasport, maosh) va malaka oshirish kurslari (N:M).</p>
+            </div>
+          </div>
+
+          <div class="callout fragment text-sm">
+            <strong>Qo‘shimcha murakkab vazifalar:</strong> (5) <code>sqlite_master</code> dan <code>UNIQUE</code>/<code>CHECK</code> sonini hisoblovchi hisobot; (6) 1.2-bo‘limdagi normallashtirilmagan CSV’ni 3NF bazaga ko‘chirish va zid telefonlarni logga yozish.
+          </div>
+        </div>
+
+        <aside class="speaker-notes-source">
+          <p><strong>Uyga vazifa taqsimoti:</strong> Talabalarni o‘z yo‘nalishiga mos (Iqtisodiyot, Menejment yoki Yurisprudensiya) bitta variantni tanlashga yo‘naltiring. <code>yuridik_firma_mb.py</code> fayli shablon sifatida xizmat qiladi.</p>
+        </aside>
+      </section>
+
+      <!-- ================================================================
+           SLIDE 42: 7.6 YAKUNIY NAZORAT SAVOLLARI VA 12-MAVZUGA KO'PRIK
+           ================================================================ -->
+      <section class="slide" data-chapter="7-bob. Kompleks amaliyot" data-title="7.6. Yakuniy nazorat savollari va xulosa">
+        <header class="slide-header">
+          <div class="slide-header-left">
+            <span class="chapter-pill rose">7-bob • Yakun</span>
+            <h2 class="slide-title">Yakuniy nazorat savollari (Javob uchun savolni bosing)</h2>
+          </div>
+          <span class="slide-num-badge"></span>
+        </header>
+
+        <div class="slide-body">
+          <div class="qa-list">
+            <div class="qa-item">
+              <div class="qa-q"><span>1. CSV faylga nisbatan relyatsion MB ning afzalliklari?</span><span>▾</span></div>
+              <div class="qa-a">Takrorlanish va zidlik yo‘q, avtomatik yaxlitlik tekshiruvi, tezkor B-daraxt qidiruvi, tranzaksiyalar (ACID) va ko‘p foydalanuvchili himoya.</div>
+            </div>
+            <div class="qa-item">
+              <div class="qa-q"><span>2. Jadval, satr, ustun, domen va sxema farqi?</span><span>▾</span></div>
+              <div class="qa-a">Jadval = obyektlar majmuasi, satr = 1 obyekt, ustun = xususiyat, domen = ruxsat etilgan qiymatlar to‘plami, sxema = jadval tuzilmasi/qolipi.</div>
+            </div>
+            <div class="qa-item">
+              <div class="qa-q"><span>3. PK va FK qaysi yaxlitlik turlarini ta’minlaydi?</span><span>▾</span></div>
+              <div class="qa-a">Birlamchi kalit (PK) — <strong>obyekt yaxlitligini</strong>; tashqi kalit (FK) — <strong>havola yaxlitligini</strong>; cheklovlar esa domen yaxlitligini ta’minlaydi.</div>
+            </div>
+            <div class="qa-item">
+              <div class="qa-q"><span>4. 1:N va N:M bog‘liqliklar qanday amalga oshiriladi?</span><span>▾</span></div>
+              <div class="qa-a">1:N — “ko‘p” tomondagi jadvalga FK qo‘shiladi; N:M — ikkala jadvalga havola qiluvchi 3-jadval (oraliq jadval) yaratiladi.</div>
+            </div>
+            <div class="qa-item">
+              <div class="qa-q"><span>5. 1NF, 2NF va 3NF ning qisqa talablari?</span><span>▾</span></div>
+              <div class="qa-a">1NF — atomar kataklar; 2NF — tarkibiy kalitning barcha qismiga bog‘liqlik; 3NF — kalit bo‘lmagan ustunlar orasida tranzitiv bog‘liqlik yo‘q.</div>
+            </div>
+            <div class="qa-item">
+              <div class="qa-q"><span>6. Nega parametrlar va <code>PRAGMA foreign_keys = ON</code> shart?</span><span>▾</span></div>
+              <div class="qa-a">Parametrlar (<code>?</code> / <code>:nom</code>) SQL-in’ektsiyani to‘sadi; <code>PRAGMA foreign_keys = ON</code> esa SQLite’da har ulanishda havola yaxlitligini faollashtiradi.</div>
+            </div>
+          </div>
+
+          <div class="callout success mt-auto">
+            <strong>Keyingi qadam → 12-mavzu:</strong> Endi yaratilgan jadvallarimiz ustida ma’lumot qo‘shish, o‘qish, yangilash va o‘chirish (<strong>SQL CRUD</strong>) hamda 13-mavzuda filtrlash, <code>JOIN</code> va guruhlash so‘rovlarini chuqur o‘rganamiz!
+          </div>
+        </div>
+
+        <aside class="speaker-notes-source">
+          <p><strong>Yakunlash:</strong> Har bir savol kartochkasini bosib kalit javobni ochish mumkin. Talabalarga prezentatsiyani PDF qilib saqlash (pastki paneldagi <strong>PDF</strong> tugmasi) yoki <code>yuridik_firma_mb.py</code> ni sinab ko‘rishni tavsiya qiling.</p>
+        </aside>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Speaker Notes Dock (Toggle with N) -->
+  <aside class="notes-dock" id="notesDock" aria-label="O‘qituvchi izohlari">
+    <div class="notes-dock-header">
+      <span class="inline-ico-label"><i data-lucide="file-text"></i>O‘qituvchi izohi (Speaker Notes)</span>
+      <span class="muted" style="font-weight:600; text-transform:none;">Yopish uchun <kbd>N</kbd> bosing</span>
+    </div>
+    <div class="notes-dock-content" id="notesDockContent"></div>
+  </aside>
+
+  <!-- Bottom Control Toolbar -->
+  <footer class="toolbar">
+    <div class="toolbar-group">
+      <button type="button" class="tb-btn" id="btnMenu" title="Boblar menyusi (M)"><i data-lucide="menu"></i><span>Boblar</span></button>
+      <span class="tb-chapter-name" id="currentChapterName">Kirish</span>
+    </div>
+
+    <div class="toolbar-group">
+      <button type="button" class="tb-btn" id="btnPrev" title="Oldingi (←)"><i data-lucide="arrow-left"></i><span>Oldingi</span></button>
+      <span class="tb-counter" id="slideCounter">1 / 42</span>
+      <button type="button" class="tb-btn" id="btnNext" title="Keyingi (→ / Space)"><span>Keyingi</span><i data-lucide="arrow-right"></i></button>
+    </div>
+
+    <div class="toolbar-group">
+      <button type="button" class="tb-btn" id="btnNotes" title="O‘qituvchi izohi (N)"><i data-lucide="file-text"></i><span>Izoh</span></button>
+      <button type="button" class="tb-btn" id="btnOverview" title="Barcha slaydlar (O)"><i data-lucide="layout-grid"></i><span>Panjara</span></button>
+      <button type="button" class="tb-btn" id="btnTheme" title="Yorug‘ / Tungi rejim (D)"><i data-lucide="moon"></i><span>Tungi</span></button>
+      <button type="button" class="tb-btn" id="btnPrint" title="PDF qilib saqlash (Ctrl+P)"><i data-lucide="printer"></i><span>PDF</span></button>
+      <button type="button" class="tb-btn" id="btnFullscreen" title="To‘liq ekran (F)"><i data-lucide="maximize-2"></i></button>
+    </div>
+  </footer>
+
+  <!-- Chapter Navigation Drawer -->
+  <div class="drawer-backdrop" id="drawerBackdrop"></div>
+  <nav class="chapter-drawer" id="chapterDrawer" aria-label="Boblar va slaydlar">
+    <div class="drawer-head">
+      <h2 class="inline-ico-label"><i data-lucide="book-open" class="ico-accent"></i>Boblar va slaydlar</h2>
+      <button type="button" class="tb-btn" id="btnDrawerClose" aria-label="Yopish"><i data-lucide="x"></i></button>
+    </div>
+    <div class="drawer-list" id="drawerList"></div>
+  </nav>
+
+  <!-- Overview Grid Modal -->
+  <div class="overview-modal" id="overviewModal" aria-label="Barcha slaydlar ko‘rinishi">
+    <div class="overview-head">
+      <h2>Barcha slaydlar (Tezkor o‘tish)</h2>
+      <button type="button" class="tb-btn" id="btnOverviewClose"><i data-lucide="x"></i><span>Yopish (Esc)</span></button>
+    </div>
+    <div class="overview-grid" id="overviewGrid"></div>
+  </div>
+
+  <script src="vendor/lucide.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
